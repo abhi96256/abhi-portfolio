@@ -1,16 +1,71 @@
 import { useRef, useState, useEffect } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
-import { useTexture } from '@react-three/drei';
+import { useFrame, useThree, extend } from '@react-three/fiber';
+import { useTexture, shaderMaterial } from '@react-three/drei';
 import * as THREE from 'three';
+
+// Custom shader for magnifying glass reveal effect
+const MagnifyMaterial = shaderMaterial(
+    {
+        uSketch: null,
+        uReal: null,
+        uCenter: new THREE.Vector2(0.5, 0.5),
+        uRadius: 0.0, // Start hidden
+        uEdgeSoftness: 0.05,
+        uMagnify: 1.60,
+        uTime: 0,
+        uVisible: 0.0,
+    },
+    // Vertex Shader
+    `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+    `,
+    // Fragment Shader
+    `
+    varying vec2 vUv;
+    uniform sampler2D uSketch;
+    uniform sampler2D uReal;
+    uniform vec2 uCenter;
+    uniform float uRadius;
+    uniform float uEdgeSoftness;
+    uniform float uMagnify;
+    uniform float uVisible;
+
+    void main() {
+      float dist = distance(vUv, uCenter);
+      
+      // Sketch color
+      vec4 sketchCol = texture2D(uSketch, vUv);
+      
+      // Magnified UV for the real face
+      vec2 magnifiedUv = uCenter + (vUv - uCenter) / uMagnify;
+      vec4 realCol = texture2D(uReal, magnifiedUv);
+
+      // Smooth mask
+      float mask = (1.0 - smoothstep(uRadius - uEdgeSoftness, uRadius, dist)) * uVisible;
+      
+      // Mix sketch and real
+      vec4 finalCol = mix(sketchCol, realCol, mask);
+      
+      // Handle transparency
+      if (mask > 0.01) {
+          finalCol.a = max(sketchCol.a, mask);
+      } else {
+          finalCol.a = sketchCol.a;
+      }
+
+      gl_FragColor = finalCol;
+    }
+    `
+);
+
+extend({ MagnifyMaterial });
 
 /**
  * Avatar Component - Hand-drawn sketch style character
- * 
- * New sketchy avatar with WOW effects:
- * - Parallax depth effect on scroll
- * - Hand-drawn line style matching entrance
- * - Dodges when camera approaches
- * - Frame-by-frame animation (Boomerang effect: 1-6-1)
  */
 const Avatar = ({ position = [10, -20, 30] }) => {
     const meshRef = useRef();
@@ -30,11 +85,20 @@ const Avatar = ({ position = [10, -20, 30] }) => {
     // Load all texture frames
     const textures = useTexture(framePaths);
 
-    // Animation control refs
-    // start at index 0 (which refers to 1.webp)
     const currentFrame = useRef(0);
     const isReversing = useRef(false);
     const frameTimer = useRef(0);
+
+    // Magnify effect refs
+    const lensRef = useRef();
+    const materialRef = useRef();
+    const mouseUv = useRef(new THREE.Vector2(0.5, 0.5));
+    const isOverFace = useRef(false);
+    const currentRadius = useRef(0);
+
+    // Load real face texture
+    const realFaceTex = useTexture('/pic.jpeg');
+    realFaceTex.colorSpace = THREE.SRGBColorSpace;
 
     // Apply color space and calculate dimensions once
     useEffect(() => {
@@ -47,13 +111,6 @@ const Avatar = ({ position = [10, -20, 30] }) => {
                 width: baseHeight * aspectRatio,
                 height: baseHeight
             });
-        }
-
-        // Set initial texture to avoid white flash, but don't bind it declaratively 
-        // to prevent React from overwriting our useFrame mutations
-        if (meshRef.current && textures[currentFrame.current]) {
-            meshRef.current.material.map = textures[currentFrame.current];
-            meshRef.current.material.needsUpdate = true;
         }
     }, [textures]);
 
@@ -85,38 +142,56 @@ const Avatar = ({ position = [10, -20, 30] }) => {
         groupRef.current.position.x = position[0] + dodgeX.current;
         groupRef.current.position.y = position[1];
 
-        // === FRAME ANIMATION LOGIC (PING-PONG) ===
-        // Using delta for consistent speed regardless of monitor Hz
-        const FPS = 20; // Prędkość machania (klatki na sekundę)
+        // === FRAME ANIMATION LOGIC ===
+        const FPS = 20; 
         const frameDuration = 1 / FPS;
-
         frameTimer.current += delta;
 
         if (frameTimer.current >= frameDuration) {
-            frameTimer.current = 0; // Reset timer
+            frameTimer.current = 0; 
+            if (currentFrame.current >= TOTAL_FRAMES - 1) isReversing.current = true;
+            else if (currentFrame.current <= 0) isReversing.current = false;
 
-            // Jesteśmy na ostatniej (od prawej)? To machamy do lewej
-            if (currentFrame.current >= TOTAL_FRAMES - 1) {
-                isReversing.current = true;
-            }
-            // Jesteśmy na indeksie 0 (czyli 1.webp)? To machamy z powrotem do prawej
-            else if (currentFrame.current <= 0) {
-                isReversing.current = false;
-            }
+            if (isReversing.current) currentFrame.current -= 1;
+            else currentFrame.current += 1;
 
-            // Przejście klatki
-            if (isReversing.current) {
-                currentFrame.current -= 1;
-            } else {
-                currentFrame.current += 1;
-            }
-
-            // Zabezpieczenie przed błędem indeksu (nie schodzimy poniżej 0)
             const safeIndex = Math.max(0, Math.min(TOTAL_FRAMES - 1, currentFrame.current));
+            if (materialRef.current) {
+                materialRef.current.uSketch = textures[safeIndex];
+            }
+        }
 
-            // Aplikacja tekstury
-            meshRef.current.material.map = textures[safeIndex];
-            meshRef.current.material.needsUpdate = true;
+        // === MAGNIFY EFFECT LOGIC ===
+        const raycaster = state.raycaster;
+        const intersects = raycaster.intersectObject(meshRef.current);
+        
+        if (intersects.length > 0) {
+            isOverFace.current = true;
+            mouseUv.current.lerp(intersects[0].uv, 0.2);
+        } else {
+            isOverFace.current = false;
+        }
+
+        const targetRadius = isOverFace.current ? 0.35 : 0.0;
+        const targetVisible = isOverFace.current ? 1.0 : 0.0;
+        
+        currentRadius.current = THREE.MathUtils.lerp(currentRadius.current, targetRadius, 0.1);
+        
+        if (materialRef.current) {
+            materialRef.current.uCenter = mouseUv.current;
+            materialRef.current.uRadius = currentRadius.current;
+            materialRef.current.uVisible = THREE.MathUtils.lerp(materialRef.current.uVisible, targetVisible, 0.1);
+        }
+
+        if (lensRef.current && isOverFace.current) {
+            lensRef.current.visible = true;
+            lensRef.current.position.copy(intersects[0].point);
+            lensRef.current.position.z += 0.02;
+            
+            const pulse = 1.0 + Math.sin(state.clock.elapsedTime * 4) * 0.02;
+            lensRef.current.scale.setScalar(pulse);
+        } else if (lensRef.current) {
+            lensRef.current.visible = false;
         }
     });
 
@@ -124,17 +199,30 @@ const Avatar = ({ position = [10, -20, 30] }) => {
         <group ref={groupRef} position={position}>
             <mesh ref={meshRef}>
                 <planeGeometry args={[dimensions.width, dimensions.height]} />
-                <meshBasicMaterial color="#ffffff"
+                <magnifyMaterial 
+                    ref={materialRef}
+                    uSketch={textures[0]}
+                    uReal={realFaceTex}
                     transparent={true}
                     side={THREE.DoubleSide}
                     depthWrite={false}
                 />
             </mesh>
+
+            <group ref={lensRef} visible={false}>
+                <mesh>
+                    <ringGeometry args={[0.65, 0.70, 64]} />
+                    <meshBasicMaterial color="#333" transparent opacity={0.8} />
+                </mesh>
+                <mesh>
+                    <circleGeometry args={[0.65, 64]} />
+                    <meshBasicMaterial color="#4A90E2" transparent opacity={0.1} />
+                </mesh>
+            </group>
         </group>
     );
 };
 
-// Easing function
 const easeOutQuad = (t) => t * (2 - t);
 
 export default Avatar;
