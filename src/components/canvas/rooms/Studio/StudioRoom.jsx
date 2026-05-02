@@ -7,7 +7,7 @@ import { useScene } from '../../../../context/SceneContext';
 import { useAchievements } from '../../../../context/AchievementsContext';
 import { TextureLoader } from 'three';
 import FloatingCodeParticles from './FloatingCodeParticles';
-import { PositionalAudio } from '@react-three/drei';
+import { PositionalAudio, Text } from '@react-three/drei';
 import { useAudio } from '../../../../context/AudioManager';
 import '../../shaders/RevealMaterial';
 import { isTouchDevice } from '../../../../utils/deviceDetect';
@@ -184,8 +184,11 @@ const StudioRoom = ({ showRoom, onReady, isExiting, isWarmup }) => {
     const monitorData = useMemo(() => {
         const items = [];
 
-        // Shuffle content for mixed appearance (seeded for consistency)
-        const shuffledContent = [...CONTENT_DATA].sort(() => 0.5 - Math.random());
+        // Group content by category for a structured showcase
+        const shuffledContent = [...CONTENT_DATA].sort((a, b) => {
+            const categories = ['frontend', 'backend', 'design', 'tool'];
+            return categories.indexOf(a.category) - categories.indexOf(b.category);
+        });
 
         // Calculate how many rings we need
         const totalMonitors = shuffledContent.length;
@@ -591,10 +594,10 @@ const MonitorBlock = memo(({ item, meshRef, isSelected, onMonitorClick, disabled
     const matRef5 = useRef(); // -Z back
     const matRefs = [matRef0, matRef1, matRef2, matRef3, matRef4, matRef5];
 
-    // Check platform types
-    const isBlogMonitor = item.platform === 'blog';
-    const isTvMonitor = item.platform === 'youtube';
-    const isPhoneMonitor = item.platform === 'tiktok';
+    // Check platform shapes from config
+    const isBlogMonitor = item.platformConfig.shape === 'monitor';
+    const isTvMonitor = item.platformConfig.shape === 'tv';
+    const isPhoneMonitor = item.platformConfig.shape === 'phone';
 
     // Determine the URL for the front texture (custom or default)
     const frontTextureUrl = item.frontTexture || (
@@ -835,9 +838,122 @@ const MonitorBlock = memo(({ item, meshRef, isSelected, onMonitorClick, disabled
                     }
                 })}
             </mesh>
+
+            {/* EXPERTISE CONTENT OVERLAY (Visible on front face) */}
+            <SkillScreen item={item} isHovered={isHoveredRef} isSelected={isSelected} />
         </group>
     );
 });
+
+/**
+ * SkillScreen Component
+ * Renders 3D UI content on the monitor screen (Progress bars or Tool icons)
+ */
+const SkillScreen = ({ item, isHovered, isSelected }) => {
+    const isTool = item.category === 'tool';
+    const accentColor = item.platformConfig.accentColor || '#F5A623';
+    
+    // Position slightly in front of the front face to avoid Z-fighting
+    const zPos = item.depth / 2 + 0.01;
+
+    if (isTool) {
+        return (
+            <group position={[0, 0, zPos]}>
+                <mesh>
+                    <circleGeometry args={[0.2, 32]} />
+                    <meshBasicMaterial color="#1a1a1a" transparent opacity={0.9} />
+                </mesh>
+                <mesh position={[0, 0, -0.001]}>
+                    <circleGeometry args={[0.21, 32]} />
+                    <meshBasicMaterial color={accentColor} />
+                </mesh>
+                <Text
+                    position={[0, -0.28, 0]}
+                    fontSize={0.06}
+                    color="#333"
+                    font="/fonts/CabinSketch-Bold.ttf"
+                    anchorX="center"
+                    anchorY="top"
+                >
+                    {item.title}
+                </Text>
+                {/* Tool Icon Initials or Placeholder */}
+                <Text
+                    position={[0, 0, 0.01]}
+                    fontSize={0.08}
+                    color="white"
+                    font="/fonts/RubikScribble-Regular.ttf"
+                    anchorX="center"
+                    anchorY="middle"
+                >
+                    {item.icon || item.title.substring(0, 2)}
+                </Text>
+            </group>
+        );
+    }
+
+    return (
+        <group position={[0, 0, zPos]} scale={[0.8, 0.8, 0.8]}>
+            {/* Skill Category Label */}
+            <Text
+                position={[-0.45, 0.4, 0]}
+                fontSize={0.05}
+                color="#888"
+                font="/fonts/CabinSketch-Bold.ttf"
+                anchorX="left"
+            >
+                {item.platformConfig.label.toUpperCase()}
+            </Text>
+
+            {/* Skill Title */}
+            <Text
+                position={[-0.45, 0.25, 0]}
+                fontSize={0.1}
+                color="#111"
+                font="/fonts/RubikScribble-Regular.ttf"
+                anchorX="left"
+            >
+                {item.title}
+            </Text>
+            
+            {/* Percentage Text */}
+            <Text
+                position={[0.45, 0.25, 0]}
+                fontSize={0.08}
+                color={accentColor}
+                font="/fonts/CabinSketch-Bold.ttf"
+                anchorX="right"
+            >
+                {item.percentage}%
+            </Text>
+
+            {/* Progress Bar Background */}
+            <mesh position={[0, 0, -0.005]}>
+                <planeGeometry args={[0.9, 0.06]} />
+                <meshBasicMaterial color="#f0f0f0" />
+            </mesh>
+
+            {/* Progress Bar Fill */}
+            <mesh position={[-0.45 + (item.percentage / 100) * 0.45, 0, 0.001]}>
+                <planeGeometry args={[(item.percentage / 100) * 0.9, 0.06]} />
+                <meshBasicMaterial color={accentColor} />
+            </mesh>
+            
+            {/* Description (Smaller) */}
+            <Text
+                position={[-0.45, -0.15, 0]}
+                fontSize={0.045}
+                color="#555"
+                font="/fonts/CabinSketch-Bold.ttf"
+                anchorX="left"
+                anchorY="top"
+                maxWidth={0.9}
+            >
+                {item.description}
+            </Text>
+        </group>
+    );
+};
 
 export default StudioRoom;
 

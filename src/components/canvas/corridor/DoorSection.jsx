@@ -42,7 +42,7 @@ const DOOR_ALIGN_X = 1.2;
 // Door texture mapping - maps label to texture file
 const DOOR_TEXTURES = {
     'THE GALLERY': '/textures/corridor/doors/drzwiprojekty.webp',
-    'THE STUDIO': '/textures/corridor/doors/drzwisocial.webp',
+    'SKILLS': '/textures/corridor/doors/drzwisocial.webp',
     'THE ABOUT': '/textures/corridor/doors/drzwiabout.webp',
     "LET'S CONNECT": '/textures/corridor/doors/drzwikontakt.webp',
 };
@@ -50,7 +50,7 @@ const DOOR_TEXTURES = {
 // Painted (colored) variants for brush-stroke reveal on hover
 const DOOR_PAINTED_TEXTURES = {
     'THE GALLERY': '/textures/corridor/doors/drzwiprojekty_painted.webp',
-    'THE STUDIO': '/textures/corridor/doors/drzwisocial_painted.webp',
+    'SKILLS': '/textures/corridor/doors/drzwisocial_painted.webp',
     'THE ABOUT': '/textures/corridor/doors/drzwiabout_painted.webp',
     "LET'S CONNECT": '/textures/corridor/doors/drzwikontakt_painted.webp',
 };
@@ -251,7 +251,7 @@ const DoorSection = ({
     }, [baseboardTexture]);
 
     // Door dimensions - based on legacy texture aspect ratio (approx 0.376)
-    const doorRatio = label === 'THE STUDIO' ? 0.388 : 0.376;
+    const doorRatio = label === 'SKILLS' ? 0.388 : 0.376;
     const doorHeight = 2.5;
     const doorWidth = doorHeight * doorRatio * 1.12;
 
@@ -1093,29 +1093,17 @@ const DoorSection = ({
                                 </Text>
                             </group>
                         )}
-                        {label === 'THE STUDIO' && (
-                            <group position={[0, 0, 0.01]}>
-                                <Text
-                                    font="/fonts/CabinSketch-Bold.ttf"
-                                    fontSize={0.25}
-                                    color="#111111"
-                                    anchorX="center"
-                                    anchorY="bottom"
-                                    position={[0, -0.02, 0]}
-                                >
-                                    THE
-                                </Text>
-                                <Text
-                                    font="/fonts/CabinSketch-Bold.ttf"
-                                    fontSize={0.25}
-                                    color="#111111"
-                                    anchorX="center"
-                                    anchorY="top"
-                                    position={[0, +0.03, 0]}
-                                >
-                                    STUDIO
-                                </Text>
-                            </group>
+                        {label === 'SKILLS' && (
+                            <Text
+                                font="/fonts/CabinSketch-Bold.ttf"
+                                fontSize={0.30}
+                                color="#111111"
+                                anchorX="center"
+                                anchorY="middle"
+                                position={[0, 0, 0.01]}
+                            >
+                                SKILLS
+                            </Text>
                         )}
                         {label === 'THE ABOUT' && (
                             <Text
@@ -1182,7 +1170,7 @@ const DoorSection = ({
                         <mesh
                             ref={doorPaintedRef}
                             position={[doorMeshX, -0.2, -0.001]}
-                            scale={[(side === 'right' && label !== 'THE STUDIO') ? -1 : 1, 1, 1]}
+                            scale={[(side === 'right' && label !== 'SKILLS') ? -1 : 1, 1, 1]}
                         >
                             <planeGeometry args={[doorWidth, doorHeight]} />
                             <meshBasicMaterial color="#e0e0e0"
@@ -1196,7 +1184,7 @@ const DoorSection = ({
                         {/* Sketch overlay (front) - brush-stroke discard reveals painted beneath */}
                         <mesh
                             position={[doorMeshX, -0.2, 0]}
-                            scale={[(side === 'right' && label !== 'THE STUDIO') ? -1 : 1, 1, 1]}
+                            scale={[(side === 'right' && label !== 'SKILLS') ? -1 : 1, 1, 1]}
                         >
                             <planeGeometry args={[doorWidth, doorHeight]} />
                             <revealMaterial color="#e0e0e0"
@@ -1208,6 +1196,39 @@ const DoorSection = ({
                                 uProgress={0.0}
                             />
                         </mesh>
+
+                        {/* CUSTOM SKILLS LOGOS (Covering old social logos) */}
+                        {label === 'SKILLS' && (
+                            <group position={[doorMeshX + 0.1, -0.2, 0.01]}>
+                                {/* Cover panels for old logos */}
+                                <mesh position={[0, 0.55, 0.001]}>
+                                    <planeGeometry args={[0.35, 0.35]} />
+                                    <meshBasicMaterial color="white" />
+                                </mesh>
+                                <mesh position={[0, 0.1, 0.001]}>
+                                    <planeGeometry args={[0.35, 0.35]} />
+                                    <meshBasicMaterial color="white" />
+                                </mesh>
+                                <mesh position={[0, -0.35, 0.001]}>
+                                    <planeGeometry args={[0.35, 0.35]} />
+                                    <meshBasicMaterial color="white" />
+                                </mesh>
+
+                                {/* New 3D Logos */}
+                                <group position={[0, 0.55, 0.002]}>
+                                    <Text fontSize={0.14} color="#61DAFB" anchorX="center" anchorY="middle">⚛️</Text>
+                                    <Text position={[0, -0.11, 0]} fontSize={0.05} color="#333" font="/fonts/CabinSketch-Bold.ttf" anchorX="center">React</Text>
+                                </group>
+                                <group position={[0, 0.1, 0.002]}>
+                                    <Text fontSize={0.14} color="#00758F" anchorX="center" anchorY="middle">🐬</Text>
+                                    <Text position={[0, -0.11, 0]} fontSize={0.05} color="#333" font="/fonts/CabinSketch-Bold.ttf" anchorX="center">MySQL</Text>
+                                </group>
+                                <group position={[0, -0.35, 0.002]}>
+                                    <Text fontSize={0.14} color="#339933" anchorX="center" anchorY="middle">⚙️</Text>
+                                    <Text position={[0, -0.11, 0]} fontSize={0.05} color="#333" font="/fonts/CabinSketch-Bold.ttf" anchorX="center">Node.js</Text>
+                                </group>
+                            </group>
+                        )}
 
                         {/* Door Back Texture */}
                         <mesh

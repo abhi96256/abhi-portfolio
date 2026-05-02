@@ -58,7 +58,7 @@ const CorridorSegment = ({
                 roomId: 'studio',
                 relativeZ: -32,
                 side: 'right',
-                label: 'THE STUDIO',
+                label: 'SKILLS',
                 icon: '▶',
                 color: '#e6f5ef'
             },

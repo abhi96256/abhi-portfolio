@@ -1,159 +1,277 @@
 /**
- * Studio Content Data
+ * Technical Expertise Content Data
  * 
- * This file contains all content items for the Studio monitor tower.
- * Each item will be displayed on a monitor in the tower.
- * 
- * Platforms: 'youtube', 'blog', 'tiktok'
+ * This file contains all skills and tools for the Technical Expertise room.
+ * Categorized into Frontend, Backend, Design, and Tools.
  */
 
 export const PLATFORM_CONFIG = {
-    youtube: {
-        color: '#FF0000',
-        accentColor: '#cc0000',
-        icon: '▶',
-        label: 'YouTube',
-        shape: 'tv', // Wide CRT style
-    },
-    blog: {
-        color: '#4A90D9',
+    frontend: {
+        color: '#4A90E2',
         accentColor: '#2d6cb5',
-        icon: '📝',
-        label: 'Blog',
-        shape: 'monitor', // Thin desktop monitor
+        icon: '⚛️',
+        label: 'Frontend Architecture',
+        shape: 'monitor',
     },
-    tiktok: {
-        color: '#00F2EA',
-        accentColor: '#FF0050',
-        icon: '🎵',
-        label: 'TikTok',
-        shape: 'phone', // Vertical phone
+    backend: {
+        color: '#7ED321',
+        accentColor: '#5a9b13',
+        icon: '⚙️',
+        label: 'Backend & Cloud',
+        shape: 'tv',
+    },
+    design: {
+        color: '#BD10E0',
+        accentColor: '#8a0a9e',
+        icon: '🎨',
+        label: 'Design & UX',
+        shape: 'monitor',
+    },
+    tool: {
+        color: '#F5A623',
+        accentColor: '#c4821a',
+        icon: '🛠️',
+        label: 'Mastered Tools',
+        shape: 'phone',
     },
 };
 
-// Sample content data - replace with real content later
 const RAW_CONTENT_DATA = [
-    // ============ Professional Links ============
+    // ============ Frontend Architecture ============
     {
-        id: 'link-001',
-        platform: 'blog',
-        title: 'LinkedIn Profile',
-        description: 'Connect with me on LinkedIn for professional collaborations and networking.',
-        thumbnail: null,
-        url: 'https://www.linkedin.com/in/abhishek-kumar-326939291/',
-        date: '2026-05-02',
-        readTime: '1 min',
-    },
-    {
-        id: 'link-002',
-        platform: 'blog',
-        title: 'GitHub Repository',
-        description: 'Check out my code repositories and open-source contributions on GitHub.',
-        thumbnail: null,
+        id: 'fe-001',
+        category: 'frontend',
+        platform: 'frontend',
+        title: 'React / Next.js',
+        percentage: 95,
+        description: 'Advanced expertise in building modern, scalable SPAs and SSR applications using React and the Next.js framework.',
         url: 'https://github.com/abhi96256',
         date: '2026-05-02',
-        readTime: '1 min',
     },
     {
-        id: 'link-003',
-        platform: 'blog',
-        title: 'WhatsApp Contact',
-        description: 'Direct message me for quick inquiries or project discussions.',
-        thumbnail: null,
-        url: 'https://wa.me/919625613008',
-        date: '2026-05-02',
-        readTime: '1 min',
-    },
-    {
-        id: 'link-004',
-        platform: 'blog',
-        title: 'Portfolio Projects',
-        description: 'Explore a collection of 12+ full-stack and frontend projects in the Gallery room.',
-        thumbnail: null,
+        id: 'fe-002',
+        category: 'frontend',
+        platform: 'frontend',
+        title: 'TypeScript',
+        percentage: 90,
+        description: 'Strong proficiency in using TypeScript for type-safe development, improving code quality and maintainability.',
         url: 'https://github.com/abhi96256',
         date: '2026-05-02',
-        readTime: '2 min',
-    },
-    // ============ Skills & Expertise ============
-    {
-        id: 'skill-001',
-        platform: 'youtube',
-        title: 'Full Stack Development',
-        description: 'Building end-to-end solutions using React, Node.js, and PHP.',
-        thumbnail: null,
-        url: 'https://github.com/abhi96256',
-        date: '2026-05-02',
-        views: 'Expert',
-        duration: '3+ Years',
     },
     {
-        id: 'skill-002',
-        platform: 'youtube',
-        title: '3D Web Experiences',
-        description: 'Creating immersive 3D environments with Three.js and React Three Fiber.',
-        thumbnail: null,
+        id: 'fe-003',
+        category: 'frontend',
+        platform: 'frontend',
+        title: 'Tailwind CSS',
+        percentage: 85,
+        description: 'Expertise in utility-first CSS for rapid UI development and maintaining consistent design systems.',
         url: 'https://github.com/abhi96256',
         date: '2026-05-02',
-        views: 'Specialist',
-        duration: '1+ Year',
+    },
+
+    // ============ Backend & Cloud ============
+    {
+        id: 'be-001',
+        category: 'backend',
+        platform: 'backend',
+        title: 'Node.js',
+        percentage: 80,
+        description: 'Building robust server-side applications and RESTful APIs using Node.js and Express.',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
     },
     {
-        id: 'skill-003',
-        platform: 'youtube',
-        title: 'Database Management',
-        description: 'Designing efficient database schemas with MySQL and Supabase.',
-        thumbnail: null,
+        id: 'be-002',
+        category: 'backend',
+        platform: 'backend',
+        title: 'MongoDB',
+        percentage: 93,
+        description: 'Extensive experience with NoSQL database design and complex aggregations.',
         url: 'https://github.com/abhi96256',
         date: '2026-05-02',
-        views: 'Advanced',
-        duration: '2+ Years',
     },
     {
-        id: 'skill-004',
-        platform: 'youtube',
-        title: 'Modern Frontend',
-        description: 'Developing responsive and high-performance UIs with Tailwind CSS and GSAP.',
-        thumbnail: null,
+        id: 'be-003',
+        category: 'backend',
+        platform: 'backend',
+        title: 'MySQL',
+        percentage: 90,
+        description: 'Deep understanding of relational database management and query optimization.',
         url: 'https://github.com/abhi96256',
         date: '2026-05-02',
-        views: 'Master',
-        duration: '3+ Years',
+    },
+    {
+        id: 'be-004',
+        category: 'backend',
+        platform: 'backend',
+        title: 'PHP / Laravel',
+        percentage: 70,
+        description: 'Proficient in developing enterprise-grade applications with the Laravel framework.',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+    {
+        id: 'be-005',
+        category: 'backend',
+        platform: 'backend',
+        title: 'PostgreSQL',
+        percentage: 75,
+        description: 'Working with advanced SQL features and spatial data.',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+    {
+        id: 'be-006',
+        category: 'backend',
+        platform: 'backend',
+        title: 'AWS / Vercel',
+        percentage: 70,
+        description: 'Deploying and managing cloud infrastructure and serverless functions.',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+
+    // ============ Design & UX ============
+    {
+        id: 'ds-001',
+        category: 'design',
+        platform: 'design',
+        title: 'Figma',
+        percentage: 85,
+        description: 'Designing high-fidelity wireframes, prototypes, and user interfaces.',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+    {
+        id: 'ds-002',
+        category: 'design',
+        platform: 'design',
+        title: 'Framer Motion',
+        percentage: 90,
+        description: 'Creating smooth, declarative animations for React applications.',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+    {
+        id: 'ds-003',
+        category: 'design',
+        platform: 'design',
+        title: 'System Design',
+        percentage: 80,
+        description: 'Architecting scalable and resilient software systems.',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+
+    // ============ Mastered Tools ============
+    {
+        id: 'tl-001',
+        category: 'tool',
+        platform: 'tool',
+        title: 'React',
+        icon: 'React',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+    {
+        id: 'tl-002',
+        category: 'tool',
+        platform: 'tool',
+        title: 'Node.js',
+        icon: 'Node',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+    {
+        id: 'tl-003',
+        category: 'tool',
+        platform: 'tool',
+        title: 'MySQL',
+        icon: 'MySQL',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+    {
+        id: 'tl-004',
+        category: 'tool',
+        platform: 'tool',
+        title: 'Next.js',
+        icon: 'Next',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+    {
+        id: 'tl-005',
+        category: 'tool',
+        platform: 'tool',
+        title: 'Tailwind',
+        icon: 'Tailwind',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+    {
+        id: 'tl-006',
+        category: 'tool',
+        platform: 'tool',
+        title: 'MongoDB',
+        icon: 'MongoDB',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+    {
+        id: 'tl-007',
+        category: 'tool',
+        platform: 'tool',
+        title: 'PHP',
+        icon: 'PHP',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+    {
+        id: 'tl-008',
+        category: 'tool',
+        platform: 'tool',
+        title: 'Laravel',
+        icon: 'Laravel',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+    {
+        id: 'tl-009',
+        category: 'tool',
+        platform: 'tool',
+        title: 'Firebase',
+        icon: 'Firebase',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
+    },
+    {
+        id: 'tl-010',
+        category: 'tool',
+        platform: 'tool',
+        title: 'Figma',
+        icon: 'Figma',
+        url: 'https://github.com/abhi96256',
+        date: '2026-05-02',
     },
 ];
-
-const ytTextures = ['/textures/studio/tvfront_filmikprojektdlamultiego.webp', '/textures/studio/tvfront_filmikedytowaniezdjec.webp'];
-const ytPaintedTextures = ['/textures/studio/tvfront_filmikprojektdlamultiego_painted.webp', '/textures/studio/tvfront_filmikedytowaniezdjec_painted.webp'];
-const blogTextures = ['/textures/studio/monitorfront_postnafbdoublewinner.webp'];
-const blogPaintedTextures = ['/textures/studio/monitorfront_postnafbdoublewinner_painted.webp'];
-const ttTextures = ['/textures/studio/phonefront_followmeontiktok.webp'];
-const ttPaintedTextures = ['/textures/studio/phonefront_followmeontiktok_painted.webp'];
-
-let ytIdx = 0, blogIdx = 0, ttIdx = 0;
-let ytPIdx = 0, blogPIdx = 0, ttPIdx = 0;
 
 export const CONTENT_DATA = RAW_CONTENT_DATA.map((item) => {
     return {
         ...item,
-        frontTexture: item.frontTexture || (
-            item.platform === 'youtube' ? ytTextures[ytIdx++ % ytTextures.length] :
-                item.platform === 'blog' ? blogTextures[blogIdx++ % blogTextures.length] :
-                    ttTextures[ttIdx++ % ttTextures.length]
-        ),
-        paintedFrontTexture: item.paintedFrontTexture || (
-            item.platform === 'youtube' ? ytPaintedTextures[ytPIdx++ % ytPaintedTextures.length] :
-                item.platform === 'blog' ? blogPaintedTextures[blogPIdx++ % blogPaintedTextures.length] :
-                    ttPaintedTextures[ttPIdx++ % ttPaintedTextures.length]
-        )
+        // We'll handle textures dynamically in the room component for better 3D display
+        frontTexture: null,
+        paintedFrontTexture: null
     };
 });
 
-// Helper to get content by platform
-export const getContentByPlatform = (platform) => {
-    if (platform === 'all') return CONTENT_DATA;
-    return CONTENT_DATA.filter(item => item.platform === platform);
+// Helper to get content by category
+export const getContentByCategory = (category) => {
+    if (category === 'all') return CONTENT_DATA;
+    return CONTENT_DATA.filter(item => item.category === category);
 };
 
-// Get latest content (for "On Air" indicator)
+// Get latest content
 export const getLatestContent = () => {
     return [...CONTENT_DATA].sort((a, b) => new Date(b.date) - new Date(a.date))[0];
 };
