@@ -582,7 +582,7 @@ const EntranceDoors = ({
                 rotation={[-Math.PI / 2, 0, 0]}
             >
                 <planeGeometry args={[pathWidth, pathLength]} />
-                <meshStandardMaterial color="#ffffff"
+                <meshBasicMaterial color="#e0e0e0"
                     map={stonePathTexture}
                     transparent={true}
                 />
@@ -592,19 +592,19 @@ const EntranceDoors = ({
             {/* LEFT WALL PANEL */}
             <mesh position={[-(doorOpeningWidth / 2 + sideWallWidth / 2), wallCenterY, 0]}>
                 <boxGeometry args={[sideWallWidth, corridorHeight, wallThickness]} />
-                <meshStandardMaterial color="#ffffff" roughness={0.95} />
+                <meshBasicMaterial color="#e0e0e0" roughness={0.95} />
             </mesh>
 
             {/* RIGHT WALL PANEL */}
             <mesh position={[(doorOpeningWidth / 2 + sideWallWidth / 2), wallCenterY, 0]}>
                 <boxGeometry args={[sideWallWidth, corridorHeight, wallThickness]} />
-                <meshStandardMaterial color="#ffffff" roughness={0.95} />
+                <meshBasicMaterial color="#e0e0e0" roughness={0.95} />
             </mesh>
 
             {/* TOP WALL PANEL */}
             <mesh position={[0, topWallCenterY, 0]}>
                 <boxGeometry args={[doorOpeningWidth, topWallHeight, wallThickness]} />
-                <meshStandardMaterial color="#ffffff" roughness={0.95} />
+                <meshBasicMaterial color="#e0e0e0" roughness={0.95} />
             </mesh>
 
             {/* === BRICK FACADE === */}
@@ -616,7 +616,7 @@ const EntranceDoors = ({
             <mesh position={[0, wallCenterY + facadeYOffset + 1.65, 0.15]}>
                 {/* args={[Szerokość, Wysokość]} - Zmieniaj te liczby (np. 7, 8) */}
                 <planeGeometry args={[16., 8]} />
-                <meshStandardMaterial color="#ffffff"
+                <meshBasicMaterial color="#e0e0e0"
                     map={bricksTexture}
                     transparent={true}
                     alphaTest={0.01}
@@ -627,7 +627,7 @@ const EntranceDoors = ({
             {/* === TEXTURED FRAME === */}
             <mesh position={[0, frameCenterY, 0.12]}>
                 <planeGeometry args={[frameWidth, frameHeight]} />
-                <meshStandardMaterial color="#ffffff"
+                <meshBasicMaterial color="#e0e0e0"
                     map={frameTexture}
                     transparent={true}
                     alphaTest={0.1}
@@ -646,14 +646,14 @@ const EntranceDoors = ({
                     onPointerLeave={handlePointerLeave}
                 >
                     <boxGeometry args={[doorWidth, doorHeight, 0.04]} />
-                    <meshStandardMaterial color="#ffffff" map={edgeTexture} roughness={0.9} />
+                    <meshBasicMaterial color="#e0e0e0" map={edgeTexture} roughness={0.9} />
                 </mesh>
 
                 {/* Painted layer (behind sketch) - left door */}
                 {!isMobile && (
                     <mesh position={[doorWidth / 2, 0, 0.088]}>
                         <planeGeometry args={[doorWidth, doorHeight]} />
-                        <meshStandardMaterial color="#ffffff"
+                        <meshBasicMaterial color="#e0e0e0"
                             map={doorLeftPaintedTexture}
                             transparent={true}
                             alphaTest={0.5}
@@ -665,7 +665,7 @@ const EntranceDoors = ({
                 {/* Sketch overlay (front) - left door brush-stroke reveal */}
                 <mesh position={[doorWidth / 2, 0, 0.09]}>
                     <planeGeometry args={[doorWidth, doorHeight]} />
-                    <revealMaterial color="#ffffff"
+                    <revealMaterial color="#e0e0e0"
                         ref={leftDoorMaterialRef}
                         map={doorLeftTexture}
                         transparent={true}
@@ -679,7 +679,7 @@ const EntranceDoors = ({
                 {/* Back Texture Face (mirrored) */}
                 <mesh position={[doorWidth / 2, 0, 0.03]} rotation={[0, Math.PI, 0]} scale={[-1, 1, 1]}>
                     <planeGeometry args={[doorWidth, doorHeight]} />
-                    <meshStandardMaterial color="#ffffff"
+                    <meshBasicMaterial color="#e0e0e0"
                         map={doorBackTexture}
                         transparent={true}
                         alphaTest={0.5}
@@ -694,7 +694,7 @@ const EntranceDoors = ({
                     {!isMobile && (
                         <mesh ref={leftHandlePaintedRef} position={[-0.357, 0.09, -0.001]} visible={false}>
                             <planeGeometry args={[doorWidth, doorHeight]} />
-                            <meshStandardMaterial color="#ffffff"
+                            <meshBasicMaterial color="#e0e0e0"
                                 map={handleLeftPaintedTexture}
                                 transparent={true}
                                 alphaTest={0.5}
@@ -705,7 +705,7 @@ const EntranceDoors = ({
                     {/* Sketch handle overlay (front) */}
                     <mesh position={[-0.357, 0.099, 0]}>
                         <planeGeometry args={[doorWidth, doorHeight]} />
-                        <revealMaterial color="#ffffff"
+                        <revealMaterial color="#e0e0e0"
                             ref={leftHandleMaterialRef}
                             map={handleLeftTexture}
                             transparent={true}
@@ -727,14 +727,14 @@ const EntranceDoors = ({
                     onPointerLeave={handlePointerLeave}
                 >
                     <boxGeometry args={[doorWidth, doorHeight, 0.04]} />
-                    <meshStandardMaterial color="#ffffff" map={edgeTexture} roughness={0.9} />
+                    <meshBasicMaterial color="#e0e0e0" map={edgeTexture} roughness={0.9} />
                 </mesh>
 
                 {/* Painted layer (behind sketch) - revealed when sketch fades out on hover */}
                 {!isMobile && (
                     <mesh position={[-doorWidth / 2, 0, 0.088]}>
                         <planeGeometry args={[doorWidth, doorHeight]} />
-                        <meshStandardMaterial color="#ffffff"
+                        <meshBasicMaterial color="#e0e0e0"
                             map={doorRightPaintedTexture}
                             transparent={true}
                             alphaTest={0.5}
@@ -746,7 +746,7 @@ const EntranceDoors = ({
                 {/* Sketch overlay (front) - brush-stroke discard reveals painted beneath */}
                 <mesh position={[-doorWidth / 2, 0, 0.09]}>
                     <planeGeometry args={[doorWidth, doorHeight]} />
-                    <revealMaterial color="#ffffff"
+                    <revealMaterial color="#e0e0e0"
                         ref={rightDoorMaterialRef}
                         map={doorRightTexture}
                         transparent={true}
@@ -760,7 +760,7 @@ const EntranceDoors = ({
                 {/* Back Texture Face */}
                 <mesh position={[-doorWidth / 2, 0, 0.03]} rotation={[0, Math.PI, 0]}>
                     <planeGeometry args={[doorWidth, doorHeight]} />
-                    <meshStandardMaterial color="#ffffff"
+                    <meshBasicMaterial color="#e0e0e0"
                         map={doorBackTexture}
                         transparent={true}
                         alphaTest={0.5}
@@ -774,7 +774,7 @@ const EntranceDoors = ({
                     {!isMobile && (
                         <mesh ref={rightHandlePaintedRef} position={[0.357, 0.09, -0.001]} visible={false}>
                             <planeGeometry args={[doorWidth, doorHeight]} />
-                            <meshStandardMaterial color="#ffffff"
+                            <meshBasicMaterial color="#e0e0e0"
                                 map={handleRightPaintedTexture}
                                 transparent={true}
                                 alphaTest={0.5}
@@ -785,7 +785,7 @@ const EntranceDoors = ({
                     {/* Sketch handle overlay (front) */}
                     <mesh position={[0.357, 0.099, 0]}>
                         <planeGeometry args={[doorWidth, doorHeight]} />
-                        <revealMaterial color="#ffffff"
+                        <revealMaterial color="#e0e0e0"
                             ref={rightHandleMaterialRef}
                             map={handleRightTexture}
                             transparent={true}
@@ -811,7 +811,7 @@ const EntranceDoors = ({
                 rotation={[0, 0, 0]}
             >
                 <planeGeometry args={[1.5, 1.5]} />
-                <meshStandardMaterial color="#ffffff"
+                <meshBasicMaterial color="#e0e0e0"
                     map={avatarWindowTexture}
                     transparent={true}
                 />
@@ -826,7 +826,7 @@ const EntranceDoors = ({
                 {/* Window Frame Sketch - in front of bricks */}
                 <mesh position={[0, 0, 0.2]}>
                     <planeGeometry args={[1.5, 1.5]} />
-                    <meshStandardMaterial color="#ffffff"
+                    <meshBasicMaterial color="#e0e0e0"
                         map={windowSketchTexture}
                         transparent={true}
                     />
@@ -838,7 +838,7 @@ const EntranceDoors = ({
                 {/* Pot texture */}
                 <mesh>
                     <planeGeometry args={[3, 1.8]} />
-                    <meshStandardMaterial color="#ffffff"
+                    <meshBasicMaterial color="#e0e0e0"
                         map={potTexture}
                         transparent={true}
                         alphaTest={0.01}
@@ -854,7 +854,7 @@ const EntranceDoors = ({
                     onPointerLeave={() => { document.body.style.cursor = "auto"; }}
                 >
                     <planeGeometry args={[0.6, 0.6]} />
-                    <meshStandardMaterial color="#ffffff" transparent opacity={0} />
+                    <meshBasicMaterial color="#e0e0e0" transparent opacity={0} />
                 </mesh>
 
                 {/* Speech Bubble */}
@@ -865,7 +865,7 @@ const EntranceDoors = ({
                 >
                     <mesh>
                         <planeGeometry args={[1.8, 1.2]} />
-                        <meshStandardMaterial color="#ffffff"
+                        <meshBasicMaterial color="#e0e0e0"
                             map={speechBubbleTexture}
                             transparent={true}
                             alphaTest={0.01}
@@ -902,7 +902,7 @@ const EntranceDoors = ({
                     onPointerLeave={() => { document.body.style.cursor = "auto"; }}
                 >
                     <planeGeometry args={[0.4, 0.4]} />
-                    <meshStandardMaterial color="#ffffff"
+                    <meshBasicMaterial color="#e0e0e0"
                         map={bugTexture}
                         transparent={true}
                         alphaTest={0.01}
@@ -919,7 +919,7 @@ const EntranceDoors = ({
             // Removed conditional 'visible' to ensure GPU upload
             >
                 <planeGeometry args={[2, 2]} />
-                <meshStandardMaterial color="#ffffff"
+                <meshBasicMaterial color="#e0e0e0"
                     map={inkSplashTexture}
                     transparent={true}
                     alphaTest={0.01}
@@ -952,7 +952,7 @@ const EntranceDoors = ({
                 {/* Tree */}
                 <mesh position={[0, 0, 0]}>
                     <planeGeometry args={[6, 8]} />
-                    <meshStandardMaterial color="#ffffff"
+                    <meshBasicMaterial color="#e0e0e0"
                         map={treeTexture}
                         transparent={true}
                         alphaTest={0.01}
@@ -969,7 +969,7 @@ const EntranceDoors = ({
                     {/* Mesh moves opposite to pivot offset to keep visual position */}
                     <mesh position={[-0.351, 0.456, 0]}>
                         <planeGeometry args={[6, 8]} />
-                        <meshStandardMaterial color="#ffffff"
+                        <meshBasicMaterial color="#e0e0e0"
                             map={mouseTexture}
                             transparent={true}
                             alphaTest={0.01}
@@ -984,7 +984,7 @@ const EntranceDoors = ({
                 {/* Body */}
                 <mesh>
                     <planeGeometry args={[1.5, 1.5]} />
-                    <meshStandardMaterial color="#ffffff"
+                    <meshBasicMaterial color="#e0e0e0"
                         map={catFrontBodyTexture}
                         transparent={true}
                         alphaTest={0.01}
@@ -998,7 +998,7 @@ const EntranceDoors = ({
                     position={[-0.063, 0.27, -0.02]} // Behind cat
                 >
                     <circleGeometry args={[0.020, 32]} />
-                    <meshStandardMaterial color="black" />
+                    <meshBasicMaterial color="black" />
                     {/* Oval Scale */}
                     <group scale={[0.8, 1.2, 1]} />
                 </mesh>
@@ -1009,7 +1009,7 @@ const EntranceDoors = ({
                     position={[0.0615, 0.27, -0.02]} // Behind cat
                 >
                     <circleGeometry args={[0.020, 32]} />
-                    <meshStandardMaterial color="black" />
+                    <meshBasicMaterial color="black" />
                 </mesh>
             </group>
 

@@ -70,13 +70,13 @@ const CorridorSegmentEmpty = ({ zStart, corridorWidth, corridorHeight, floorText
                 rotation={[-Math.PI / 2, 0, 0]}
             >
                 <planeGeometry args={[corridorWidth, length]} />
-                <meshStandardMaterial
+                <meshBasicMaterial
                     map={floorTexture}
                     transparent={true}
                     alphaTest={0.1}
                     roughness={1}
                     metalness={0}
-                    color="#ffffff" // Keep white base
+                    color="#e0e0e0" // Keep white base
                 />
             </mesh>
 
