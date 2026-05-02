@@ -827,8 +827,21 @@ const JourneyMilestone = ({ z, scrollProgressRef }) => {
     const uoAspect = islandLegacyAspect;
     const freelanceAspect = islandLegacyAspect;
 
+    // Apply UV offset to hide the top part (where UO/FREELANCE text is)
+    useEffect(() => {
+        if (uoTexture) {
+            uoTexture.repeat.set(1, 0.6); // Show bottom 60%
+            uoTexture.offset.set(0, 0);
+        }
+        if (freelanceTexture) {
+            freelanceTexture.repeat.set(1, 0.6); // Show bottom 60%
+            freelanceTexture.offset.set(0, 0);
+        }
+    }, [uoTexture, freelanceTexture]);
+
     // Base height for islands - width will adjust automatically
     const islandHeight = 4.5;
+    const croppedHeight = islandHeight * 0.6;
 
     useFrame((state) => {
         if (!groupRef.current) return;
@@ -910,8 +923,8 @@ const JourneyMilestone = ({ z, scrollProgressRef }) => {
 
             {/* === UO ISLAND (Left) === */}
             <group ref={uoRef} position={[-3.5, -1, 0]}>
-                <mesh>
-                    <planeGeometry args={[islandHeight * uoAspect, islandHeight]} />
+                <mesh position={[0, -0.5, 0]}>
+                    <planeGeometry args={[islandHeight * uoAspect, croppedHeight]} />
                     <meshBasicMaterial color="#e0e0e0"
                         map={uoTexture}
                         transparent
@@ -920,8 +933,8 @@ const JourneyMilestone = ({ z, scrollProgressRef }) => {
                 </mesh>
                 {/* NAPIS NA WYSPIE (UO) - EDYTUJ TUTAJ */}
                 <Text
-                    position={[0.1, 0.5, 0.1]}
-                    fontSize={0.5}
+                    position={[0.1, 0.8, 0.1]}
+                    fontSize={0.45}
                     color="#1a1a1a"
                     anchorX="center"
                     anchorY="middle"
@@ -947,8 +960,8 @@ const JourneyMilestone = ({ z, scrollProgressRef }) => {
 
             {/* === FREELANCE ISLAND (Right) === */}
             <group ref={freelanceRef} position={[3.5, -2, 0.5]}>
-                <mesh>
-                    <planeGeometry args={[islandHeight * freelanceAspect, islandHeight]} />
+                <mesh position={[0, -0.5, 0]}>
+                    <planeGeometry args={[islandHeight * freelanceAspect, croppedHeight]} />
                     <meshBasicMaterial color="#e0e0e0"
                         map={freelanceTexture}
                         transparent
@@ -957,8 +970,8 @@ const JourneyMilestone = ({ z, scrollProgressRef }) => {
                 </mesh>
                 {/* NAPIS NA WYSPIE (Freelance) - EDYTUJ TUTAJ */}
                 <Text
-                    position={[0, 0.5, 0.1]}
-                    fontSize={0.5}
+                    position={[0, 0.8, 0.1]}
+                    fontSize={0.45}
                     color="#1a1a1a"
                     anchorX="center"
                     anchorY="middle"
