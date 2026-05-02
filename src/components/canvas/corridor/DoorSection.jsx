@@ -42,7 +42,7 @@ const DOOR_ALIGN_X = 1.2;
 // Door texture mapping - maps label to texture file
 const DOOR_TEXTURES = {
     'THE GALLERY': '/textures/corridor/doors/drzwiprojekty.webp',
-    'SKILLS': '/textures/corridor/doors/drzwisocial.webp',
+    'SKILLS': '/textures/corridor/doors/drzwiskills.png',
     'THE ABOUT': '/textures/corridor/doors/drzwiabout.webp',
     "LET'S CONNECT": '/textures/corridor/doors/drzwikontakt.webp',
 };
@@ -1197,35 +1197,21 @@ const DoorSection = ({
                             />
                         </mesh>
 
-                        {/* CUSTOM SKILLS LOGOS (Covering old social logos) */}
+                        {/* CUSTOM SKILLS LOGOS (Rendered on clean generated door) */}
                         {label === 'SKILLS' && (
-                            <group position={[doorMeshX + 0.1, -0.2, 0.01]}>
-                                {/* Cover panels for old logos */}
-                                <mesh position={[0, 0.55, 0.001]}>
-                                    <planeGeometry args={[0.35, 0.35]} />
-                                    <meshBasicMaterial color="white" />
-                                </mesh>
-                                <mesh position={[0, 0.1, 0.001]}>
-                                    <planeGeometry args={[0.35, 0.35]} />
-                                    <meshBasicMaterial color="white" />
-                                </mesh>
-                                <mesh position={[0, -0.35, 0.001]}>
-                                    <planeGeometry args={[0.35, 0.35]} />
-                                    <meshBasicMaterial color="white" />
-                                </mesh>
-
-                                {/* New 3D Logos */}
+                            <group position={[doorMeshX + 0.05, -0.2, 0.01]}>
+                                {/* New 3D Logos - centered on the vertical strip of the clean door */}
                                 <group position={[0, 0.55, 0.002]}>
-                                    <Text fontSize={0.14} color="#61DAFB" anchorX="center" anchorY="middle">⚛️</Text>
-                                    <Text position={[0, -0.11, 0]} fontSize={0.05} color="#333" font="/fonts/CabinSketch-Bold.ttf" anchorX="center">React</Text>
+                                    <Text fontSize={0.16} color="#61DAFB" anchorX="center" anchorY="middle">⚛️</Text>
+                                    <Text position={[0, -0.13, 0]} fontSize={0.07} color="#333" font="/fonts/CabinSketch-Bold.ttf" anchorX="center">React</Text>
                                 </group>
                                 <group position={[0, 0.1, 0.002]}>
-                                    <Text fontSize={0.14} color="#00758F" anchorX="center" anchorY="middle">🐬</Text>
-                                    <Text position={[0, -0.11, 0]} fontSize={0.05} color="#333" font="/fonts/CabinSketch-Bold.ttf" anchorX="center">MySQL</Text>
+                                    <Text fontSize={0.16} color="#00758F" anchorX="center" anchorY="middle">🐬</Text>
+                                    <Text position={[0, -0.13, 0]} fontSize={0.07} color="#333" font="/fonts/CabinSketch-Bold.ttf" anchorX="center">MySQL</Text>
                                 </group>
                                 <group position={[0, -0.35, 0.002]}>
-                                    <Text fontSize={0.14} color="#339933" anchorX="center" anchorY="middle">⚙️</Text>
-                                    <Text position={[0, -0.11, 0]} fontSize={0.05} color="#333" font="/fonts/CabinSketch-Bold.ttf" anchorX="center">Node.js</Text>
+                                    <Text fontSize={0.16} color="#339933" anchorX="center" anchorY="middle">⚙️</Text>
+                                    <Text position={[0, -0.13, 0]} fontSize={0.07} color="#333" font="/fonts/CabinSketch-Bold.ttf" anchorX="center">Node.js</Text>
                                 </group>
                             </group>
                         )}
