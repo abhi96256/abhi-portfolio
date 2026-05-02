@@ -225,7 +225,7 @@ const Preloader = ({ onComplete, ready }) => {
   const checkProgressTriggers = (val) => {
     // Pencil Sound
     if (val < 99 && !pencilSoundRef.current) {
-      pencilSoundRef.current = play('pencil', { loop: true, volume: 0.5 });
+      // pencilSoundRef.current = play('pencil', { loop: true, volume: 0.5 });
     }
     else if (val >= 99 && pencilSoundRef.current) {
       pencilSoundRef.current.stop();
