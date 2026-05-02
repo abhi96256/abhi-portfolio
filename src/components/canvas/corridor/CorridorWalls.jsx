@@ -1,7 +1,7 @@
 import { useMemo, useRef } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useFrame, useThree, extend } from '@react-three/fiber';
 import * as THREE from 'three';
-import { useTexture } from '@react-three/drei';
+import { useTexture, MeshReflectorMaterial } from '@react-three/drei';
 
 const WALL_X_OUTER = 3.5;
 const WALL_X_INNER = 1.7;
@@ -120,7 +120,20 @@ const CorridorWalls = ({ zStart = 10, length = 80, doorPositions = [], zClip = 1
                     tiles.push(
                         <mesh key={`f-${tileZ}`} position={[0, floorY, tileZ]} rotation={[-Math.PI / 2, 0, Math.PI / 2]}>
                             <planeGeometry args={[TILE_LENGTH, CENTER_WIDTH]} />
-                            <meshStandardMaterial map={floorTexture} roughness={0.3} metalness={0.1} />
+                            <MeshReflectorMaterial
+                                blur={[300, 100]}
+                                resolution={1024}
+                                mixBlur={1}
+                                mixStrength={40}
+                                roughness={1}
+                                depthScale={1.2}
+                                minDepthThreshold={0.4}
+                                maxDepthThreshold={1.4}
+                                color="#151515"
+                                metalness={0.5}
+                                mirror={1}
+                                map={floorTexture}
+                            />
                         </mesh>
                     );
                     tileZ -= TILE_LENGTH;
@@ -145,13 +158,14 @@ const CorridorWalls = ({ zStart = 10, length = 80, doorPositions = [], zClip = 1
                                 <planeGeometry args={[tileWidth, tileLength]} />
                                 <meshStandardMaterial 
                                     map={ceilingTexture} 
-                                    roughness={0.8} 
+                                    roughness={0.9} 
+                                    metalness={0.0}
                                     emissive="#ffffff" 
-                                    emissiveIntensity={0.1} 
+                                    emissiveIntensity={0.02} 
                                 />
                             </mesh>
-                            {/* CEILING LIGHT FIXTURES */}
-                            <pointLight position={[0, ceilingY - 0.2, tileZ]} intensity={4} distance={15} decay={2} color="#fff5e6" />
+                            {/* CEILING LIGHT FIXTURES - Softer with higher decay */}
+                            <pointLight position={[0, ceilingY - 0.2, tileZ]} intensity={8} distance={12} decay={2.5} color="#fff5e6" />
                         </group>
                     );
                     tileZ -= tileLength;
@@ -164,12 +178,12 @@ const CorridorWalls = ({ zStart = 10, length = 80, doorPositions = [], zClip = 1
                 <group key={i} position={seg.position} rotation={[0, seg.rotationY || seg.rotation[1], 0]}>
                     <mesh>
                         <planeGeometry args={[seg.width, corridorHeight]} />
-                        <meshStandardMaterial color="#f8f8f8" roughness={0.9} metalness={0} />
+                        <meshStandardMaterial color="#dcdcdc" roughness={0.9} metalness={0.05} />
                     </mesh>
-                    {/* Baseboard */}
+                    {/* Baseboard - Darker for realism */}
                     <mesh position={[0, -corridorHeight / 2 + 0.075, 0.01]}>
                         <planeGeometry args={[seg.width, 0.15]} />
-                        <meshStandardMaterial map={baseboardTexture} roughness={0.8} />
+                        <meshStandardMaterial color="#333333" roughness={0.5} metalness={0.2} />
                     </mesh>
                 </group>
             ))}
