@@ -473,6 +473,7 @@ const AwardsMilestone = ({ z, scrollProgressRef }) => {
     const sotyRef = useRef();
     const sotdRef = useRef();
     const sotmRef = useRef();
+    const featuredRef = useRef();
 
     // Card reveal refs (driven by button hover)
     const sotdCardRevealRef = useRef();
@@ -597,6 +598,12 @@ const AwardsMilestone = ({ z, scrollProgressRef }) => {
 
         if (sotyRef.current) {
             sotyRef.current.position.y = 0.5 + sotyFactor * 2.5;
+            sotyRef.current.position.x = -revealFactor * 1.5; // Slightly left
+        }
+
+        if (featuredRef.current) {
+            featuredRef.current.position.y = 0.5 + sotyFactor * 2.5;
+            featuredRef.current.position.x = revealFactor * 1.5; // Slightly right
         }
     });
 
@@ -604,7 +611,7 @@ const AwardsMilestone = ({ z, scrollProgressRef }) => {
         <group ref={groupRef} position={[0, 2, z]}>
             {/* Title */}
             <Text
-                position={[0, 4, 0]}
+                position={[0, 4.8, 0]}
                 fontSize={1.2}
                 color="#1a1a1a"
                 anchorX="center"
@@ -638,19 +645,7 @@ const AwardsMilestone = ({ z, scrollProgressRef }) => {
                         uProgress={0.0}
                     />
                 </mesh>
-                {/* BUTTON */}
-                <AwardButton
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        openOverlay(AWARDS_DATA.sotd);
-                    }}
-                    texture={buttonTexture}
-                    paintedTexture={buttonPaintedTexture}
-                    width={buttonWidth}
-                    height={buttonHeight}
-                    position={[0, buttonY, 0.05]}
-                    onHoverChange={makeCardHoverHandler(sotdCardRevealRef, sotdCardPaintedRef, sotdHideDelayRef)}
-                />
+
                 {/* AWARD LABEL */}
                 <Text
                     position={[0, 0.95, 0.01]}
@@ -699,19 +694,7 @@ const AwardsMilestone = ({ z, scrollProgressRef }) => {
                         uProgress={0.0}
                     />
                 </mesh>
-                {/* BUTTON */}
-                <AwardButton
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        openOverlay(AWARDS_DATA.sotm);
-                    }}
-                    texture={buttonTexture}
-                    paintedTexture={buttonPaintedTexture}
-                    width={buttonWidth}
-                    height={buttonHeight}
-                    position={[0, buttonY, 0.05]}
-                    onHoverChange={makeCardHoverHandler(sotmCardRevealRef, sotmCardPaintedRef, sotmHideDelayRef)}
-                />
+
                 {/* AWARD LABEL */}
                 <Text
                     position={[0, 0.95, 0.01]}
@@ -759,19 +742,7 @@ const AwardsMilestone = ({ z, scrollProgressRef }) => {
                         side={THREE.DoubleSide}
                     />
                 </mesh>
-                {/* BUTTON */}
-                <AwardButton
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        openOverlay(AWARDS_DATA.soty);
-                    }}
-                    texture={buttonTexture}
-                    paintedTexture={buttonPaintedTexture}
-                    width={buttonWidth}
-                    height={buttonHeight}
-                    position={[0, buttonY, 0.05]}
-                    onHoverChange={makeCardHoverHandler(sotyCardRevealRef, sotyCardPaintedRef, sotyHideDelayRef)}
-                />
+
                 {/* AWARD LABEL */}
                 <Text
                     position={[0, 0.95, 0.01]}
@@ -793,6 +764,38 @@ const AwardsMilestone = ({ z, scrollProgressRef }) => {
                     font="/fonts/CabinSketch-Bold.ttf"
                 >
                     SEO
+                </Text>
+            </group>
+
+            {/* === FEATURED (front, right) === */}
+            <group ref={featuredRef} position={[0, 0.5, 0.2]}>
+                <mesh>
+                    <planeGeometry args={[cardHeight * cardLegacyAspect, cardHeight]} />
+                    <revealBasicMaterial
+                        map={sotyTexture}
+                        transparent
+                        side={THREE.DoubleSide}
+                    />
+                </mesh>
+                <Text
+                    position={[0, 0.95, 0.01]}
+                    fontSize={0.4}
+                    color="#1a1a1a"
+                    anchorX="center"
+                    anchorY="middle"
+                    font="/fonts/CabinSketch-Bold.ttf"
+                >
+                    UI/UX DESIGN
+                </Text>
+                <Text
+                    position={[-0.05, 0, 0.01]}
+                    fontSize={0.6}
+                    color="#1a1a1a"
+                    anchorX="center"
+                    anchorY="middle"
+                    font="/fonts/CabinSketch-Bold.ttf"
+                >
+                    FIGMA
                 </Text>
             </group>
         </group>
@@ -917,6 +920,18 @@ const JourneyMilestone = ({ z, scrollProgressRef }) => {
                 </mesh>
                 {/* NAPIS NA WYSPIE (UO) - EDYTUJ TUTAJ */}
                 <Text
+                    position={[0.1, 0.5, 0.1]}
+                    fontSize={0.5}
+                    color="#1a1a1a"
+                    anchorX="center"
+                    anchorY="middle"
+                    font="/fonts/RubikScribble-Regular.ttf"
+                    outlineWidth={0.03}
+                    outlineColor="#fff"
+                >
+                    SOFTWARE ENGINEER 2
+                </Text>
+                <Text
                     position={[0.1, -0.85, 0.1]} // POZYCJA (X, Y, Z)
                     fontSize={0.35}           // WIELKOŚĆ
                     color="#1a1a1a"
@@ -941,6 +956,18 @@ const JourneyMilestone = ({ z, scrollProgressRef }) => {
                     />
                 </mesh>
                 {/* NAPIS NA WYSPIE (Freelance) - EDYTUJ TUTAJ */}
+                <Text
+                    position={[0, 0.5, 0.1]}
+                    fontSize={0.5}
+                    color="#1a1a1a"
+                    anchorX="center"
+                    anchorY="middle"
+                    font="/fonts/RubikScribble-Regular.ttf"
+                    outlineWidth={0.03}
+                    outlineColor="#fff"
+                >
+                    SOFTWARE ENGINEER 1
+                </Text>
                 <Text
                     position={[0, -0.65, 0.1]} // POZYCJA (X, Y, Z)
                     fontSize={0.35}           // WIELKOŚĆ

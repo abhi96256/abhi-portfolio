@@ -84,17 +84,28 @@ const PaperMaterial = forwardRef(({ color = '#e0e0e0', roughness = 0.6, map, sid
             '#include <map_fragment>',
             `
             #ifdef USE_MAP
-                // --- Aspect Ratio Correction (Object-fit: Cover) ---
+                // --- Aspect Ratio Correction (Object-fit: Contain / Fit) ---
                 vec2 correctedUv = vMapUv;
+                bool isOutside = false;
+
                 if (uAspect > 1.0) {
-                    // Plane is wider than image (relatively) -> crop top/bottom
-                    correctedUv.y = (correctedUv.y - 0.5) / uAspect + 0.5;
+                    // Plane is relatively wider than image -> letterbox SIDES
+                    correctedUv.x = (vMapUv.x - 0.5) * uAspect + 0.5;
+                    if (correctedUv.x < 0.0 || correctedUv.x > 1.0) isOutside = true;
                 } else {
-                    // Image is wider than plane (relatively) -> crop left/right
-                    correctedUv.x = (correctedUv.x - 0.5) * uAspect + 0.5;
+                    // Image is relatively wider than plane -> letterbox TOP/BOTTOM
+                    correctedUv.y = (vMapUv.y - 0.5) / uAspect + 0.5;
+                    if (correctedUv.y < 0.0 || correctedUv.y > 1.0) isOutside = true;
                 }
 
-                vec4 texColor = texture2D( map, correctedUv );
+                vec4 texColor;
+                if (isOutside) {
+                    texColor = vec4(1.0, 1.0, 1.0, 1.0); // White paper background
+                } else {
+                    vec4 rawColor = texture2D(map, correctedUv);
+                    // Standard alpha blending with white background for non-transparent look
+                    texColor = vec4(mix(vec3(1.0), rawColor.rgb, rawColor.a), 1.0);
+                }
 
                 // --- Added Brush Reveal Logic ---
                 if (gl_FrontFacing && uProgress > 0.001) {
@@ -102,7 +113,7 @@ const PaperMaterial = forwardRef(({ color = '#e0e0e0', roughness = 0.6, map, sid
                     float rn = revealNoise(correctedUv * 15.0) * 0.15;
                     float maskValue = (1.0 - correctedUv.y) + rn;
                     float threshold = uProgress * 1.5;
-                    if (maskValue < threshold) {
+                    if (!isOutside && maskValue < threshold) {
                         texColor = paintedColor;
                     }
                 }

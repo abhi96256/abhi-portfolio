@@ -1388,22 +1388,7 @@ const ProjectCard = memo(forwardRef(({ index, project, clothespinTexture, curren
                     {project.title}
                 </Text>
 
-                {/* PROJECT DESCRIPTION ON FRONT */}
-                <Text
-                    ref={frontDescRef}
-                    position={[0, -0.6, 0]}
-                    fontSize={0.065}
-                    color="#333333"
-                    font="/fonts/CabinSketch-Bold.ttf"
-                    anchorX="center"
-                    anchorY="middle"
-                    maxWidth={1.3}
-                    textAlign="center"
-                    lineHeight={1.2}
-                    fillOpacity={0} // Managed by useFrame
-                >
-                    {project.description}
-                </Text>
+
 
                 <PositionalAudio
                     ref={paperAudioRef}
