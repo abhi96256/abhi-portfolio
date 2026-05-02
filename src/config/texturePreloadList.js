@@ -133,28 +133,33 @@ export const GALLERY_TEXTURES_BASE = [
     '/textures/gallery/bird_gray.webp',
     '/textures/gallery/klamerka.webp',
     '/textures/gallery/openliveproject.webp',
+    // Project logo PNGs (Abhishek's projects)
+    '/6.7.png',
+    '/trac.png',
+    '/it.png',
+    '/Jms.png',
+    '/MAYDIV.png',
+    '/Tvara.png',
+    '/3.7.png',
+    '/Grid%20Zero-02.png',
+    '/logo10.png',
+    '/290126125406LOGO.png',
+    '/logo99.png',
+    '/logo%20(1).png',
 ];
 
 export const GALLERY_TEXTURES_VERSIONED = [
-    // Project cards
-    'monetuneprzod',
-    'timberkittyprzod',
-    'youngmultiprzod',
-    'bioprzod',
     // Card back
     'tylkartki',
     'przyciskdotylukartki',
     // Tech stack logos
     'csslogo',
-    'elementorlogo',
     'firebaselogo',
     'htmllogo',
     'jslogo',
-    'netlifylogo',
     'phplogo',
     'reactlogo',
     'tailwindlogo',
-    'wordpresslogo',
 ];
 
 export const GALLERY_TEXTURES = [

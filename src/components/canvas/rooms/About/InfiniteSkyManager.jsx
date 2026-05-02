@@ -351,7 +351,7 @@ const IntroMilestone = ({ z, scrollProgressRef }) => {
                 anchorY="middle"
                 font="/fonts/RubikScribble-Regular.ttf"
             >
-                TOMASZ SZMAJDA
+                ABHISHEK KUMAR
             </Text>
 
             {/* Subtitle - Brand (spreads right) */}
@@ -364,7 +364,7 @@ const IntroMilestone = ({ z, scrollProgressRef }) => {
                 anchorY="middle"
                 font="/fonts/CabinSketch-Regular.ttf"
             >
-                (ITOM)
+                Full Stack Developer
             </Text>
 
             {/* Avatar on cloud - floating + spreads up-left */}
@@ -382,28 +382,30 @@ const IntroMilestone = ({ z, scrollProgressRef }) => {
             <Text
                 ref={motto1Ref}
                 position={[0, 0, 0.1]}
-                fontSize={0.32}
+                fontSize={0.24}
                 color="#555555"
                 anchorX="center"
                 anchorY="middle"
                 font="/fonts/CabinSketch-Regular.ttf"
-                fontStyle="italic"
+                maxWidth={6}
+                textAlign="center"
             >
-                "Crafting digital experiences
+                I'm a passionate developer with a keen eye for detail and a love for creating seamless digital experiences.
             </Text>
 
             {/* Motto - Line 2 (spreads left) */}
             <Text
                 ref={motto2Ref}
-                position={[0, -0.5, 0]}
-                fontSize={0.32}
+                position={[0, -1.0, 0]}
+                fontSize={0.24}
                 color="#555555"
                 anchorX="center"
                 anchorY="middle"
                 font="/fonts/CabinSketch-Regular.ttf"
-                fontStyle="italic"
+                maxWidth={6}
+                textAlign="center"
             >
-                that push creative boundaries"
+                My journey in tech evolved into a career dedicated to building high-performance web applications.
             </Text>
         </group>
     );
@@ -414,58 +416,48 @@ const IntroMilestone = ({ z, scrollProgressRef }) => {
  */
 const AWARDS_DATA = {
     featured: {
-        id: 'award-featured',
+        id: 'service-ui',
         layout: 'certificate_grid',
-        title: 'Featured Projects Collection',
+        title: 'UI/UX Design',
         items: [
-            { label: 'Featured - Awwwards', date: 'May 2025', image: '/textures/about/FEATURED.webp', url: 'https://awwwards.com' },
-            { label: 'Featured - CSS Design Awards', date: 'June 2025', image: '/textures/about/FEATURED.webp', url: 'https://cssdesignawards.com' },
-            { label: 'Featured - The FWA', date: 'July 2025', image: '/textures/about/FEATURED.webp', url: 'https://thefwa.com' },
-            { label: 'Featured - Behance', date: 'August 2025', image: '/textures/about/FEATURED.webp', url: 'https://behance.net' },
+            { label: 'Wireframing', date: 'Expertise', image: '/textures/about/SOTD.webp', url: '#' },
+            { label: 'Prototyping', date: 'Expertise', image: '/textures/about/SOTD.webp', url: '#' },
+            { label: 'Visual Design', date: 'Expertise', image: '/textures/about/SOTD.webp', url: '#' },
         ],
-        platformConfig: {
-            label: 'HONOR',
-            color: '#1a1a1a',
-            icon: '⭐'
-        }
+        platformConfig: { label: 'SERVICE', color: '#1a1a1a', icon: '🎨' }
     },
     sotd: {
-        id: 'award-sotd',
+        id: 'service-web',
         layout: 'certificate_grid',
-        title: 'Site of the Day Awards',
+        title: 'Web Engineering',
         items: [
-            { label: 'SOTD - GSAP', date: 'February 13, 2026', image: '/textures/about/SOTDAYYOUNGMULTIGSAP.webp', url: 'https://www.linkedin.com/posts/greensock_site-of-the-day-young-multi-this-immersive-activity-7427567524940017664-zU2n?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE3TV6UBqXoaJXUN5-1s3ij6SQJwTRAcbCM' },
-            { label: 'SOTD - CSS Winner', date: 'January 24, 2026', image: '/textures/about/SOTDAYYOUNGMULTICSSWINNER.webp', url: 'https://www.csswinner.com/details/young-multi-official-experience/19045' },
-            { label: 'SOTD - Orpetron', date: 'January 29, 2026', image: '/textures/about/SOTDAYYOUNGMULTIORPETRON.webp', url: 'https://orpetron.com/sites/young-multi/' },
-            { label: 'SOTD - Design Nominess', date: 'February 17, 2026', image: '/textures/about/SOTDAYYOUNGMULTIDESIGNNOMINESS.webp', url: 'https://www.designnominees.com/sites/young-multi' }
+            { label: 'React / Next.js', date: 'Professional', image: '/textures/about/SOTDAYYOUNGMULTIGSAP.webp', url: '#' },
+            { label: 'API Integration', date: 'Professional', image: '/textures/about/SOTDAYYOUNGMULTICSSWINNER.webp', url: '#' },
+            { label: 'Cloud Native', date: 'Professional', image: '/textures/about/SOTDAYYOUNGMULTIORPETRON.webp', url: '#' },
         ],
-        platformConfig: {
-            label: 'AWARD',
-            color: '#1a1a1a',
-            icon: '🏆'
-        }
+        platformConfig: { label: 'SERVICE', color: '#1a1a1a', icon: '⚙️' }
     },
     sotm: {
-        id: 'award-sotm',
+        id: 'service-ecommerce',
         layout: 'certificate_grid',
-        title: 'Site of the Month Awards',
-        items: [],
-        platformConfig: {
-            label: 'AWARD',
-            color: '#1a1a1a',
-            icon: '📅'
-        }
+        title: 'E-commerce Solutions',
+        items: [
+            { label: 'Payment Gateways', date: 'Expert', image: '/textures/about/SOTM.webp', url: '#' },
+            { label: 'CMS Strategy', date: 'Expert', image: '/textures/about/SOTM.webp', url: '#' },
+            { label: 'Conversion Opt.', date: 'Expert', image: '/textures/about/SOTM.webp', url: '#' },
+        ],
+        platformConfig: { label: 'SERVICE', color: '#1a1a1a', icon: '🛍️' }
     },
     soty: {
-        id: 'award-soty',
+        id: 'service-brand',
         layout: 'certificate_grid',
-        title: 'Site of the Year Awards',
-        items: [],
-        platformConfig: {
-            label: 'PRESTIGE',
-            color: '#1a1a1a',
-            icon: '👑'
-        }
+        title: 'Brand Activation',
+        items: [
+            { label: 'SEO Strategy', date: 'Creative', image: '/textures/about/SOTY.webp', url: '#' },
+            { label: 'Digital Identity', date: 'Creative', image: '/textures/about/SOTY.webp', url: '#' },
+            { label: 'Growth Hacking', date: 'Creative', image: '/textures/about/SOTY.webp', url: '#' },
+        ],
+        platformConfig: { label: 'SERVICE', color: '#1a1a1a', icon: '🚀' }
     }
 };
 
@@ -619,7 +611,7 @@ const AwardsMilestone = ({ z, scrollProgressRef }) => {
                 anchorY="middle"
                 font="/fonts/RubikScribble-Regular.ttf"
             >
-                AWARDS
+                SERVICES
             </Text>
 
             {/* === SOTD (behind SOTY, rendered second) === */}
@@ -662,24 +654,24 @@ const AwardsMilestone = ({ z, scrollProgressRef }) => {
                 {/* AWARD LABEL */}
                 <Text
                     position={[0, 0.95, 0.01]}
-                    fontSize={0.45}
+                    fontSize={0.4}
                     color="#1a1a1a"
                     anchorX="center"
                     anchorY="middle"
                     font="/fonts/CabinSketch-Bold.ttf"
                 >
-                    SOTD
+                    WEB ENGINEERING
                 </Text>
                 {/* AWARD COUNT */}
                 <Text
                     position={[-0.05, 0, 0.01]}
-                    fontSize={0.8}
+                    fontSize={0.6}
                     color="#1a1a1a"
                     anchorX="center"
                     anchorY="middle"
                     font="/fonts/CabinSketch-Bold.ttf"
                 >
-                    4
+                    JS/PHP
                 </Text>
             </group>
 
@@ -723,24 +715,24 @@ const AwardsMilestone = ({ z, scrollProgressRef }) => {
                 {/* AWARD LABEL */}
                 <Text
                     position={[0, 0.95, 0.01]}
-                    fontSize={0.45}
+                    fontSize={0.4}
                     color="#1a1a1a"
                     anchorX="center"
                     anchorY="middle"
                     font="/fonts/CabinSketch-Bold.ttf"
                 >
-                    SOTM
+                    E-COMMERCE
                 </Text>
                 {/* AWARD COUNT */}
                 <Text
                     position={[-0.05, 0, 0.01]}
-                    fontSize={0.8}
+                    fontSize={0.6}
                     color="#1a1a1a"
                     anchorX="center"
                     anchorY="middle"
                     font="/fonts/CabinSketch-Bold.ttf"
                 >
-                    0
+                    CART
                 </Text>
             </group>
 
@@ -783,24 +775,24 @@ const AwardsMilestone = ({ z, scrollProgressRef }) => {
                 {/* AWARD LABEL */}
                 <Text
                     position={[0, 0.95, 0.01]}
-                    fontSize={0.45}
+                    fontSize={0.4}
                     color="#1a1a1a"
                     anchorX="center"
                     anchorY="middle"
                     font="/fonts/CabinSketch-Bold.ttf"
                 >
-                    SOTY
+                    BRANDING
                 </Text>
                 {/* AWARD COUNT */}
                 <Text
                     position={[-0.05, 0, 0.01]}
-                    fontSize={0.8}
+                    fontSize={0.6}
                     color="#1a1a1a"
                     anchorX="center"
                     anchorY="middle"
                     font="/fonts/CabinSketch-Bold.ttf"
                 >
-                    0
+                    SEO
                 </Text>
             </group>
         </group>
@@ -898,7 +890,7 @@ const JourneyMilestone = ({ z, scrollProgressRef }) => {
                 anchorY="middle"
                 font="/fonts/RubikScribble-Regular.ttf"
             >
-                JOURNEY
+                EXPERIENCE
             </Text>
 
             {/* Subtitle */}
@@ -910,7 +902,7 @@ const JourneyMilestone = ({ z, scrollProgressRef }) => {
                 anchorY="middle"
                 font="/fonts/CabinSketch-Regular.ttf"
             >
-                My path so far...
+                Software Engineer & Developer
             </Text>
 
             {/* === UO ISLAND (Left) === */}
@@ -926,13 +918,15 @@ const JourneyMilestone = ({ z, scrollProgressRef }) => {
                 {/* NAPIS NA WYSPIE (UO) - EDYTUJ TUTAJ */}
                 <Text
                     position={[0.1, -0.85, 0.1]} // POZYCJA (X, Y, Z)
-                    fontSize={0.4}           // WIELKOŚĆ
+                    fontSize={0.35}           // WIELKOŚĆ
                     color="#1a1a1a"
                     anchorX="center"
                     anchorY="middle"
                     font="/fonts/CabinSketch-Bold.ttf"
+                    maxWidth={4}
+                    textAlign="center"
                 >
-                    2025-NOW
+                    MAYDIV INFOTECH (2025-PRES)
                 </Text>
             </group>
 
@@ -949,13 +943,15 @@ const JourneyMilestone = ({ z, scrollProgressRef }) => {
                 {/* NAPIS NA WYSPIE (Freelance) - EDYTUJ TUTAJ */}
                 <Text
                     position={[0, -0.65, 0.1]} // POZYCJA (X, Y, Z)
-                    fontSize={0.5}           // WIELKOŚĆ
+                    fontSize={0.35}           // WIELKOŚĆ
                     color="#1a1a1a"
                     anchorX="center"
                     anchorY="middle"
                     font="/fonts/CabinSketch-Bold.ttf"
+                    maxWidth={4}
+                    textAlign="center"
                 >
-                    2023-NOW
+                    3S LOGICS (2024-2025)
                 </Text>
             </group>
         </group>
@@ -972,19 +968,19 @@ const JourneyMilestone = ({ z, scrollProgressRef }) => {
 const BALLOON_CONFIG = [
     // Large balloons (main skills) - front and center
     { texture: '/textures/about/reactduzybalon.webp', paintedTexture: '/textures/about/reactduzybalon_painted.webp', label: 'React', size: 'large', x: -2.5, y: 2, z: 0.3, phase: 0 },
-    { texture: '/textures/about/threejsduzybalon.webp', paintedTexture: '/textures/about/threejsduzybalon_painted.webp', label: 'Three.js', size: 'large', x: 2.5, y: 2.5, z: 0.2, phase: 1.5 },
-    { texture: '/textures/about/GSAPduzybalon.webp', paintedTexture: '/textures/about/GSAPduzybalon_painted.webp', label: 'GSAP', size: 'large', x: 0, y: 3, z: 0.5, phase: 3 },
+    { texture: '/textures/about/threejsduzybalon.webp', paintedTexture: '/textures/about/threejsduzybalon_painted.webp', label: 'Next.js', size: 'large', x: 2.5, y: 2.5, z: 0.2, phase: 1.5 },
+    { texture: '/textures/about/GSAPduzybalon.webp', paintedTexture: '/textures/about/GSAPduzybalon_painted.webp', label: 'Node.js', size: 'large', x: 0, y: 3, z: 0.5, phase: 3 },
 
     // Medium balloons - scattered around
-    { texture: '/textures/about/JSSREDNIBALON.webp', paintedTexture: '/textures/about/JSSREDNIBALON_painted.webp', label: 'JavaScript', size: 'medium', x: -4, y: 1, z: -0.3, phase: 0.8 },
-    { texture: '/textures/about/csssrednibalon.webp', paintedTexture: '/textures/about/csssrednibalon_painted.webp', label: 'CSS', size: 'medium', x: 4, y: 1.5, z: -0.2, phase: 2.2 },
-    { texture: '/textures/about/nextjssrednibalon.webp', paintedTexture: '/textures/about/nextjssrednibalon_painted.webp', label: 'Next.js', size: 'medium', x: 0, y: 0.5, z: -0.4, phase: 4 },
+    { texture: '/textures/about/JSSREDNIBALON.webp', paintedTexture: '/textures/about/JSSREDNIBALON_painted.webp', label: 'MySQL', size: 'medium', x: -4, y: 1, z: -0.3, phase: 0.8 },
+    { texture: '/textures/about/csssrednibalon.webp', paintedTexture: '/textures/about/csssrednibalon_painted.webp', label: 'Tailwind', size: 'medium', x: 4, y: 1.5, z: -0.2, phase: 2.2 },
+    { texture: '/textures/about/nextjssrednibalon.webp', paintedTexture: '/textures/about/nextjssrednibalon_painted.webp', label: 'MongoDB', size: 'medium', x: 0, y: 0.5, z: -0.4, phase: 4 },
 
     // Small balloons - background accents
-    { texture: '/textures/about/htmlmalybalon.webp', paintedTexture: '/textures/about/htmlmalybalon_painted.webp', label: 'HTML', size: 'small', x: -5.5, y: 2.5, z: -0.8, phase: 1.2 },
-    { texture: '/textures/about/gitmalybalon.webp', paintedTexture: '/textures/about/gitmalybalon_painted.webp', label: 'Git', size: 'small', x: 5.5, y: 3, z: -0.7, phase: 2.8 },
-    { texture: '/textures/about/figmamalybalon.webp', paintedTexture: '/textures/about/figmamalybalon_painted.webp', label: 'Figma', size: 'small', x: -3, y: 4.5, z: -0.5, phase: 3.5 },
-    { texture: '/textures/about/firebasemalybalon.webp', paintedTexture: '/textures/about/firebasemalybalon_painted.webp', label: 'Firebase', size: 'small', x: 3.5, y: 4, z: -0.6, phase: 4.5 },
+    { texture: '/textures/about/htmlmalybalon.webp', paintedTexture: '/textures/about/htmlmalybalon_painted.webp', label: 'PHP', size: 'small', x: -5.5, y: 2.5, z: -0.8, phase: 1.2 },
+    { texture: '/textures/about/gitmalybalon.webp', paintedTexture: '/textures/about/gitmalybalon_painted.webp', label: 'Laravel', size: 'small', x: 5.5, y: 3, z: -0.7, phase: 2.8 },
+    { texture: '/textures/about/figmamalybalon.webp', paintedTexture: '/textures/about/figmamalybalon_painted.webp', label: 'Firebase', size: 'small', x: -3, y: 4.5, z: -0.5, phase: 3.5 },
+    { texture: '/textures/about/firebasemalybalon.webp', paintedTexture: '/textures/about/firebasemalybalon_painted.webp', label: 'Figma', size: 'small', x: 3.5, y: 4, z: -0.6, phase: 4.5 },
 ];
 
 // Size multipliers for balloon categories
@@ -1394,7 +1390,7 @@ const SkillsMilestone = ({ z, scrollProgressRef }) => {
                 anchorY="middle"
                 font="/fonts/RubikScribble-Regular.ttf"
             >
-                SKILLS
+                MASTERED TOOLS
             </Text>
 
             {/* Subtitle */}
@@ -1406,7 +1402,7 @@ const SkillsMilestone = ({ z, scrollProgressRef }) => {
                 anchorY="middle"
                 font="/fonts/CabinSketch-Regular.ttf"
             >
-                Technologies I love working with
+                Proficient in industry-standard technologies
             </Text>
 
             {/* === FLOATING BALLOONS === */}

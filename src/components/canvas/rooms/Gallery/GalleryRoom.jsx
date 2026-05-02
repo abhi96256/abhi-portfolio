@@ -35,44 +35,116 @@ export const GALLERY_INTERACTION_AUDIO_SETTINGS = {
 // Define the unique projects and their textures
 const UNIQUE_PROJECTS = [
     {
-        id: 'monetune',
-        title: 'MONETUNE',
-        front: '/textures/gallery/monetuneprzod.webp',
-        painted: '/textures/gallery/monetuneprzod_painted.webp',
-        url: 'https://monetune.pl',
-        description: 'MoneTune is a step-by-step blueprint that teaches beginners how to generate passive income using AI-created music. Without any musical skills, you will learn how to easily produce professional tracks, publish them on platforms like Spotify, and monetize your digital assets.',
-        techStack: ['/textures/gallery/wordpresslogo.webp', '/textures/gallery/elementorlogo.webp', '/textures/gallery/phplogo.webp', '/textures/gallery/csslogo.webp']
+        id: 'fika',
+        title: 'FIKA INDIA',
+        front: '/6.7.png',
+        painted: '/6.7.png',
+        url: 'https://fika-india.com/',
+        description: 'A premium e-commerce platform specializing in lifestyle and fashion, delivering a seamless full-stack shopping experience with modern design and secure transactions.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/tailwindlogo.webp', '/textures/gallery/csslogo.webp']
     },
     {
-        id: 'timber',
-        title: 'TIMBERKITTY',
-        front: '/textures/gallery/timberkittyprzod.webp',
-        painted: '/textures/gallery/timberkittyprzod_painted.webp',
-        url: 'https://timberkitty.netlify.app',
-        description: 'TimberKitty is an addictive, free-to-play browser arcade game built in pure JavaScript. Players control a lumberjack cat to chop wood, save birds, complete daily missions, and compete on global leaderboards.',
-        techStack: ['/textures/gallery/jslogo.webp', '/textures/gallery/htmllogo.webp', '/textures/gallery/csslogo.webp', '/textures/gallery/firebaselogo.webp']
+        id: 'tracto',
+        title: 'TRACTOWEAVE ERP',
+        front: '/trac.png',
+        painted: '/trac.png',
+        url: 'http://tractoweave.cloud/login',
+        description: 'A comprehensive Enterprise Resource Planning (ERP) solution for textile management, featuring advanced business process automation and inventory control.',
+        techStack: ['/textures/gallery/phplogo.webp', '/textures/gallery/csslogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/htmllogo.webp']
     },
     {
-        id: 'young',
-        title: 'YOUNG MULTI',
-        front: '/textures/gallery/youngmultiprzod.webp',
-        painted: '/textures/gallery/youngmultiprzod_painted.webp',
-        url: 'https://young-multi-strona.netlify.app',
-        description: 'A sleek, modern concept website dedicated to the Polish rapper and creator Young Multi. It serves as a promotional landing page designed to highlight his personal brand, music, and online presence.',
-        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/tailwindlogo.webp', '/textures/gallery/htmllogo.webp', '/textures/gallery/netlifylogo.webp']
+        id: 'itagency',
+        title: 'IT AGENCY WORKFLOW',
+        front: '/it.png',
+        painted: '/it.png',
+        url: 'https://it-agency-gold.vercel.app/',
+        description: 'A specialized agency management software designed to streamline digital agency operations, project tracking, and client workflow management.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/tailwindlogo.webp', '/textures/gallery/csslogo.webp']
     },
     {
-        id: 'bio',
-        title: 'BIO',
-        front: '/textures/gallery/bioprzod.webp',
-        painted: '/textures/gallery/bioprzod_painted.webp',
-        url: 'https://tomkingbio.netlify.app',
-        description: 'A fast, modern personal bio page serving as a central hub for my digital footprint. It showcases my latest coding projects, web development services, YouTube videos, and recommended music artists.',
-        techStack: ['/textures/gallery/htmllogo.webp', '/textures/gallery/csslogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/netlifylogo.webp']
+        id: 'jms',
+        title: 'JOB-PROCESSING CRM',
+        front: '/Jms.png',
+        painted: '/Jms.png',
+        url: 'https://maytm.online/',
+        description: 'Applicant tracking and job management CRM with 5-stage automated workflows for streamlined HR operations and real-time candidate management.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/csslogo.webp', '/textures/gallery/htmllogo.webp']
+    },
+    {
+        id: 'maydiv',
+        title: 'MODERN PORTFOLIO',
+        front: '/MAYDIV.png',
+        painted: '/MAYDIV.png',
+        url: 'https://www.maydiv.com/',
+        description: 'Sleek, high-performance personal portfolio built with Next.js and Framer Motion for smooth cinematic animations and a stunning user experience.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/tailwindlogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/csslogo.webp']
+    },
+    {
+        id: 'tvara',
+        title: 'TVARA INDIA',
+        front: '/Tvara.png',
+        painted: '/Tvara.png',
+        url: 'https://www.tvaraindia.com/',
+        description: 'A modern web platform for Tvara India, featuring a sleek branding experience with smooth frontend animations and a polished responsive layout.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/csslogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/htmllogo.webp']
+    },
+    {
+        id: 'melanie',
+        title: 'MELANIE INDIA',
+        front: '/3.7.png',
+        painted: '/3.7.png',
+        url: 'https://www.melanieindia.com/',
+        description: 'Elegant digital showcase for Melanie India, built for high performance with a focus on premium aesthetics and seamless user interactions.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/csslogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/htmllogo.webp']
+    },
+    {
+        id: 'gridzero',
+        title: 'GRID ZERO',
+        front: '/Grid%20Zero-02.png',
+        painted: '/Grid%20Zero-02.png',
+        url: 'https://gridzero.in/',
+        description: 'Futuristic web experience for GridZero with a clean modern interface, bold typography, and a fully responsive cutting-edge design.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/tailwindlogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/csslogo.webp']
+    },
+    {
+        id: 'hotel',
+        title: 'HOTEL ROYAL GRAND',
+        front: '/logo10.png',
+        painted: '/logo10.png',
+        url: 'https://hotelroyalgrandbarsana.com/',
+        description: 'Premium hospitality website offering an interactive and seamless booking experience for Hotel Royal Grand Barsana with elegant UI.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/csslogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/htmllogo.webp']
+    },
+    {
+        id: 'a2p',
+        title: 'A2P REALTECH',
+        front: '/290126125406LOGO.png',
+        painted: '/290126125406LOGO.png',
+        url: 'https://a2prealtech.com/',
+        description: 'Robust real estate management platform for high scalability and secure data handling, featuring property listings and lead management.',
+        techStack: ['/textures/gallery/phplogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/csslogo.webp', '/textures/gallery/htmllogo.webp']
+    },
+    {
+        id: 'pomp',
+        title: 'POMP & PEPPER',
+        front: '/logo99.png',
+        painted: '/logo99.png',
+        url: 'https://pompnpepper.com/',
+        description: 'Vibrant and engaging web application for dynamic content delivery with a modern, polished UI and smooth interactive elements.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/tailwindlogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/csslogo.webp']
+    },
+    {
+        id: 'ledel',
+        title: 'LEDEL ENTERPRISES',
+        front: '/logo%20(1).png',
+        painted: '/logo%20(1).png',
+        url: 'https://ledel.vercel.app/',
+        description: 'Premium LED enterprise platform integrated with Supabase for real-time data management, secure operations, and enterprise-level performance.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/tailwindlogo.webp', '/textures/gallery/firebaselogo.webp', '/textures/gallery/csslogo.webp']
     },
 ];
 
-const PROJECT_COUNT = 10; // Keep the count for the infinite scroll feel
+const PROJECT_COUNT = 12; // One per unique project
 const GAP = 2.5;
 
 // Zmień te wartości aby dopasować proporcje ptaka (legacy ratio 1.41)
@@ -230,9 +302,9 @@ const GalleryRoom = ({ showRoom, onReady, isExiting, isWarmup }) => {
     // We use the same conditional logic: painted on desktop, regular on touch
     const allLogos = useMemo(() => {
         const names = [
-            'csslogo', 'elementorlogo', 'firebaselogo', 'htmllogo',
-            'jslogo', 'netlifylogo', 'phplogo', 'reactlogo',
-            'tailwindlogo', 'wordpresslogo'
+            'csslogo', 'firebaselogo', 'htmllogo',
+            'jslogo', 'phplogo', 'reactlogo',
+            'tailwindlogo'
         ];
         return names.map(name => {
             if (!canHover) return `/textures/gallery/${name}.webp`;
@@ -694,6 +766,7 @@ const ProjectCard = memo(forwardRef(({ index, project, clothespinTexture, curren
     const detailsTextRef2 = useRef();
     const techTextRef = useRef();
     const openTextRef = useRef();
+    const frontDescRef = useRef(); // Ref for the front description text
     const [hovered, setHovered] = useState(false);
     const [btnHovered, setBtnHovered] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);  // True ONLY during flip animation
@@ -958,11 +1031,29 @@ const ProjectCard = memo(forwardRef(({ index, project, clothespinTexture, curren
                     }
                 };
                 applyOpacity(textRef);
+                applyOpacity(frontDescRef); // Apply to front description
                 applyOpacity(detailsTextRef1);
                 applyOpacity(detailsTextRef2);
                 applyOpacity(techTextRef);
                 applyOpacity(openTextRef);
             }
+        }
+
+        // --- Zrównaj pozycję frontowego opisu (FRONT DESCRIPTION) ---
+        if (frontDescRef.current && materialRef.current) {
+            const y = frontDescRef.current.position.y;
+            const uBend = materialRef.current.bend;
+            const uWindStrength = materialRef.current.windStrength || 0;
+            const uTime = state.clock.getElapsedTime();
+
+            const bendAmount = Math.pow(y, 2.0) * uBend;
+            const totalWind = 0.02 + uWindStrength;
+            const flutter = Math.sin(uTime * 2.0 + y * 2.0) * totalWind * (1.0 + Math.abs(uBend * 3.0));
+
+            frontDescRef.current.position.z = bendAmount + flutter + 0.02;
+
+            const dz_dy = 2.0 * y * uBend + 2.0 * Math.cos(uTime * 2.0 + y * 2.0) * totalWind * (1.0 + Math.abs(uBend * 3.0));
+            frontDescRef.current.rotation.x = Math.atan(dz_dy);
         }
 
         // --- Zrównaj pozycję tekstu Z z animacją zaginania i falowania kartki (PRZÓD) ---
@@ -1046,6 +1137,13 @@ const ProjectCard = memo(forwardRef(({ index, project, clothespinTexture, curren
 
         // Skip position updates ONLY during flip animation, NOT during scroll
         if (isAnimating || isSelected) return;
+
+        // Update aspect ratio in shader
+        if (materialRef.current) {
+            const textureAspect = project.frontTexture?.image ? project.frontTexture.image.width / project.frontTexture.image.height : 1;
+            const planeAspect = 1.5 / 2.0;
+            materialRef.current.aspect = planeAspect / textureAspect;
+        }
 
         const totalWidth = PROJECT_COUNT * GAP; // GAP is available in scope because we are in the file where GAP is defined
         let rawX = (index * GAP) - currentScroll.current;
@@ -1288,6 +1386,23 @@ const ProjectCard = memo(forwardRef(({ index, project, clothespinTexture, curren
                     fillOpacity={0} // Start hidden
                 >
                     {project.title}
+                </Text>
+
+                {/* PROJECT DESCRIPTION ON FRONT */}
+                <Text
+                    ref={frontDescRef}
+                    position={[0, -0.6, 0]}
+                    fontSize={0.065}
+                    color="#333333"
+                    font="/fonts/CabinSketch-Bold.ttf"
+                    anchorX="center"
+                    anchorY="middle"
+                    maxWidth={1.3}
+                    textAlign="center"
+                    lineHeight={1.2}
+                    fillOpacity={0} // Managed by useFrame
+                >
+                    {project.description}
                 </Text>
 
                 <PositionalAudio

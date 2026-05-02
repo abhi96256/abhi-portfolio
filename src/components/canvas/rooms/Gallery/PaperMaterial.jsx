@@ -23,6 +23,7 @@ const PaperMaterial = forwardRef(({ color = '#e0e0e0', roughness = 0.6, map, sid
         shader.uniforms.mapPainted = { value: null }; // Painted texture
         shader.uniforms.mapPainted = { value: null }; // Painted texture
         shader.uniforms.uProgress = { value: 0.0 }; // Reveal progress
+        shader.uniforms.uAspect = { value: 1.0 }; // Texture aspect ratio adjustment
         shader.uniforms.uPaintProgress = paintProgress || { value: 1.0 };
         shader.uniforms.uRoomOrigin = roomOrigin || { value: new THREE.Vector3(0, 0, 0) };
 
@@ -59,6 +60,7 @@ const PaperMaterial = forwardRef(({ color = '#e0e0e0', roughness = 0.6, map, sid
             uniform sampler2D mapBack;
             uniform sampler2D mapPainted;
             uniform float uProgress;
+            uniform float uAspect; // (PlaneAspect / TextureAspect)
             uniform float uPaintProgress;
             uniform vec3 uRoomOrigin;
             varying vec3 vWorldPositionColor;
@@ -82,13 +84,23 @@ const PaperMaterial = forwardRef(({ color = '#e0e0e0', roughness = 0.6, map, sid
             '#include <map_fragment>',
             `
             #ifdef USE_MAP
-                vec4 texColor = texture2D( map, vMapUv );
+                // --- Aspect Ratio Correction (Object-fit: Cover) ---
+                vec2 correctedUv = vMapUv;
+                if (uAspect > 1.0) {
+                    // Plane is wider than image (relatively) -> crop top/bottom
+                    correctedUv.y = (correctedUv.y - 0.5) / uAspect + 0.5;
+                } else {
+                    // Image is wider than plane (relatively) -> crop left/right
+                    correctedUv.x = (correctedUv.x - 0.5) * uAspect + 0.5;
+                }
+
+                vec4 texColor = texture2D( map, correctedUv );
 
                 // --- Added Brush Reveal Logic ---
                 if (gl_FrontFacing && uProgress > 0.001) {
-                    vec4 paintedColor = texture2D(mapPainted, vMapUv);
-                    float rn = revealNoise(vMapUv * 15.0) * 0.15;
-                    float maskValue = (1.0 - vMapUv.y) + rn;
+                    vec4 paintedColor = texture2D(mapPainted, correctedUv);
+                    float rn = revealNoise(correctedUv * 15.0) * 0.15;
+                    float maskValue = (1.0 - correctedUv.y) + rn;
                     float threshold = uProgress * 1.5;
                     if (maskValue < threshold) {
                         texColor = paintedColor;
@@ -197,6 +209,15 @@ const PaperMaterial = forwardRef(({ color = '#e0e0e0', roughness = 0.6, map, sid
         },
         get uProgress() {
             return materialRef.current?.userData?.shader?.uniforms.uProgress.value || 0;
+        },
+        // Getter/Setter for uAspect
+        set aspect(value) {
+            if (materialRef.current?.userData?.shader) {
+                materialRef.current.userData.shader.uniforms.uAspect.value = value;
+            }
+        },
+        get aspect() {
+            return materialRef.current?.userData?.shader?.uniforms.uAspect.value || 1;
         },
         // We can also expose the raw material if needed
         material: materialRef.current
