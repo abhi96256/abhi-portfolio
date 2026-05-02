@@ -274,13 +274,14 @@ const NavigationUI = () => {
                     <button
                         className={`nav-btn achievements-btn ${isAchievementsOpen ? 'open' : ''}`}
                         onClick={() => setIsAchievementsOpen(!isAchievementsOpen)}
-                        aria-label="Achievements"
+                        aria-label="Professional Stats"
                         aria-expanded={isAchievementsOpen}
                     >
-                        <svg viewBox="0 0 24 24" className="icon-trophy">
-                            <path d="M8 21h8M12 17v4M7 4h10M5 4h14v5a7 7 0 0 1-7 7 7 7 0 0 1-7-7z" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M5 9H3V6h2" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M19 9h2V6h-2" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <svg viewBox="0 0 24 24" className="icon-stats">
+                            <path d="M3 3v18h18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                            <rect x="7" y="10" width="3" height="8" fill="currentColor" />
+                            <rect x="12" y="6" width="3" height="12" fill="currentColor" />
+                            <rect x="17" y="14" width="3" height="4" fill="currentColor" />
                         </svg>
                     </button>
                 </div>

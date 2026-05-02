@@ -70,10 +70,9 @@ const EntranceDoors = ({
     const doorBackTexture = useTexture(isMobileDevice ? '/textures/doors/door_back.webp' : '/textures/doors/door_back_left_sketch.webp');
     const edgeTexture = useTexture(isMobileDevice ? '/textures/doors/pien_sketch.webp' : '/textures/doors/pien.webp');
 
-    const bricksTexture = useTexture('/textures/entrance/wall_bricks_2.webp');
+    const bricksTexture = useTexture('/textures/entrance/real_bricks.png');
     const stonePathTexture = useTexture('/textures/entrance/stone-path.webp');
-    // const catTexture = useTexture('/textures/entrance/cat_sketch.webp'); // Old side cat
-    const catFrontBodyTexture = useTexture('/textures/entrance/cat_front_body.webp');
+    const catFrontBodyTexture = useTexture('/textures/entrance/real_cat.png');
     const windowSketchTexture = useTexture('/textures/entrance/window_sketch.webp');
     const avatarWindowTexture = useTexture('/textures/entrance/avatar_window.webp');
     const treeTexture = useTexture('/textures/entrance/tree_sketch.webp');
@@ -82,6 +81,12 @@ const EntranceDoors = ({
     const bugTexture = useTexture('/textures/entrance/bug_sketch.webp');
     const inkSplashTexture = useTexture('/images/ink-splash.webp');
     const speechBubbleTexture = useTexture('/textures/entrance/speech_bubble.webp');
+
+    useMemo(() => {
+        [bricksTexture, stonePathTexture, catFrontBodyTexture, treeTexture, potTexture].forEach(tex => {
+            tex.colorSpace = THREE.SRGBColorSpace;
+        });
+    }, [bricksTexture, stonePathTexture, catFrontBodyTexture, treeTexture, potTexture]);
 
     // Cat Ref
     const leftPupilRef = useRef();
@@ -582,9 +587,10 @@ const EntranceDoors = ({
                 rotation={[-Math.PI / 2, 0, 0]}
             >
                 <planeGeometry args={[pathWidth, pathLength]} />
-                <meshBasicMaterial color="#e0e0e0"
+                <meshStandardMaterial color="#ffffff"
                     map={stonePathTexture}
                     transparent={true}
+                    roughness={0.8}
                 />
             </mesh>
 
@@ -592,19 +598,19 @@ const EntranceDoors = ({
             {/* LEFT WALL PANEL */}
             <mesh position={[-(doorOpeningWidth / 2 + sideWallWidth / 2), wallCenterY, 0]}>
                 <boxGeometry args={[sideWallWidth, corridorHeight, wallThickness]} />
-                <meshBasicMaterial color="#e0e0e0" roughness={0.95} />
+                <meshStandardMaterial color="#f0f0f0" roughness={0.9} />
             </mesh>
 
             {/* RIGHT WALL PANEL */}
             <mesh position={[(doorOpeningWidth / 2 + sideWallWidth / 2), wallCenterY, 0]}>
                 <boxGeometry args={[sideWallWidth, corridorHeight, wallThickness]} />
-                <meshBasicMaterial color="#e0e0e0" roughness={0.95} />
+                <meshStandardMaterial color="#f0f0f0" roughness={0.9} />
             </mesh>
 
             {/* TOP WALL PANEL */}
             <mesh position={[0, topWallCenterY, 0]}>
                 <boxGeometry args={[doorOpeningWidth, topWallHeight, wallThickness]} />
-                <meshBasicMaterial color="#e0e0e0" roughness={0.95} />
+                <meshStandardMaterial color="#f0f0f0" roughness={0.9} />
             </mesh>
 
             {/* === BRICK FACADE === */}
@@ -614,24 +620,28 @@ const EntranceDoors = ({
                 2. facadeYOffset - Przesunięcie góra/dół (np. -1 obniży, 1 podwyższy)
             */}
             <mesh position={[0, wallCenterY + facadeYOffset + 1.65, 0.15]}>
-                {/* args={[Szerokość, Wysokość]} - Zmieniaj te liczby (np. 7, 8) */}
                 <planeGeometry args={[16., 8]} />
-                <meshBasicMaterial color="#e0e0e0"
+                <meshStandardMaterial color="#ffffff"
                     map={bricksTexture}
                     transparent={true}
                     alphaTest={0.01}
-                    roughness={0.9}
+                    roughness={0.6}
+                    metalness={0.1}
                 />
             </mesh>
+
+            {/* LIGHTING AT ENTRANCE */}
+            <pointLight position={[0, 1, 1]} intensity={5} distance={10} color="#fff5e6" />
+            <ambientLight intensity={0.5} />
 
             {/* === TEXTURED FRAME === */}
             <mesh position={[0, frameCenterY, 0.12]}>
                 <planeGeometry args={[frameWidth, frameHeight]} />
-                <meshBasicMaterial color="#e0e0e0"
+                <meshStandardMaterial color="#ffffff"
                     map={frameTexture}
                     transparent={true}
                     alphaTest={0.1}
-                    roughness={0.9}
+                    roughness={0.8}
                     depthWrite={false}
                 />
             </mesh>
@@ -646,7 +656,7 @@ const EntranceDoors = ({
                     onPointerLeave={handlePointerLeave}
                 >
                     <boxGeometry args={[doorWidth, doorHeight, 0.04]} />
-                    <meshBasicMaterial color="#e0e0e0" map={edgeTexture} roughness={0.9} />
+                    <meshStandardMaterial color="#ffffff" map={edgeTexture} roughness={0.4} metalness={0.1} />
                 </mesh>
 
                 {/* Painted layer (behind sketch) - left door */}
@@ -838,7 +848,7 @@ const EntranceDoors = ({
                 {/* Pot texture */}
                 <mesh>
                     <planeGeometry args={[3, 1.8]} />
-                    <meshBasicMaterial color="#e0e0e0"
+                    <meshStandardMaterial color="#ffffff"
                         map={potTexture}
                         transparent={true}
                         alphaTest={0.01}
@@ -952,11 +962,12 @@ const EntranceDoors = ({
                 {/* Tree */}
                 <mesh position={[0, 0, 0]}>
                     <planeGeometry args={[6, 8]} />
-                    <meshBasicMaterial color="#e0e0e0"
+                    <meshStandardMaterial color="#4d7c0f" // Realistic Green
                         map={treeTexture}
                         transparent={true}
                         alphaTest={0.01}
                         depthWrite={false}
+                        roughness={0.8}
                     />
                 </mesh>
                 {/* Mouse Hanging - Pivot Group for swinging */}
@@ -969,7 +980,7 @@ const EntranceDoors = ({
                     {/* Mesh moves opposite to pivot offset to keep visual position */}
                     <mesh position={[-0.351, 0.456, 0]}>
                         <planeGeometry args={[6, 8]} />
-                        <meshBasicMaterial color="#e0e0e0"
+                        <meshStandardMaterial color="#ffffff"
                             map={mouseTexture}
                             transparent={true}
                             alphaTest={0.01}
@@ -984,18 +995,19 @@ const EntranceDoors = ({
                 {/* Body */}
                 <mesh>
                     <planeGeometry args={[1.5, 1.5]} />
-                    <meshBasicMaterial color="#e0e0e0"
+                    <meshStandardMaterial color="#ffffff"
                         map={catFrontBodyTexture}
                         transparent={true}
                         alphaTest={0.01}
                         depthWrite={false}
+                        roughness={0.7}
                     />
                 </mesh>
 
                 {/* Left Pupil */}
                 <mesh
                     ref={leftPupilRef}
-                    position={[-0.063, 0.27, -0.02]} // Behind cat
+                    position={[-0.063, 0.27, 0.01]} // In front of cat
                 >
                     <circleGeometry args={[0.020, 32]} />
                     <meshBasicMaterial color="black" />
@@ -1006,7 +1018,7 @@ const EntranceDoors = ({
                 {/* Right Pupil */}
                 <mesh
                     ref={rightPupilRef}
-                    position={[0.0615, 0.27, -0.02]} // Behind cat
+                    position={[0.0615, 0.27, 0.01]} // In front of cat
                 >
                     <circleGeometry args={[0.020, 32]} />
                     <meshBasicMaterial color="black" />
