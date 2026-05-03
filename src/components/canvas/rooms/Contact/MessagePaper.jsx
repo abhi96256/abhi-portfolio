@@ -197,55 +197,62 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
             {/* Single HTML Overlay Layer */}
             <Html
                 transform
-                position={[0, 0.015, 0]}
+                position={[0, 0.018, 0]} // Slightly higher to ensure it's on top
                 rotation={[-Math.PI / 2, 0, 0]}
                 scale={0.1}
-                pointerEvents="none"
             >
                 <div style={{
                     width: PAPER_WIDTH * 1000 + 'px',
                     height: PAPER_HEIGHT * 1000 + 'px',
                     position: 'relative',
-                    pointerEvents: 'none'
+                    pointerEvents: 'none' // The wrapper itself doesn't block clicks
                 }}>
+                    {/* Email Input Overlay */}
                     <input 
                         type="email"
-                        placeholder="email"
+                        autoComplete="off"
+                        spellCheck="false"
                         style={{
                             position: 'absolute',
                             top: '8%',
                             left: '5%',
                             width: '90%',
-                            height: '10%',
+                            height: '11%',
                             opacity: 0,
-                            pointerEvents: 'auto',
-                            fontSize: '60px'
+                            pointerEvents: 'auto', // This input DOES catch clicks
+                            fontSize: '60px',
+                            cursor: 'text'
                         }}
                         value={email}
                         onChange={(e) => setEmail(e.target.value.slice(0, 50))}
                         onFocus={() => setActiveField('email')}
                         onBlur={() => setActiveField(null)}
                     />
+                    {/* Subject Input Overlay */}
                     <input 
                         type="text"
-                        placeholder="subject"
+                        autoComplete="off"
+                        spellCheck="false"
                         style={{
                             position: 'absolute',
-                            top: '18%',
+                            top: '19%',
                             left: '5%',
                             width: '90%',
-                            height: '10%',
+                            height: '11%',
                             opacity: 0,
                             pointerEvents: 'auto',
-                            fontSize: '60px'
+                            fontSize: '60px',
+                            cursor: 'text'
                         }}
                         value={subject}
                         onChange={(e) => setSubject(e.target.value.slice(0, 50))}
                         onFocus={() => setActiveField('subject')}
                         onBlur={() => setActiveField(null)}
                     />
+                    {/* Message Input Overlay */}
                     <textarea 
-                        placeholder="message"
+                        autoComplete="off"
+                        spellCheck="false"
                         style={{
                             position: 'absolute',
                             top: '32%',
@@ -255,7 +262,8 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                             opacity: 0,
                             pointerEvents: 'auto',
                             fontSize: '60px',
-                            resize: 'none'
+                            resize: 'none',
+                            cursor: 'text'
                         }}
                         value={message}
                         onChange={(e) => setMessage(e.target.value.slice(0, 300))}
