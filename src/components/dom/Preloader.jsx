@@ -310,22 +310,36 @@ const Preloader = ({ onComplete, ready }) => {
     }
     play('tear', { volume: 0.8 });
     
-    // 0. Earthquake Shake Effect
+    // 0. Earthquake Shake Effect (Violent start, decaying rumble)
     const shakeTL = gsap.timeline();
+    
+    // Initial violent jolt
     shakeTL.to(".app", {
-      x: "random(-15, 15)",
-      y: "random(-10, 10)",
-      rotation: "random(-0.5, 0.5)",
-      duration: 0.05,
-      repeat: 35,
+      x: "random(-20, 20)",
+      y: "random(-15, 15)",
+      rotation: "random(-1, 1)",
+      duration: 0.04,
+      repeat: 15,
       yoyo: true,
       ease: "none"
     });
+    
+    // Decaying rumble
+    shakeTL.to(".app", {
+      x: "random(-8, 8)",
+      y: "random(-5, 5)",
+      rotation: "random(-0.3, 0.3)",
+      duration: 0.06,
+      repeat: 20,
+      yoyo: true,
+      ease: "none"
+    });
+
     shakeTL.to(".app", { 
       x: 0, 
       y: 0, 
       rotation: 0, 
-      duration: 0.5, 
+      duration: 0.8, 
       ease: "elastic.out(1, 0.3)" 
     });
 
