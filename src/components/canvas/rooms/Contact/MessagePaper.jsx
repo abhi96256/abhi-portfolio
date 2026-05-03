@@ -146,8 +146,8 @@ const SmoothButton = ({ texture, onClick, position, size, text, fontPath }) => {
     );
 };
 
-// Web3Forms API Key
-const WEB3FORMS_KEY = '2ceaee50-a31e-4936-98fc-ca9648b21cdd';
+// Formspree URL
+const FORMSPREE_URL = 'https://formspree.io/f/mojrjnwd';
 
 const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
     const groupRef = useRef();
@@ -235,24 +235,20 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
         setErrors({});
 
         try {
-            const response = await fetch('https://api.web3forms.com/submit', {
+            const response = await fetch(FORMSPREE_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    access_key: WEB3FORMS_KEY,
-                    from_name: 'Portfolio Contact',
                     email: email,
                     subject: subject,
                     message: message
                 })
             });
 
-            const result = await response.json();
-
-            if (result.success) {
+            if (response.ok) {
                 setSubmitStatus('success');
                 onSend?.({ message, email, subject });
                 // console.log('✅ Message sent successfully!');
@@ -262,7 +258,8 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                 setEmail('');
                 setSubject('');
             } else {
-                throw new Error(result.message || 'Failed to send');
+                const result = await response.json();
+                throw new Error(result.error || 'Failed to send');
             }
         } catch (error) {
             // console.error('❌ Send failed:', error);
@@ -341,6 +338,8 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
         // Flutter animation
         paperRef.current.rotation.z = Math.sin(time * 0.5) * 0.005;
     });
+
+    if (submitStatus === 'success') return null;
 
     return (
         <group ref={groupRef} position={position}>
