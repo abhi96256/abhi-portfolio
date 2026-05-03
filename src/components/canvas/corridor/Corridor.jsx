@@ -46,13 +46,13 @@ const Corridor = ({ length = 100 }) => {
                     blur={[300, 100]}
                     resolution={1024}
                     mixBlur={1}
-                    mixStrength={60}
+                    mixStrength={80}
                     roughness={1}
                     depthScale={1.2}
                     minDepthThreshold={0.4}
                     maxDepthThreshold={1.4}
-                    color="#1a1a1a"
-                    metalness={0.5}
+                    color="#0a0a0a"
+                    metalness={0.8}
                     mirror={1}
                     map={floorTexture}
                     map-repeat={[corridorWidth / 3, length / 3]}
@@ -75,29 +75,27 @@ const Corridor = ({ length = 100 }) => {
                 />
             </mesh>
 
-            {/* Left Wall - Matte Finish Architectural Paint */}
             <mesh
                 position={[-corridorWidth / 2, 0, zOffset]}
                 rotation={[0, Math.PI / 2, 0]}
             >
                 <planeGeometry args={[length, corridorHeight]} />
                 <meshStandardMaterial
-                    color="#dcdcdc"
-                    roughness={0.9}
-                    metalness={0.05}
+                    color="#222222"
+                    roughness={0.4}
+                    metalness={0.1}
                 />
             </mesh>
 
-            {/* Right Wall - Matte Finish Architectural Paint */}
             <mesh
                 position={[corridorWidth / 2, 0, zOffset]}
                 rotation={[0, -Math.PI / 2, 0]}
             >
                 <planeGeometry args={[length, corridorHeight]} />
                 <meshStandardMaterial
-                    color="#dcdcdc"
-                    roughness={0.9}
-                    metalness={0.05}
+                    color="#222222"
+                    roughness={0.4}
+                    metalness={0.1}
                 />
             </mesh>
 

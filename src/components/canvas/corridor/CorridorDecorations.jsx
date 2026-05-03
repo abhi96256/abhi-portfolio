@@ -331,6 +331,59 @@ const InspectableFrame = ({ frame, wallX, frameTexture, framePaintedTexture, CAB
         </group>
     );
 };
+const DustParticles = ({ count = 100 }) => {
+    const mesh = useRef();
+    const { viewport } = useThree();
+    
+    const particles = useMemo(() => {
+        const temp = [];
+        for (let i = 0; i < count; i++) {
+            const x = (Math.random() - 0.5) * 10;
+            const y = (Math.random() - 0.5) * 5;
+            const z = (Math.random() - 0.5) * 80;
+            const speed = 0.01 + Math.random() * 0.02;
+            temp.push({ x, y, z, speed });
+        }
+        return temp;
+    }, [count]);
+
+    useFrame((state) => {
+        if (!mesh.current) return;
+        const time = state.clock.getElapsedTime();
+        
+        particles.forEach((p, i) => {
+            const s = p.speed;
+            mesh.current.getMatrixAt(i, tempMatrix);
+            tempPos.setFromMatrixPosition(tempMatrix);
+            
+            // Subtle floating motion
+            tempPos.y += Math.sin(time * s * 10) * 0.001;
+            tempPos.x += Math.cos(time * s * 5) * 0.001;
+            
+            tempMatrix.setPosition(tempPos);
+            mesh.current.setMatrixAt(i, tempMatrix);
+        });
+        mesh.current.instanceMatrix.needsUpdate = true;
+    });
+
+    const tempMatrix = useMemo(() => new THREE.Matrix4(), []);
+
+    useEffect(() => {
+        particles.forEach((p, i) => {
+            tempMatrix.setPosition(p.x, p.y, p.z);
+            mesh.current.setMatrixAt(i, tempMatrix);
+        });
+        mesh.current.instanceMatrix.needsUpdate = true;
+    }, [particles]);
+
+    return (
+        <instancedMesh ref={mesh} args={[null, null, count]}>
+            <sphereGeometry args={[0.01, 8, 8]} />
+            <meshBasicMaterial color="#ffffff" transparent opacity={0.3} />
+        </instancedMesh>
+    );
+};
+
 const CorridorDecorations = ({ segmentLength, zOffset, corridorWidth = 4, corridorHeight = 3.5, zClip = 100000, setCameraOverride }) => {
     const { tier } = usePerformance();
     const isLowTier = tier === TIERS.LOW;
@@ -519,18 +572,31 @@ const CorridorDecorations = ({ segmentLength, zOffset, corridorWidth = 4, corrid
                             rotation={[-Math.PI / 2, 0, 0]}
                         >
                             <planeGeometry args={[1.9, 0.4]} />
-                            <meshBasicMaterial
+                            <meshStandardMaterial
                                 color="#ffffff"
+                                emissive="#ffffff"
+                                emissiveIntensity={10}
                                 toneMapped={false}
                                 side={THREE.DoubleSide}
                             />
                         </mesh>
 
-                        {/* RZECZYWISTE ŹRÓDŁO ŚWIATŁA (PointLight) - WYLACZONE */}
-                        {/* Wylaczone globalnie, uzywamy meshBasicMaterial/emissive dla wydajnosci */}
+                        {/* RZECZYWISTE ŹRÓDŁO ŚWIATŁA (PointLight) */}
+                        {!isLowTier && (
+                            <pointLight 
+                                position={[0, -0.2, 0]} 
+                                intensity={35} 
+                                distance={15} 
+                                decay={2} 
+                                color="#ffffff"
+                            />
+                        )}
                     </group>
                 );
             })}
+
+            {/* DUST PARTICLES (FOR REALISM) */}
+            {!isLowTier && <DustParticles count={200} />}
 
             {/* === STOLIK (obrócony 90°, przy lewej ścianie) === */}
             <group position={[tableConfig.x, floorY, tableConfig.z]} rotation={[0, Math.PI / 2, 0]}>

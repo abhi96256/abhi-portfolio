@@ -41,6 +41,8 @@ const useInfiniteCamera = ({
     const glanceOffset = useRef(0);
     const targetGlance = useRef(0); // For door hover glance
     const currentSegment = useRef(0);
+    const headBob = useRef(0);
+    const sway = useRef({ x: 0, y: 0 });
     const scrollEnabledRef = useRef(scrollEnabled);
     const parallaxEnabledRef = useRef(parallaxEnabled);
     const justEnabled = useRef(false);
@@ -323,6 +325,17 @@ const useInfiniteCamera = ({
             justEnabled.current = false;
         }
 
+        // --- REALISM EFFECTS (Head Bob & Sway) ---
+        const time = state.clock.getElapsedTime();
+        // Head bobbing based on movement
+        const moveSpeed = Math.abs(currentZ.current - targetZ.current);
+        const bobAmount = Math.min(0.02, moveSpeed * 0.1);
+        headBob.current = Math.sin(time * 10) * bobAmount;
+        
+        // Natural handheld sway
+        sway.current.x = Math.sin(time * 0.5) * 0.005;
+        sway.current.y = Math.cos(time * 0.7) * 0.005;
+
         // Z movement and door glance - only when scroll is enabled
         if (scrollActive) {
             // Smooth Z movement
@@ -340,8 +353,8 @@ const useInfiniteCamera = ({
 
             // Apply Z position to camera (only when scroll enabled)
             camera.position.z = currentZ.current;
-            camera.position.x = parallax.current.x;
-            camera.position.y = 0.2 + parallax.current.y;
+            camera.position.x = parallax.current.x + sway.current.x;
+            camera.position.y = 0.2 + parallax.current.y + headBob.current + sway.current.y;
 
             // Look direction with glance + swipe glance
             const lookX = parallax.current.x * 0.3 + glanceOffset.current * 3 + swipeGlance.current * 4;
