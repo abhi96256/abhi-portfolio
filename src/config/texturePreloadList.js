@@ -143,6 +143,10 @@ export const GALLERY_TEXTURES_BASE = [
     '/290126125406LOGO.png',
     '/logo99.png',
     '/logo%20(1).png',
+    '/clinic_logo.svg',
+    '/restaurant_logo.svg',
+    '/neoclass_coaching_logo.svg',
+    '/salon_logo.svg',
 ];
 
 export const GALLERY_TEXTURES_VERSIONED = [

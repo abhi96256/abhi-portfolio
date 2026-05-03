@@ -142,9 +142,45 @@ const UNIQUE_PROJECTS = [
         description: 'Premium LED enterprise platform integrated with Supabase for real-time data management, secure operations, and enterprise-level performance.',
         techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/tailwindlogo.webp', '/textures/gallery/firebaselogo.webp', '/textures/gallery/csslogo.webp']
     },
+    {
+        id: 'medcare',
+        title: 'MedCare Clinic',
+        front: '/clinic_logo.svg',
+        painted: '/clinic_logo.svg',
+        url: 'https://clindemo.vercel.app/',
+        description: 'Modern medical clinic portal for seamless scheduling and patient management.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/csslogo.webp']
+    },
+    {
+        id: 'savorybite',
+        title: 'SavoryBite Restaurant',
+        front: '/restaurant_logo.svg',
+        painted: '/restaurant_logo.svg',
+        url: 'https://resdemo-mauve.vercel.app/',
+        description: 'Elegant dining platform featuring digital menus and reservation systems.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/tailwindlogo.webp']
+    },
+    {
+        id: 'neoclass',
+        title: 'NeoClass Coaching',
+        front: '/neoclass_coaching_logo.svg',
+        painted: '/neoclass_coaching_logo.svg',
+        url: 'https://classes-teal.vercel.app/',
+        description: 'Educational hub for coaching centers to manage courses and interactive learning.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/tailwindlogo.webp']
+    },
+    {
+        id: 'glowstyle',
+        title: 'GlowStyle Salon',
+        front: '/salon_logo.svg',
+        painted: '/salon_logo.svg',
+        url: 'https://demo-p6hb.vercel.app/',
+        description: 'Premium beauty platform for salons with online booking and stylist profiles.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/tailwindlogo.webp']
+    },
 ];
 
-const PROJECT_COUNT = 12; // One per unique project
+const PROJECT_COUNT = 16; // One per unique project
 const GAP = 2.5;
 
 // Zmień te wartości aby dopasować proporcje ptaka (legacy ratio 1.41)
