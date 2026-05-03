@@ -213,6 +213,20 @@ const GalleryRoom = ({ showRoom, onReady, isExiting, isWarmup }) => {
     const [globalIsAnimating, setGlobalIsAnimating] = useState(false);
     const cardRefs = useRef([]);
 
+    // --- AUTO-SCROLL ---
+    const AUTO_SCROLL_SPEED = 0.35;  // units per second — tweak for faster/slower
+    const AUTO_RESUME_DELAY = 3000;  // ms before auto-scroll resumes after user interaction
+    const isAutoScrolling = useRef(true);
+    const autoResumeTimer = useRef(null);
+
+    const pauseAutoScroll = () => {
+        isAutoScrolling.current = false;
+        if (autoResumeTimer.current) clearTimeout(autoResumeTimer.current);
+        autoResumeTimer.current = setTimeout(() => {
+            isAutoScrolling.current = true;
+        }, AUTO_RESUME_DELAY);
+    };
+
     useEffect(() => {
         if (isExiting || isTeleporting) {
             hidePopup();
@@ -258,6 +272,7 @@ const GalleryRoom = ({ showRoom, onReady, isExiting, isWarmup }) => {
 
     const handleCardClick = async (clickedIndex) => {
         if (globalIsAnimating || isTransitioning) return;
+        pauseAutoScroll(); // Stop auto-scroll when user interacts with a card
 
         // Unlock inspect achievement
         unlockAchievement('gallery_inspect');
@@ -436,12 +451,14 @@ const GalleryRoom = ({ showRoom, onReady, isExiting, isWarmup }) => {
                 const orig = e.event;
                 orig.preventDefault();
                 targetScroll.current += orig.deltaY * 0.005;
+                pauseAutoScroll(); // Pause auto-scroll on wheel
             },
             onPress: (e) => {
                 if (!showRoom || selectedCard !== null || globalIsAnimating || isTransitioning) return;
                 const orig = e.event;
                 if (orig.touches && orig.touches.length === 1) {
                     lastTouchX.current = orig.touches[0].clientX;
+                    pauseAutoScroll(); // Pause auto-scroll on touch start
                 }
             },
             onDrag: (e) => {
@@ -455,10 +472,18 @@ const GalleryRoom = ({ showRoom, onReady, isExiting, isWarmup }) => {
             }
         });
 
-        return () => scrollObserver.kill();
+        return () => {
+            scrollObserver.kill();
+            if (autoResumeTimer.current) clearTimeout(autoResumeTimer.current);
+        };
     }, [showRoom, selectedCard, globalIsAnimating]);
 
     useFrame((state, delta) => {
+        // Auto-scroll: advance targetScroll smoothly when no card is open
+        if (isAutoScrolling.current && showRoom && selectedCard === null && !globalIsAnimating && !isTransitioning) {
+            targetScroll.current += AUTO_SCROLL_SPEED * delta;
+        }
+        // Smooth lerp to target
         currentScroll.current = THREE.MathUtils.lerp(currentScroll.current, targetScroll.current, delta * 5);
     });
 
@@ -629,6 +654,59 @@ const GalleryRoom = ({ showRoom, onReady, isExiting, isWarmup }) => {
                             roomOrigin={uniformsData.uRoomOrigin}
                         />
                     ))}
+                </group>
+
+                {/* === 30+ PROJECTS BADGE === */}
+                <group position={[0, 3.6, -5.5]}>
+                    {/* Outer glow border */}
+                    <mesh position={[0, 0, -0.005]}>
+                        <planeGeometry args={[3.6, 1.05]} />
+                        <meshBasicMaterial color="#555555" transparent opacity={0.5} side={THREE.DoubleSide} />
+                    </mesh>
+                    {/* Dark background panel */}
+                    <mesh>
+                        <planeGeometry args={[3.45, 0.92]} />
+                        <meshBasicMaterial color="#1a1a1a" transparent opacity={0.88} side={THREE.DoubleSide} />
+                    </mesh>
+                    {/* Big "30+" number */}
+                    <Text
+                        position={[-0.72, 0.0, 0.01]}
+                        fontSize={0.52}
+                        color="#ffffff"
+                        anchorX="center"
+                        anchorY="middle"
+                        fontWeight={700}
+                        outlineWidth={0.015}
+                        outlineColor="#888888"
+                    >
+                        30+
+                    </Text>
+                    {/* Divider line */}
+                    <mesh position={[-0.08, 0, 0.01]}>
+                        <planeGeometry args={[0.02, 0.65]} />
+                        <meshBasicMaterial color="#555555" transparent opacity={0.9} />
+                    </mesh>
+                    {/* Label text block (right of divider) */}
+                    <Text
+                        position={[0.72, 0.15, 0.01]}
+                        fontSize={0.22}
+                        color="#dddddd"
+                        anchorX="center"
+                        anchorY="middle"
+                        letterSpacing={0.04}
+                    >
+                        PROJECTS
+                    </Text>
+                    <Text
+                        position={[0.72, -0.17, 0.01]}
+                        fontSize={0.14}
+                        color="#888888"
+                        anchorX="center"
+                        anchorY="middle"
+                        letterSpacing={0.06}
+                    >
+                        DELIVERED GLOBALLY
+                    </Text>
                 </group>
 
                 {/* === SCENERY LAYERS === */}
