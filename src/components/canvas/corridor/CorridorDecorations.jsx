@@ -688,3 +688,4 @@ const CorridorDecorations = ({ segmentLength, zOffset, corridorWidth = 4, corrid
 };
 
 export default CorridorDecorations;
+
