@@ -92,7 +92,7 @@ const Avatar = ({ position = [10, -20, 30] }) => {
     const isOverFace = useRef(false);
     const currentRadius = useRef(0);
 
-    const realFaceTex = useTexture('/favico.png');
+    const realFaceTex = useTexture('/pic.jpeg');
     
     useEffect(() => {
         textures.forEach(tex => tex.colorSpace = THREE.SRGBColorSpace);
