@@ -89,46 +89,91 @@
 
         .title {
             font-family: 'Patrick Hand', cursive, sans-serif;
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 18px;
+            font-weight: 900;
             color: #1a1a1a;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 2px;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.05);
+            display: block;
         }
 
         .description {
             font-size: 13px;
             color: #444;
             line-height: 1.4;
+        }
+
+        .description-interactive {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 4px;
+
+            .desc-text {
+                font-size: 13px;
+                color: #555;
+            }
 
             .inline-sound-toggle {
-                background: none;
-                border: none;
-                padding: 0;
-                margin-left: 4px;
-                font-family: 'Patrick Hand', cursive, sans-serif;
-                font-size: 13px;
-                font-weight: 700;
-                cursor: pointer;
-                text-decoration: underline;
-                text-decoration-style: dashed;
-                text-underline-offset: 3px;
-                transition: opacity 0.2s ease, transform 0.2s ease;
-                display: inline-flex;
+                background: #f5f5f5;
+                border: 1px solid #ddd;
+                border-radius: 20px;
+                padding: 4px 10px;
+                display: flex;
                 align-items: center;
+                gap: 8px;
+                cursor: pointer;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 
-                &.on {
+                .toggle-icon-wrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #1a1a1a;
+                    
+                    .icon-svg {
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+
+                .toggle-status {
+                    font-size: 11px;
+                    font-weight: 800;
+                    letter-spacing: 0.5px;
                     color: #1a1a1a;
                 }
 
+                &.on {
+                    background: #e8f5e9;
+                    border-color: #c8e6c9;
+                    color: #2e7d32;
+                    
+                    .toggle-icon-wrapper, .toggle-status {
+                        color: #2e7d32;
+                    }
+                }
+
                 &.off {
-                    color: #888;
+                    background: #ffebee;
+                    border-color: #ffcdd2;
+                    color: #c62828;
+                    
+                    .toggle-icon-wrapper, .toggle-status {
+                        color: #c62828;
+                    }
                 }
 
                 &:hover {
-                    opacity: 0.7;
-                    transform: scale(1.05);
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                }
+
+                &:active {
+                    transform: translateY(0);
                 }
             }
         }

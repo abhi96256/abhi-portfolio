@@ -258,15 +258,14 @@ const NavigationUI = () => {
                     >
                         {isMuted ? (
                             <svg viewBox="0 0 24 24" className="icon-audio">
-                                <path d="M11 5L6 9H2v6h4l5 4V5z" />
-                                <line x1="23" y1="9" x2="17" y2="15" />
-                                <line x1="17" y1="9" x2="23" y2="15" />
+                                <path d="M11 5L6 9H2v6h4l5 4V5z" fill="currentColor" />
+                                <path d="M23 9l-6 6M17 9l6 6" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
                             </svg>
                         ) : (
                             <svg viewBox="0 0 24 24" className="icon-audio">
-                                <path d="M11 5L6 9H2v6h4l5 4V5z" />
-                                <path d="M15 9a5 5 0 0 1 0 6" />
-                                <path d="M18 5a9 9 0 0 1 0 14" />
+                                <path d="M11 5L6 9H2v6h4l5 4V5z" fill="currentColor" />
+                                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                                <path d="M19.07 4.93a9 9 0 0 1 0 12.72" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                             </svg>
                         )}
                     </button>

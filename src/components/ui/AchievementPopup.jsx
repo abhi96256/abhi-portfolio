@@ -56,33 +56,43 @@ const AchievementPopup = () => {
                     {!isSoundPrompt ? (
                         <span className="description">{data.label}</span>
                     ) : (
-                        <span className="description">
-                            Click a door to enter. Audio is currently
+                        <div className="description-interactive">
+                            <span className="desc-text">Click a door to enter. Audio:</span>
                             <button
                                 className={`inline-sound-toggle ${!isMuted ? 'on' : 'off'}`}
                                 onClick={(e) => {
                                     e.stopPropagation();
-
                                     const willMute = !isMuted;
-
-                                    // 1. Oprogramowujemy flagi MUTE (dla silnika i utilsa)
                                     if (isMuted !== willMute) toggleMute();
                                     if (getBgmMuted() !== willMute) toggleBgmMute();
-
-                                    // 2. Wymuszamy fizyczne zjechanie pasków głośności, 
-                                    // żeby menu się zsynchronizowało z ustawieniami z wejścia
                                     if (willMute) {
                                         setGlobalVolume(0);
                                         setMusicVolume(0);
                                     } else {
-                                        setGlobalVolume(1.0); // 100% SFX
-                                        setMusicVolume(0.3);  // 30% BGM
+                                        setGlobalVolume(1.0);
+                                        setMusicVolume(0.3);
                                     }
                                 }}
+                                aria-label={isMuted ? "Unmute audio" : "Mute audio"}
                             >
-                                {!isMuted ? " [🔊 ON]" : " [🔇 OFF]"}
+                                <div className="toggle-icon-wrapper">
+                                    {!isMuted ? (
+                                        <svg viewBox="0 0 24 24" className="icon-svg">
+                                            <path d="M11 5L6 9H2v6h4l5 4V5z" fill="currentColor" />
+                                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                                            <path d="M19.07 4.93a9 9 0 0 1 0 12.72" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                                        </svg>
+                                    ) : (
+                                        <svg viewBox="0 0 24 24" className="icon-svg">
+                                            <path d="M11 5L6 9H2v6h4l5 4V5z" fill="currentColor" />
+                                            <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                                            <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                                        </svg>
+                                    )}
+                                </div>
+                                <span className="toggle-status">{!isMuted ? "ON" : "OFF"}</span>
                             </button>
-                        </span>
+                        </div>
                     )}
                 </div>
 
