@@ -95,14 +95,23 @@ const Avatar = ({ position = [10, -20, 30] }) => {
     const realFaceTex = useTexture('/pic.png');
 
     useEffect(() => {
-        textures.forEach(tex => tex.colorSpace = THREE.SRGBColorSpace);
+        const tex = textures[0];
+        if (tex) tex.colorSpace = THREE.SRGBColorSpace;
         realFaceTex.colorSpace = THREE.SRGBColorSpace;
-        if (textures[0] && textures[0].image) {
-            const aspectRatio = textures[0].image.width / textures[0].image.height;
+        
+        if (tex && tex.image) {
+            const aspectRatio = tex.image.width / tex.image.height;
             // Adjust height to 2.8 for a better presence in the corridor
-            setDimensions({ width: 2.8 * aspectRatio, height: 2.8 });
+            const newWidth = 2.8 * aspectRatio;
+            const newHeight = 2.8;
+            
+            // Only update state if values actually changed to avoid extra renders
+            setDimensions(prev => {
+                if (prev.width === newWidth && prev.height === newHeight) return prev;
+                return { width: newWidth, height: newHeight };
+            });
         }
-    }, [textures, realFaceTex]);
+    }, [textures[0], realFaceTex]);
 
     useFrame((state, delta) => {
         if (!groupRef.current || !meshRef.current) return;
