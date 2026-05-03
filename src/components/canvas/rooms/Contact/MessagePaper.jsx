@@ -8,7 +8,7 @@ const PAPER_WIDTH = 1.51; // Legacy ratio 1197/1340
 const PAPER_HEIGHT = 1.7;
 const FONT_PATH = '/fonts/CabinSketch-Regular.ttf';
 
-// Helper: Interactive Text Field with Smooth Animation and Invisible Hitbox
+// Helper: Interactive Text Field with Native DOM Input for Mobile Compatibility
 const InteractiveTextField = ({
     isActive,
     value,
@@ -30,21 +30,22 @@ const InteractiveTextField = ({
     textAlign,
     lineHeight,
 
-    // Interaction
-    onClick
+    // Input props
+    type = 'text',
+    onChange,
+    onFocus,
+    onBlur
 }) => {
     const textRef = useRef();
     const [hovered, setHovered] = useState(false);
     useCursor(hovered);
 
     // Animation targets
-    // Smooth lift (Y) and wobble (Z rotation) on hover
     const targetY = hovered ? position[1] + 0.007 : position[1];
     const targetRotZ = hovered ? baseRotation[2] + 0.015 : baseRotation[2];
 
     useFrame((state, delta) => {
-        // Smooth interpolation for "buttery" feel
-        const t = delta * 12; // Speed factor
+        const t = delta * 12;
         if (textRef.current) {
             textRef.current.position.y = THREE.MathUtils.lerp(textRef.current.position.y, targetY, t);
             textRef.current.rotation.z = THREE.MathUtils.lerp(textRef.current.rotation.z, targetRotZ, t);
@@ -55,24 +56,70 @@ const InteractiveTextField = ({
         <group
             onPointerOver={() => setHovered(true)}
             onPointerOut={() => setHovered(false)}
-            onClick={(e) => {
-                e.stopPropagation();
-                onClick && onClick();
-            }}
         >
-            {/* Invisible Hitbox - colorWrite=false prevents grey artifacts while keeping raycast */}
-            <mesh position={hitboxPosition} rotation={[-Math.PI / 2, 0, 0]}>
-                <planeGeometry args={hitboxSize} />
-                <meshBasicMaterial color="#e0e0e0" colorWrite={false} depthWrite={false} />
-            </mesh>
+            {/* Native DOM Input Overlay for Keyboard Trigger */}
+            <Html
+                transform
+                position={[hitboxPosition[0], hitboxPosition[1] + 0.01, hitboxPosition[2]]}
+                rotation={[-Math.PI / 2, 0, 0]}
+                scale={0.1}
+                zIndexRange={[0, 0]}
+            >
+                <div style={{
+                    width: hitboxSize[0] * 1000 + 'px',
+                    height: hitboxSize[1] * 1000 + 'px',
+                    position: 'relative',
+                    pointerEvents: 'auto'
+                }}>
+                    {type === 'textarea' ? (
+                        <textarea
+                            value={value}
+                            onChange={onChange}
+                            onFocus={onFocus}
+                            onBlur={onBlur}
+                            placeholder={placeholder}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                opacity: 0,
+                                border: 'none',
+                                outline: 'none',
+                                background: 'transparent',
+                                fontSize: '64px',
+                                resize: 'none',
+                                padding: '10px'
+                            }}
+                        />
+                    ) : (
+                        <input
+                            type={type}
+                            value={value}
+                            onChange={onChange}
+                            onFocus={onFocus}
+                            onBlur={onBlur}
+                            placeholder={placeholder}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                opacity: 0,
+                                border: 'none',
+                                outline: 'none',
+                                background: 'transparent',
+                                fontSize: '64px',
+                                padding: '10px'
+                            }}
+                        />
+                    )}
+                </div>
+            </Html>
 
             <Text
-                renderOrder={1} // Ensure text renders on top of paper
+                renderOrder={1}
                 ref={textRef}
                 position={position}
                 rotation={baseRotation}
                 fontSize={fontSize}
-                color={hovered ? '#111111' : '#333333'} // Snap color, smooth motion
+                color={hovered ? '#111111' : '#333333'}
                 font={fontPath}
                 anchorX={anchorX}
                 anchorY={anchorY}
@@ -87,25 +134,19 @@ const InteractiveTextField = ({
 };
 
 // Helper: Smooth Animated Button
-// Helper: Smooth Animated Button
 const SmoothButton = ({ texture, onClick, position, size, text, fontPath }) => {
     const groupRef = useRef();
     const [hovered, setHovered] = useState(false);
     useCursor(hovered);
 
-    // Animation targets - match InteractiveTextField style
     const targetY = hovered ? position[1] + 0.007 : position[1];
     const targetRotZ = hovered ? 0.015 : 0;
 
     useFrame((state, delta) => {
         const t = delta * 12;
         if (groupRef.current) {
-            // Lerp Y Position
             groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, t);
-            // Lerp Z Rotation (tilt)
             groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, targetRotZ, t);
-            // Reset scale in case it was modified previously
-            groupRef.current.scale.set(1, 1, 1);
         }
     });
 
@@ -152,10 +193,7 @@ const FORMSPREE_URL = 'https://formspree.io/f/mojrjnwd';
 const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
     const groupRef = useRef();
     const paperRef = useRef();
-    const backPaperRef = useRef(); // Back side of paper (white)
-    const hiddenInputRef = useRef();
-    const emailInputRef = useRef();
-    const subjectInputRef = useRef();
+    const backPaperRef = useRef();
 
     // Form State
     const [message, setMessage] = useState('');
@@ -167,7 +205,7 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
     // Validation & Submit State
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error'
+    const [submitStatus, setSubmitStatus] = useState(null);
 
     // Email validation helper
     const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -187,7 +225,6 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
     const paperTexture = useTexture('/textures/contact/paper_form.webp');
     const buttonTexture = useTexture('/textures/contact/send_button.webp');
 
-    // Configure textures
     useEffect(() => {
         if (paperTexture) paperTexture.colorSpace = THREE.SRGBColorSpace;
         if (buttonTexture) buttonTexture.colorSpace = THREE.SRGBColorSpace;
@@ -203,34 +240,10 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
         return () => clearInterval(interval);
     }, [activeField]);
 
-    // General paper click handler (background click)
-    const handlePaperClick = useCallback((e) => {
-        e.stopPropagation();
-        if (!e.uv) return;
-        const uvY = e.uv.y;
-
-        // Fallback selection logic based on UV if hitboxes are missed
-        if (uvY > 0.82) {
-            setActiveField('email');
-            setTimeout(() => emailInputRef.current?.focus(), 10);
-        } else if (uvY > 0.68) {
-            setActiveField('subject');
-            setTimeout(() => subjectInputRef.current?.focus(), 10);
-        } else if (uvY > 0.18) {
-            setActiveField('message');
-            setTimeout(() => hiddenInputRef.current?.focus(), 10);
-        }
-    }, []);
-
-    // Handle send button click - Submit to Web3Forms
+    // Handle send button click
     const handleButtonClick = useCallback(async () => {
-        // Reset previous status
         setSubmitStatus(null);
-
-        if (!validateForm()) {
-            return;
-        }
-
+        if (!validateForm()) return;
         setIsSubmitting(true);
         setErrors({});
 
@@ -241,19 +254,12 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify({
-                    email: email,
-                    subject: subject,
-                    message: message
-                })
+                body: JSON.stringify({ email, subject, message })
             });
 
             if (response.ok) {
                 setSubmitStatus('success');
                 onSend?.({ message, email, subject });
-                // console.log('✅ Message sent successfully!');
-
-                // Clear form after success
                 setMessage('');
                 setEmail('');
                 setSubject('');
@@ -262,36 +268,13 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                 throw new Error(result.error || 'Failed to send');
             }
         } catch (error) {
-            // console.error('❌ Send failed:', error);
             setSubmitStatus('error');
         } finally {
             setIsSubmitting(false);
         }
-    }, [message, email, subject, onSend, validateForm]);
+    }, [message, email, subject, onSend]);
 
-    // Input handlers
-    const handleMessageInput = useCallback((e) => {
-        if (e.target.value.length <= 300) setMessage(e.target.value);
-    }, []);
-    const handleEmailInput = useCallback((e) => {
-        if (e.target.value.length <= 50) setEmail(e.target.value);
-    }, []);
-    const handleSubjectInput = useCallback((e) => {
-        if (e.target.value.length <= 50) setSubject(e.target.value);
-    }, []);
-
-    const handleBlur = useCallback(() => {
-        setTimeout(() => {
-            const active = document.activeElement;
-            if (active !== hiddenInputRef.current &&
-                active !== emailInputRef.current &&
-                active !== subjectInputRef.current) {
-                setActiveField(null);
-            }
-        }, 100);
-    }, []);
-
-    // Format message (word wrap)
+    // Word wrap message for 3D text display
     const formattedMessage = useMemo(() => {
         const maxCharsPerLine = 28;
         const maxLines = 10;
@@ -299,25 +282,8 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
         const words = message.split(' ');
         let currentLine = '';
 
-        const breakLongWord = (word) => {
-            const chunks = [];
-            while (word.length > maxCharsPerLine) {
-                chunks.push(word.slice(0, maxCharsPerLine));
-                word = word.slice(maxCharsPerLine);
-            }
-            if (word) chunks.push(word);
-            return chunks;
-        };
-
         words.forEach(word => {
-            if (word.length > maxCharsPerLine) {
-                if (currentLine) { lines.push(currentLine); currentLine = ''; }
-                const brokenWord = breakLongWord(word);
-                brokenWord.forEach((chunk, i) => {
-                    if (i < brokenWord.length - 1) lines.push(chunk);
-                    else currentLine = chunk;
-                });
-            } else if ((currentLine + ' ' + word).trim().length <= maxCharsPerLine) {
+            if ((currentLine + ' ' + word).trim().length <= maxCharsPerLine) {
                 currentLine = (currentLine + ' ' + word).trim();
             } else {
                 if (currentLine) lines.push(currentLine);
@@ -328,27 +294,19 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
         return lines.slice(0, maxLines).join('\n');
     }, [message]);
 
-    // Store original vertex positions for fold animation
     // Paper animation (flutter)
     useFrame((state, delta) => {
         if (!paperRef.current) return;
         const time = state.clock.getElapsedTime();
-        // Flutter animation
         paperRef.current.rotation.z = Math.sin(time * 0.5) * 0.005;
     });
 
     if (submitStatus === 'success') {
         return (
             <group ref={groupRef} position={position}>
-                {/* Paper Mesh for success message */}
                 <mesh rotation={[-Math.PI / 2, 0, 0]}>
                     <planeGeometry args={[PAPER_WIDTH, PAPER_HEIGHT]} />
-                    <meshBasicMaterial 
-                        color="#f5f5f0" 
-                        map={paperTexture}
-                        transparent
-                        alphaTest={0.5}
-                    />
+                    <meshBasicMaterial color="#f5f5f0" map={paperTexture} transparent alphaTest={0.5} />
                 </mesh>
                 <Text
                     position={[0, 0.02, 0]}
@@ -367,179 +325,117 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
 
     return (
         <group ref={groupRef} position={position}>
-            {/* Hidden HTML inputs - Optimized for mobile keyboard */}
-            <Html position={[0, 0, 0]} style={{ 
-                position: 'fixed', 
-                top: '0', 
-                left: '0', 
-                width: '1px', 
-                height: '1px', 
-                overflow: 'hidden',
-                opacity: 0,
-                zIndex: -1 // Behind the canvas but still focusable
-            }}>
-                <textarea 
-                    ref={hiddenInputRef} 
-                    value={message} 
-                    onChange={handleMessageInput} 
-                    onBlur={handleBlur} 
-                    aria-label="Message" 
-                    style={{ fontSize: '16px' }} 
-                />
-                <input 
-                    ref={emailInputRef} 
-                    type="email" 
-                    value={email} 
-                    onChange={handleEmailInput} 
-                    onBlur={handleBlur} 
-                    aria-label="Email" 
-                    style={{ fontSize: '16px' }} 
-                />
-                <input 
-                    ref={subjectInputRef} 
-                    type="text" 
-                    value={subject} 
-                    onChange={handleSubjectInput} 
-                    onBlur={handleBlur} 
-                    aria-label="Subject" 
-                    style={{ fontSize: '16px' }} 
-                />
-            </Html>
-
-            {/* Main Paper Mesh - FRONT (with texture) */}
-            <mesh ref={paperRef} rotation={[-Math.PI / 2, 0, 0]} onClick={handlePaperClick}>
+            {/* Main Paper Mesh */}
+            <mesh ref={paperRef} rotation={[-Math.PI / 2, 0, 0]}>
                 <planeGeometry args={[PAPER_WIDTH, PAPER_HEIGHT, 20, 20]} />
-                <meshBasicMaterial color="#e0e0e0"
-                    map={paperTexture}
-                    transparent
-                    alphaTest={0.5}
-                    side={THREE.FrontSide}
-                    roughness={0.9}
-                />
+                <meshBasicMaterial color="#e0e0e0" map={paperTexture} transparent alphaTest={0.5} side={THREE.FrontSide} roughness={0.9} />
             </mesh>
 
-            {/* Paper BACK (white) */}
+            {/* Paper BACK */}
             <mesh ref={backPaperRef} rotation={[-Math.PI / 2, 0, 0]}>
                 <planeGeometry args={[PAPER_WIDTH, PAPER_HEIGHT, 20, 20]} />
-                <meshBasicMaterial
-                    color="#f5f5f0"
-                    side={THREE.BackSide}
-                    roughness={0.9}
-                />
+                <meshBasicMaterial color="#f5f5f0" side={THREE.BackSide} roughness={0.9} />
             </mesh>
 
-            {/* === INTERACTIVE FIELDS === */}
-            <>
-                <InteractiveTextField
-                    isActive={activeField === 'email'}
-                    value={email}
-                    placeholder="email..."
-                    cursor={cursorVisible ? '|' : ' '}
-                    onClick={() => { 
-                        setActiveField('email'); 
-                        // Direct focus for mobile
-                        emailInputRef.current?.focus();
-                        // Fallback for some mobile browsers
-                        setTimeout(() => emailInputRef.current?.focus(), 50);
-                    }}
-                    // Layout
-                    position={[-0.5, 0.008, -0.61]}
-                    baseRotation={[-Math.PI / 2, 0, 0.02]}
-                    hitboxPosition={[0, 0.005, -0.61]}
-                    hitboxSize={[PAPER_WIDTH * 0.85, 0.08]}
-                    // Style
-                    fontSize={0.05}
-                    maxWidth={PAPER_WIDTH * 0.8}
-                    fontPath={FONT_PATH}
-                />
+            {/* Email Field */}
+            <InteractiveTextField
+                isActive={activeField === 'email'}
+                value={email}
+                placeholder="email..."
+                cursor={cursorVisible ? '|' : ' '}
+                type="email"
+                onChange={(e) => setEmail(e.target.value.slice(0, 50))}
+                onFocus={() => setActiveField('email')}
+                onBlur={() => setActiveField(null)}
+                position={[-0.5, 0.008, -0.61]}
+                baseRotation={[-Math.PI / 2, 0, 0.02]}
+                hitboxPosition={[0, 0.005, -0.61]}
+                hitboxSize={[PAPER_WIDTH * 0.85, 0.08]}
+                fontSize={0.05}
+                maxWidth={PAPER_WIDTH * 0.8}
+                fontPath={FONT_PATH}
+            />
 
-                {/* Subject Field */}
-                <InteractiveTextField
-                    isActive={activeField === 'subject'}
-                    value={subject}
-                    placeholder="subject..."
-                    cursor={cursorVisible ? '|' : ' '}
-                    onClick={() => { 
-                        setActiveField('subject'); 
-                        subjectInputRef.current?.focus();
-                        setTimeout(() => subjectInputRef.current?.focus(), 50);
-                    }}
-                    // Layout
-                    position={[-0.5, 0.008, -0.46]}
-                    baseRotation={[-Math.PI / 2, 0, 0.02]}
-                    hitboxPosition={[0, 0.005, -0.46]}
-                    hitboxSize={[PAPER_WIDTH * 0.85, 0.08]}
-                    // Style
-                    fontSize={0.05}
-                    maxWidth={PAPER_WIDTH * 0.8}
-                    fontPath={FONT_PATH}
-                />
+            {/* Subject Field */}
+            <InteractiveTextField
+                isActive={activeField === 'subject'}
+                value={subject}
+                placeholder="subject..."
+                cursor={cursorVisible ? '|' : ' '}
+                type="text"
+                onChange={(e) => setSubject(e.target.value.slice(0, 50))}
+                onFocus={() => setActiveField('subject')}
+                onBlur={() => setActiveField(null)}
+                position={[-0.5, 0.008, -0.46]}
+                baseRotation={[-Math.PI / 2, 0, 0.02]}
+                hitboxPosition={[0, 0.005, -0.46]}
+                hitboxSize={[PAPER_WIDTH * 0.85, 0.08]}
+                fontSize={0.05}
+                maxWidth={PAPER_WIDTH * 0.8}
+                fontPath={FONT_PATH}
+            />
 
-                {/* Message Field */}
-                <InteractiveTextField
-                    isActive={activeField === 'message'}
-                    value={formattedMessage}
-                    placeholder="message..."
-                    cursor={cursorVisible ? '|' : ' '}
-                    onClick={() => { 
-                        setActiveField('message'); 
-                        hiddenInputRef.current?.focus();
-                        setTimeout(() => hiddenInputRef.current?.focus(), 50);
-                    }}
-                    // Layout
-                    position={[-0.46, 0.008, -0.3]}
-                    baseRotation={[-Math.PI / 2, 0, 0.02]}
-                    hitboxPosition={[0, 0.005, 0.1]}
-                    hitboxSize={[PAPER_WIDTH * 0.85, 0.55]}
-                    // Style
-                    fontSize={0.045}
-                    maxWidth={PAPER_WIDTH * 0.75}
-                    fontPath={FONT_PATH}
-                    anchorY="top"
-                    textAlign="left"
-                    lineHeight={1.35}
-                />
+            {/* Message Field */}
+            <InteractiveTextField
+                isActive={activeField === 'message'}
+                value={formattedMessage}
+                placeholder="message..."
+                cursor={cursorVisible ? '|' : ' '}
+                type="textarea"
+                onChange={(e) => setMessage(e.target.value.slice(0, 300))}
+                onFocus={() => setActiveField('message')}
+                onBlur={() => setActiveField(null)}
+                position={[-0.46, 0.008, -0.3]}
+                baseRotation={[-Math.PI / 2, 0, 0.02]}
+                hitboxPosition={[0, 0.005, 0.1]}
+                hitboxSize={[PAPER_WIDTH * 0.85, 0.55]}
+                fontSize={0.045}
+                maxWidth={PAPER_WIDTH * 0.75}
+                fontPath={FONT_PATH}
+                anchorY="top"
+                textAlign="left"
+                lineHeight={1.35}
+            />
 
-                {/* === SEND BUTTON === */}
-                <SmoothButton
-                    texture={buttonTexture}
-                    onClick={handleButtonClick}
-                    position={[0, 0.005, 0.68]}
-                    size={[0.5, 0.13]}
-                    text={isSubmitting ? 'SENDING...' : 'SEND'}
-                    fontPath={FONT_PATH}
-                />
+            {/* SEND BUTTON */}
+            <SmoothButton
+                texture={buttonTexture}
+                onClick={handleButtonClick}
+                position={[0, 0.005, 0.68]}
+                size={[0.5, 0.13]}
+                text={isSubmitting ? 'SENDING...' : 'SEND'}
+                fontPath={FONT_PATH}
+            />
 
-                {/* === VALIDATION ERRORS === */}
-                {Object.keys(errors).length > 0 && (
-                    <Text
-                        position={[0, 0.01, 0.55]}
-                        rotation={[-Math.PI / 2, 0, 0]}
-                        fontSize={0.035}
-                        color="#cc3333"
-                        font={FONT_PATH}
-                        anchorX="center"
-                        anchorY="middle"
-                    >
-                        {errors.email || errors.subject || errors.message || 'Please fill all fields'}
-                    </Text>
-                )}
+            {/* VALIDATION ERRORS */}
+            {Object.keys(errors).length > 0 && (
+                <Text
+                    position={[0, 0.01, 0.55]}
+                    rotation={[-Math.PI / 2, 0, 0]}
+                    fontSize={0.035}
+                    color="#cc3333"
+                    font={FONT_PATH}
+                    anchorX="center"
+                    anchorY="middle"
+                >
+                    {errors.email || errors.subject || errors.message || 'Please fill all fields'}
+                </Text>
+            )}
 
-                {/* === ERROR MESSAGE === */}
-                {submitStatus === 'error' && (
-                    <Text
-                        position={[0, 0.02, 0.55]}
-                        rotation={[-Math.PI / 2, 0, 0]}
-                        fontSize={0.04}
-                        color="#cc3333"
-                        font={FONT_PATH}
-                        anchorX="center"
-                        anchorY="middle"
-                    >
-                        Failed to send. Try again.
-                    </Text>
-                )}
-            </>
+            {/* ERROR MESSAGE */}
+            {submitStatus === 'error' && (
+                <Text
+                    position={[0, 0.02, 0.55]}
+                    rotation={[-Math.PI / 2, 0, 0]}
+                    fontSize={0.04}
+                    color="#cc3333"
+                    font={FONT_PATH}
+                    anchorX="center"
+                    anchorY="middle"
+                >
+                    Failed to send. Try again.
+                </Text>
+            )}
         </group>
     );
 };
