@@ -332,22 +332,78 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
     // Paper animation (flutter)
     useFrame((state, delta) => {
         if (!paperRef.current) return;
-
         const time = state.clock.getElapsedTime();
-
         // Flutter animation
         paperRef.current.rotation.z = Math.sin(time * 0.5) * 0.005;
     });
 
-    if (submitStatus === 'success') return null;
+    if (submitStatus === 'success') {
+        return (
+            <group ref={groupRef} position={position}>
+                {/* Paper Mesh for success message */}
+                <mesh rotation={[-Math.PI / 2, 0, 0]}>
+                    <planeGeometry args={[PAPER_WIDTH, PAPER_HEIGHT]} />
+                    <meshBasicMaterial 
+                        color="#f5f5f0" 
+                        map={paperTexture}
+                        transparent
+                        alphaTest={0.5}
+                    />
+                </mesh>
+                <Text
+                    position={[0, 0.02, 0]}
+                    rotation={[-Math.PI / 2, 0, 0]}
+                    fontSize={0.08}
+                    color="#22aa44"
+                    font={FONT_PATH}
+                    anchorX="center"
+                    anchorY="middle"
+                >
+                    SUCCESSFULLY SENT! ✓
+                </Text>
+            </group>
+        );
+    }
 
     return (
         <group ref={groupRef} position={position}>
-            {/* Hidden HTML inputs */}
-            <Html position={[0, 0, 0]} style={{ position: 'fixed', left: '-9999px', top: '-9999px', opacity: 0, pointerEvents: 'none' }}>
-                <textarea ref={hiddenInputRef} value={message} onChange={handleMessageInput} onBlur={handleBlur} aria-label="Message" style={{ pointerEvents: 'auto' }} />
-                <input ref={emailInputRef} type="email" value={email} onChange={handleEmailInput} onBlur={handleBlur} aria-label="Email" style={{ pointerEvents: 'auto' }} />
-                <input ref={subjectInputRef} type="text" value={subject} onChange={handleSubjectInput} onBlur={handleBlur} aria-label="Subject" style={{ pointerEvents: 'auto' }} />
+            {/* Hidden HTML inputs - Optimized for mobile keyboard */}
+            <Html position={[0, 0, 0]} style={{ 
+                position: 'fixed', 
+                top: '0', 
+                left: '0', 
+                width: '1px', 
+                height: '1px', 
+                overflow: 'hidden',
+                opacity: 0,
+                zIndex: -1 // Behind the canvas but still focusable
+            }}>
+                <textarea 
+                    ref={hiddenInputRef} 
+                    value={message} 
+                    onChange={handleMessageInput} 
+                    onBlur={handleBlur} 
+                    aria-label="Message" 
+                    style={{ fontSize: '16px' }} 
+                />
+                <input 
+                    ref={emailInputRef} 
+                    type="email" 
+                    value={email} 
+                    onChange={handleEmailInput} 
+                    onBlur={handleBlur} 
+                    aria-label="Email" 
+                    style={{ fontSize: '16px' }} 
+                />
+                <input 
+                    ref={subjectInputRef} 
+                    type="text" 
+                    value={subject} 
+                    onChange={handleSubjectInput} 
+                    onBlur={handleBlur} 
+                    aria-label="Subject" 
+                    style={{ fontSize: '16px' }} 
+                />
             </Html>
 
             {/* Main Paper Mesh - FRONT (with texture) */}
@@ -379,7 +435,13 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                     value={email}
                     placeholder="email..."
                     cursor={cursorVisible ? '|' : ' '}
-                    onClick={() => { setActiveField('email'); setTimeout(() => emailInputRef.current?.focus(), 10); }}
+                    onClick={() => { 
+                        setActiveField('email'); 
+                        // Direct focus for mobile
+                        emailInputRef.current?.focus();
+                        // Fallback for some mobile browsers
+                        setTimeout(() => emailInputRef.current?.focus(), 50);
+                    }}
                     // Layout
                     position={[-0.5, 0.008, -0.61]}
                     baseRotation={[-Math.PI / 2, 0, 0.02]}
@@ -397,7 +459,11 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                     value={subject}
                     placeholder="subject..."
                     cursor={cursorVisible ? '|' : ' '}
-                    onClick={() => { setActiveField('subject'); setTimeout(() => subjectInputRef.current?.focus(), 10); }}
+                    onClick={() => { 
+                        setActiveField('subject'); 
+                        subjectInputRef.current?.focus();
+                        setTimeout(() => subjectInputRef.current?.focus(), 50);
+                    }}
                     // Layout
                     position={[-0.5, 0.008, -0.46]}
                     baseRotation={[-Math.PI / 2, 0, 0.02]}
@@ -415,7 +481,11 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                     value={formattedMessage}
                     placeholder="message..."
                     cursor={cursorVisible ? '|' : ' '}
-                    onClick={() => { setActiveField('message'); setTimeout(() => hiddenInputRef.current?.focus(), 10); }}
+                    onClick={() => { 
+                        setActiveField('message'); 
+                        hiddenInputRef.current?.focus();
+                        setTimeout(() => hiddenInputRef.current?.focus(), 50);
+                    }}
                     // Layout
                     position={[-0.46, 0.008, -0.3]}
                     baseRotation={[-Math.PI / 2, 0, 0.02]}
@@ -452,21 +522,6 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                         anchorY="middle"
                     >
                         {errors.email || errors.subject || errors.message || 'Please fill all fields'}
-                    </Text>
-                )}
-
-                {/* === SUCCESS MESSAGE === */}
-                {submitStatus === 'success' && (
-                    <Text
-                        position={[0, 0.02, 0.55]}
-                        rotation={[-Math.PI / 2, 0, 0]}
-                        fontSize={0.045}
-                        color="#22aa44"
-                        font={FONT_PATH}
-                        anchorX="center"
-                        anchorY="middle"
-                    >
-                        Message sent! ✓
                     </Text>
                 )}
 
