@@ -181,9 +181,9 @@ const CorridorWalls = ({ zStart = 10, length = 80, doorPositions = [], zClip = 1
                             {!isLowTier && (
                                 <pointLight 
                                     position={[0, ceilingY - 0.2, tileZ]} 
-                                    intensity={400} 
-                                    distance={20} 
-                                    decay={2} 
+                                    intensity={isMediumTier ? 5 : 8} 
+                                    distance={isMediumTier ? 10 : 12} 
+                                    decay={2.5} 
                                     color="#fff5e6" 
                                 />
                             )}
@@ -199,7 +199,7 @@ const CorridorWalls = ({ zStart = 10, length = 80, doorPositions = [], zClip = 1
                 <group key={i} position={seg.position} rotation={[0, seg.rotationY || seg.rotation[1], 0]}>
                     <mesh>
                         <planeGeometry args={[seg.width, corridorHeight]} />
-                        <meshStandardMaterial color="#dcdcdc" roughness={0.4} metalness={0.4} />
+                        <meshStandardMaterial color="#dcdcdc" roughness={0.9} metalness={0.05} />
                     </mesh>
                     {/* Baseboard - Darker for realism */}
                     <mesh position={[0, -corridorHeight / 2 + 0.075, 0.01]}>

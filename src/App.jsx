@@ -111,8 +111,6 @@ const PaperSceneBackground = () => {
   return null;
 };
 
-import Effects from './components/canvas/Effects';
-
 function AppContent() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [sceneReady, setSceneReady] = useState(false);
@@ -155,8 +153,8 @@ function AppContent() {
               dpr={settings.dpr}
               shadows={settings.shadows}
             >
-              <color attach="background" args={['#050505']} />
-              <fog attach="fog" args={['#050505', 10, 60]} />
+              <color attach="background" args={['#fafafa']} />
+              <fog attach="fog" args={['#fafafa', 15, 50]} />
 
               {/* Scale performance down if fps drops */}
               <PerformanceMonitor
@@ -174,7 +172,6 @@ function AppContent() {
                   onSceneReady={handleSceneReady}
                   performanceTier={tier}
                 />
-                <Effects />
                 <Preload all />
               </Suspense>
             </Canvas>
