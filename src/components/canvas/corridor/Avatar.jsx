@@ -98,13 +98,13 @@ const Avatar = ({ position = [10, -20, 30] }) => {
         const tex = textures[0];
         if (tex) tex.colorSpace = THREE.SRGBColorSpace;
         realFaceTex.colorSpace = THREE.SRGBColorSpace;
-        
+
         if (tex && tex.image) {
             const aspectRatio = tex.image.width / tex.image.height;
             // Adjust height to 2.8 for a better presence in the corridor
             const newWidth = 2.8 * aspectRatio;
             const newHeight = 2.8;
-            
+
             // Only update state if values actually changed to avoid extra renders
             setDimensions(prev => {
                 if (prev.width === newWidth && prev.height === newHeight) return prev;
