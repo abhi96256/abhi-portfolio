@@ -350,7 +350,7 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                 position={[-0.5, 0.008, -0.61]}
                 baseRotation={[-Math.PI / 2, 0, 0.02]}
                 hitboxPosition={[0, 0.005, -0.61]}
-                hitboxSize={[PAPER_WIDTH * 0.85, 0.08]}
+                hitboxSize={[PAPER_WIDTH * 0.9, 0.14]} // Increased height for easier touch
                 fontSize={0.05}
                 maxWidth={PAPER_WIDTH * 0.8}
                 fontPath={FONT_PATH}
@@ -369,7 +369,7 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                 position={[-0.5, 0.008, -0.46]}
                 baseRotation={[-Math.PI / 2, 0, 0.02]}
                 hitboxPosition={[0, 0.005, -0.46]}
-                hitboxSize={[PAPER_WIDTH * 0.85, 0.08]}
+                hitboxSize={[PAPER_WIDTH * 0.9, 0.14]} // Increased height for easier touch
                 fontSize={0.05}
                 maxWidth={PAPER_WIDTH * 0.8}
                 fontPath={FONT_PATH}
@@ -387,8 +387,8 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                 onBlur={() => setActiveField(null)}
                 position={[-0.46, 0.008, -0.3]}
                 baseRotation={[-Math.PI / 2, 0, 0.02]}
-                hitboxPosition={[0, 0.005, 0.1]}
-                hitboxSize={[PAPER_WIDTH * 0.85, 0.55]}
+                hitboxPosition={[0, 0.005, 0.12]} // Adjusted position slightly
+                hitboxSize={[PAPER_WIDTH * 0.9, 0.65]} // Increased hitbox size
                 fontSize={0.045}
                 maxWidth={PAPER_WIDTH * 0.75}
                 fontPath={FONT_PATH}
