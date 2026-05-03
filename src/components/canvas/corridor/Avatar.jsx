@@ -18,9 +18,24 @@ const MagnifyMaterial = shaderMaterial(
     },
     `
     varying vec2 vUv;
+    uniform float uTime;
     void main() {
       vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      vec3 pos = position;
+      
+      // NATURAL ARC WAVE (Side-to-Side):
+      // Strength is concentrated at the very tip of the hand
+      float handMask = smoothstep(0.6, 1.0, uv.x) * smoothstep(0.3, 0.9, uv.y);
+      
+      // Horizontal wave (Right-Left)
+      float waveX = sin(uTime * 10.0) * 0.25 * handMask;
+      // Vertical arc (Down-Up) - pulling down slightly at the ends of the swing
+      float waveY = -abs(waveX) * 0.4; 
+      
+      pos.x += waveX;
+      pos.y += waveY;
+      
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
     }
     `,
     `
@@ -64,9 +79,8 @@ const Avatar = ({ position = [10, -20, 30] }) => {
     const targetDodgeX = useRef(0);
     const worldPosVec = useRef(new THREE.Vector3());
 
-    const TOTAL_FRAMES = 9;
-    const framePaths = Array.from({ length: TOTAL_FRAMES }, (_, i) => `/textures/corridor/avatar_anim/${i + 1}.webp`);
-    const textures = useTexture(framePaths);
+    const TOTAL_FRAMES = 1;
+    const textures = [useTexture('/favico.png')];
 
     const currentFrame = useRef(0);
     const isReversing = useRef(false);
@@ -78,14 +92,15 @@ const Avatar = ({ position = [10, -20, 30] }) => {
     const isOverFace = useRef(false);
     const currentRadius = useRef(0);
 
-    const realFaceTex = useTexture('/pic.jpeg');
+    const realFaceTex = useTexture('/favico.png');
     
     useEffect(() => {
         textures.forEach(tex => tex.colorSpace = THREE.SRGBColorSpace);
         realFaceTex.colorSpace = THREE.SRGBColorSpace;
         if (textures[0] && textures[0].image) {
             const aspectRatio = textures[0].image.width / textures[0].image.height;
-            setDimensions({ width: 2.3 * aspectRatio, height: 2.3 });
+            // Adjust height to 2.8 for a better presence in the corridor
+            setDimensions({ width: 2.8 * aspectRatio, height: 2.8 });
         }
     }, [textures, realFaceTex]);
 
@@ -111,16 +126,15 @@ const Avatar = ({ position = [10, -20, 30] }) => {
             groupRef.current.position.x = position[0];
         }
 
-        const frameDuration = isLowTier ? 1 / 12 : 1 / 20; // Slower animation on low tier
-        frameTimer.current += delta;
-        if (frameTimer.current >= frameDuration) {
-            frameTimer.current = 0;
-            if (currentFrame.current >= TOTAL_FRAMES - 1) isReversing.current = true;
-            else if (currentFrame.current <= 0) isReversing.current = false;
-            currentFrame.current += isReversing.current ? -1 : 1;
-            const safeIndex = Math.max(0, Math.min(TOTAL_FRAMES - 1, currentFrame.current));
-            if (materialRef.current) materialRef.current.uSketch = textures[safeIndex];
+        // Body kept static so only the hand waves via the shader
+        if (groupRef.current) {
+            groupRef.current.position.x = position[0] + (dodgeX.current || 0);
+            groupRef.current.position.y = position[1] - dimensions.height / 2;
+            groupRef.current.rotation.z = 0;
+            groupRef.current.rotation.y = 0;
         }
+
+        // Animation loop removed for single static image
 
         const raycaster = state.raycaster;
         const intersects = raycaster.intersectObject(meshRef.current);
@@ -131,21 +145,28 @@ const Avatar = ({ position = [10, -20, 30] }) => {
             isOverFace.current = false;
         }
 
-        const targetRadius = isOverFace.current ? 0.35 : 0.0;
+        const targetRadius = isOverFace.current ? 0.22 : 0.0;
         const targetVisible = isOverFace.current ? 1.0 : 0.0;
-        currentRadius.current = THREE.MathUtils.lerp(currentRadius.current, targetRadius, 0.1);
+        
+        // Much smoother lerping (0.05 instead of 0.1)
+        currentRadius.current = THREE.MathUtils.lerp(currentRadius.current, targetRadius, 0.06);
         
         if (materialRef.current) {
+            materialRef.current.uTime = state.clock.elapsedTime;
+            materialRef.current.uSketch = textures[0]; // Always use the new face
             materialRef.current.uCenter = mouseUv.current;
             materialRef.current.uRadius = currentRadius.current;
-            materialRef.current.uVisible = THREE.MathUtils.lerp(materialRef.current.uVisible, targetVisible, 0.1);
+            materialRef.current.uVisible = THREE.MathUtils.lerp(materialRef.current.uVisible, targetVisible, 0.06);
+            // Dynamic edge softness based on radius
+            materialRef.current.uEdgeSoftness = 0.02 + (currentRadius.current * 0.1);
         }
 
         if (lensRef.current && isOverFace.current) {
             lensRef.current.visible = true;
             lensRef.current.position.copy(intersects[0].point);
             lensRef.current.position.z += 0.02;
-            const pulse = 1.0 + Math.sin(state.clock.elapsedTime * 4) * 0.02;
+            // Subtle premium pulse
+            const pulse = 1.0 + Math.sin(state.clock.elapsedTime * 3) * 0.015;
             lensRef.current.scale.setScalar(pulse);
         } else if (lensRef.current) {
             lensRef.current.visible = false;
@@ -153,9 +174,10 @@ const Avatar = ({ position = [10, -20, 30] }) => {
     });
 
     return (
-        <group ref={groupRef} position={position}>
-            <mesh ref={meshRef}>
-                <planeGeometry args={[dimensions.width, dimensions.height]} />
+        <group ref={groupRef} position={[position[0], position[1] - dimensions.height / 2, position[2]]}>
+            <mesh ref={meshRef} position={[0, dimensions.height / 2, 0]}>
+                {/* High resolution geometry for smooth bending/waving */}
+                <planeGeometry args={[dimensions.width, dimensions.height, 32, 32]} />
                 <magnifyMaterial 
                     ref={materialRef}
                     uSketch={textures[0]}
@@ -166,8 +188,9 @@ const Avatar = ({ position = [10, -20, 30] }) => {
                 />
             </mesh>
             <group ref={lensRef} visible={false}>
-                <mesh><ringGeometry args={[0.65, 0.7, 64]} /><meshBasicMaterial color="#333" transparent opacity={0.8} /></mesh>
-                <mesh><circleGeometry args={[0.65, 64]} /><meshBasicMaterial color="#4A90E2" transparent opacity={0.1} /></mesh>
+                {/* Smaller, more elegant lens ring */}
+                <mesh><ringGeometry args={[0.42, 0.45, 64]} /><meshBasicMaterial color="#333" transparent opacity={0.6} /></mesh>
+                <mesh><circleGeometry args={[0.42, 64]} /><meshBasicMaterial color="#4A90E2" transparent opacity={0.08} /></mesh>
             </group>
         </group>
     );
