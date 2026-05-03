@@ -1,5 +1,4 @@
 import React from 'react';
-import { useAchievements, ACHIEVEMENTS } from '../../context/AchievementsContext';
 import '../../styles/AchievementsPanel.scss';
 
 const ExperienceIcon = () => (
@@ -35,19 +34,11 @@ const AchievementIcon = () => (
 );
 
 const AchievementsPanel = ({ isOpen, onClose }) => {
-    const { completed } = useAchievements();
-
     const stats = [
         { id: 'exp', title: '2+', label: 'Years Experience', icon: <ExperienceIcon /> },
         { id: 'projects', title: '20+', label: 'Projects Completed', icon: <ProjectsIcon /> },
         { id: 'tools', title: '15+', label: 'Tools Mastered', icon: <ToolsIcon /> }
     ];
-
-    // Get real achievements from context
-    const achievementItems = Object.values(ACHIEVEMENTS).map(ach => ({
-        ...ach,
-        isUnlocked: completed.includes(ach.id)
-    }));
 
     return (
         <div className={`achievements-panel ${isOpen ? 'open' : ''}`} inert={!isOpen ? true : undefined}>
@@ -77,26 +68,6 @@ const AchievementsPanel = ({ isOpen, onClose }) => {
                             </div>
                         </div>
                     ))}
-                </div>
-
-                <div className="achievements-section">
-                    <div className="section-divider">
-                        <span>ACHIEVEMENTS</span>
-                    </div>
-                    <div className="achievements-list">
-                        {achievementItems.map((item) => (
-                            <div key={item.id} className={`achievement-item ${!item.isUnlocked ? 'locked' : ''}`}>
-                                <div className="achievement-icon">
-                                    <AchievementIcon />
-                                </div>
-                                <div className="achievement-text">
-                                    <div className="achievement-title">{item.title}</div>
-                                    <div className="achievement-label">{item.isUnlocked ? item.label : '???'}</div>
-                                </div>
-                                {item.isUnlocked && <div className="unlock-check">✓</div>}
-                            </div>
-                        ))}
-                    </div>
                 </div>
 
                 <div className="achievements-footer stats-footer">
