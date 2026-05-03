@@ -37,6 +37,7 @@ const InteractiveTextField = ({
     onBlur
 }) => {
     const textRef = useRef();
+    const inputRef = useRef();
     const [hovered, setHovered] = useState(false);
     useCursor(hovered);
 
@@ -56,23 +57,37 @@ const InteractiveTextField = ({
         <group
             onPointerOver={() => setHovered(true)}
             onPointerOut={() => setHovered(false)}
+            onClick={(e) => {
+                e.stopPropagation();
+                if (inputRef.current) inputRef.current.focus();
+            }}
         >
+            {/* Invisible solid hitbox to ensure the whole field area is clickable */}
+            <mesh 
+                position={[hitboxPosition[0] - position[0], 0, hitboxPosition[2] - position[2]]} 
+                rotation={[-Math.PI / 2, 0, 0]}
+            >
+                <planeGeometry args={hitboxSize} />
+                <meshBasicMaterial transparent opacity={0} />
+            </mesh>
+
             {/* Native DOM Input Overlay for Keyboard Trigger */}
             <Html
                 transform
-                position={[hitboxPosition[0], hitboxPosition[1] + 0.01, hitboxPosition[2]]}
+                position={[hitboxPosition[0], hitboxPosition[1] + 0.02, hitboxPosition[2]]}
                 rotation={[-Math.PI / 2, 0, 0]}
-                scale={0.1}
-                zIndexRange={[0, 0]}
+                scale={0.01}
             >
                 <div style={{
-                    width: hitboxSize[0] * 1000 + 'px',
-                    height: hitboxSize[1] * 1000 + 'px',
+                    width: (hitboxSize[0] * 100) + 'px',
+                    height: (hitboxSize[1] * 100) + 'px',
                     position: 'relative',
                     pointerEvents: 'auto'
                 }}>
                     {type === 'textarea' ? (
                         <textarea
+                            ref={inputRef}
+                            name="message"
                             value={value}
                             onChange={onChange}
                             onFocus={onFocus}
@@ -92,6 +107,8 @@ const InteractiveTextField = ({
                         />
                     ) : (
                         <input
+                            ref={inputRef}
+                            name={placeholder.replace('...', '')}
                             type={type}
                             value={value}
                             onChange={onChange}
@@ -387,7 +404,7 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                 onBlur={() => setActiveField(null)}
                 position={[-0.46, 0.008, -0.3]}
                 baseRotation={[-Math.PI / 2, 0, 0.02]}
-                hitboxPosition={[0, 0.005, 0.1]}
+                hitboxPosition={[0, 0.005, -0.025]}
                 hitboxSize={[PAPER_WIDTH * 0.85, 0.55]}
                 fontSize={0.045}
                 maxWidth={PAPER_WIDTH * 0.75}
