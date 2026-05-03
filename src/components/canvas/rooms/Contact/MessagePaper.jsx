@@ -197,7 +197,7 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
             {/* Single HTML Overlay Layer */}
             <Html
                 transform
-                position={[0, 0.018, 0]} // Slightly higher to ensure it's on top
+                position={[0, 0.02, 0]} // Sufficiently above paper
                 rotation={[-Math.PI / 2, 0, 0]}
                 scale={0.1}
             >
@@ -205,65 +205,62 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                     width: PAPER_WIDTH * 1000 + 'px',
                     height: PAPER_HEIGHT * 1000 + 'px',
                     position: 'relative',
-                    pointerEvents: 'none' // The wrapper itself doesn't block clicks
+                    pointerEvents: 'none'
                 }}>
-                    {/* Email Input Overlay */}
+                    {/* Email Input Overlay - Perfectly aligned with lines */}
                     <input 
                         type="email"
                         autoComplete="off"
                         spellCheck="false"
                         style={{
                             position: 'absolute',
-                            top: '8%',
+                            top: '10%', // Centered on -0.61
                             left: '5%',
                             width: '90%',
-                            height: '11%',
+                            height: '10%',
                             opacity: 0,
-                            pointerEvents: 'auto', // This input DOES catch clicks
-                            fontSize: '60px',
-                            cursor: 'text'
+                            pointerEvents: 'auto',
+                            fontSize: '60px'
                         }}
                         value={email}
                         onChange={(e) => setEmail(e.target.value.slice(0, 50))}
                         onFocus={() => setActiveField('email')}
                         onBlur={() => setActiveField(null)}
                     />
-                    {/* Subject Input Overlay */}
+                    {/* Subject Input Overlay - Perfectly aligned with lines */}
                     <input 
                         type="text"
                         autoComplete="off"
                         spellCheck="false"
                         style={{
                             position: 'absolute',
-                            top: '19%',
+                            top: '19%', // Centered on -0.46
                             left: '5%',
                             width: '90%',
-                            height: '11%',
+                            height: '10%',
                             opacity: 0,
                             pointerEvents: 'auto',
-                            fontSize: '60px',
-                            cursor: 'text'
+                            fontSize: '60px'
                         }}
                         value={subject}
                         onChange={(e) => setSubject(e.target.value.slice(0, 50))}
                         onFocus={() => setActiveField('subject')}
                         onBlur={() => setActiveField(null)}
                     />
-                    {/* Message Input Overlay */}
+                    {/* Message Input Overlay - Perfectly aligned with lines */}
                     <textarea 
                         autoComplete="off"
                         spellCheck="false"
                         style={{
                             position: 'absolute',
-                            top: '32%',
+                            top: '32%', // Matches the big box
                             left: '5%',
                             width: '90%',
                             height: '42%',
                             opacity: 0,
                             pointerEvents: 'auto',
                             fontSize: '60px',
-                            resize: 'none',
-                            cursor: 'text'
+                            resize: 'none'
                         }}
                         value={message}
                         onChange={(e) => setMessage(e.target.value.slice(0, 300))}
@@ -288,6 +285,7 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                 fontSize={0.05}
                 maxWidth={PAPER_WIDTH * 0.8}
                 fontPath={FONT_PATH}
+                pointerEvents="none" // Ensure visual text doesn't block HTML
             />
 
             <VisualTextField
@@ -300,6 +298,7 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                 fontSize={0.05}
                 maxWidth={PAPER_WIDTH * 0.8}
                 fontPath={FONT_PATH}
+                pointerEvents="none"
             />
 
             <VisualTextField
@@ -315,6 +314,7 @@ const MessagePaper = ({ position = [0, 0.05, 2], onSend }) => {
                 anchorY="top"
                 textAlign="left"
                 lineHeight={1.35}
+                pointerEvents="none"
             />
 
             <SmoothButton texture={buttonTexture} onClick={handleButtonClick} position={[0, 0.005, 0.68]} size={[0.5, 0.13]} text={isSubmitting ? 'SENDING...' : 'SEND'} fontPath={FONT_PATH} />
