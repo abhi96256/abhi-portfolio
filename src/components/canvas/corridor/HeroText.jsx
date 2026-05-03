@@ -197,3 +197,4 @@ const SmallStar = ({ position, scale = 0.1 }) => {
 };
 
 export default HeroText;
+
