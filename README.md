@@ -115,9 +115,9 @@ npm run build
 
 I specialize in creating high-end digital experiences that bridge the gap between design and technology. With 2+ years of experience and 30+ projects delivered globally, I focus on performance, aesthetics, and user delight.
 
-- 🌐 [Portfolio](https://abhi-portfolio.vercel.app/)
+- 🌐 [Portfolio](https://abhi-portfolio-indol.vercel.app/)
 - 🐙 [GitHub](https://github.com/abhi96256)
-- 💼 [LinkedIn](https://www.linkedin.com/in/abhishek-kumar-442475253/)
+- 💼 [LinkedIn](https://www.linkedin.com/in/abhishek-kumar-326939291/)
 
 ---
 
