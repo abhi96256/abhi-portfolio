@@ -521,6 +521,7 @@ const GalleryRoom = ({ showRoom, onReady, isExiting, isWarmup }) => {
     const cityTexture = useTexture('/textures/gallery/miastotlo.webp');
     const birdTexture = useTexture('/textures/gallery/bird_gray.webp');
     const clothespinTexture = useTexture('/textures/gallery/klamerka.webp');
+    const cloudTextureForLabel = useTexture('/textures/clouds/254b8ec8-d6f7-4275-956f-7bab65b2ce2d.webp');
 
     useEffect(() => {
         if (floorTexture) {
@@ -683,58 +684,8 @@ const GalleryRoom = ({ showRoom, onReady, isExiting, isWarmup }) => {
                     ))}
                 </group>
 
-                {/* === 30+ PROJECTS BADGE === */}
-                <group position={[0, 3.6, -5.5]}>
-                    {/* Outer glow border */}
-                    <mesh position={[0, 0, -0.005]}>
-                        <planeGeometry args={[3.6, 1.05]} />
-                        <meshBasicMaterial color="#555555" transparent opacity={0.5} side={THREE.DoubleSide} />
-                    </mesh>
-                    {/* Dark background panel */}
-                    <mesh>
-                        <planeGeometry args={[3.45, 0.92]} />
-                        <meshBasicMaterial color="#1a1a1a" transparent opacity={0.88} side={THREE.DoubleSide} />
-                    </mesh>
-                    {/* Big "30+" number */}
-                    <Text
-                        position={[-0.72, 0.0, 0.01]}
-                        fontSize={0.52}
-                        color="#ffffff"
-                        anchorX="center"
-                        anchorY="middle"
-                        fontWeight={700}
-                        outlineWidth={0.015}
-                        outlineColor="#888888"
-                    >
-                        30+
-                    </Text>
-                    {/* Divider line */}
-                    <mesh position={[-0.08, 0, 0.01]}>
-                        <planeGeometry args={[0.02, 0.65]} />
-                        <meshBasicMaterial color="#555555" transparent opacity={0.9} />
-                    </mesh>
-                    {/* Label text block (right of divider) */}
-                    <Text
-                        position={[0.72, 0.15, 0.01]}
-                        fontSize={0.22}
-                        color="#dddddd"
-                        anchorX="center"
-                        anchorY="middle"
-                        letterSpacing={0.04}
-                    >
-                        PROJECTS
-                    </Text>
-                    <Text
-                        position={[0.72, -0.17, 0.01]}
-                        fontSize={0.14}
-                        color="#888888"
-                        anchorX="center"
-                        anchorY="middle"
-                        letterSpacing={0.06}
-                    >
-                        DELIVERED GLOBALLY
-                    </Text>
-                </group>
+                {/* === LABEL CLOUD: 30+ Projects Done === */}
+                <LabelCloud texture={cloudTextureForLabel} />
 
                 {/* === SCENERY LAYERS === */}
                 {/* Houses - center */}
@@ -1599,4 +1550,37 @@ const TechStackLogo = ({ path, position }) => {
     );
 };
 
+// Label Cloud Component
+const LabelCloud = ({ texture }) => {
+    const cloudRef = useRef();
+    
+    return (
+        <group position={[6, 5, -12]}>
+            <mesh ref={cloudRef} scale={[3.5, 3.5, 1]}>
+                <planeGeometry args={[2.459, 1]} />
+                <meshBasicMaterial 
+                    map={texture} 
+                    transparent 
+                    opacity={0.8} 
+                    color="#ffffff"
+                    depthWrite={false}
+                />
+            </mesh>
+            <Text
+                position={[0, 0, 0.1]}
+                fontSize={0.25}
+                color="#444444"
+                anchorX="center"
+                anchorY="middle"
+                maxWidth={2}
+                textAlign="center"
+                fontWeight="bold"
+            >
+                30+ PROJECTS DONE
+            </Text>
+        </group>
+    );
+};
+
 export default GalleryRoom;
+
