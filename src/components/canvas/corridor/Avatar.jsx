@@ -92,8 +92,8 @@ const Avatar = ({ position = [10, -20, 30] }) => {
     const isOverFace = useRef(false);
     const currentRadius = useRef(0);
 
-    const realFaceTex = useTexture('/pic.jpeg');
-    
+    const realFaceTex = useTexture('/pic.png');
+
     useEffect(() => {
         textures.forEach(tex => tex.colorSpace = THREE.SRGBColorSpace);
         realFaceTex.colorSpace = THREE.SRGBColorSpace;
@@ -147,10 +147,10 @@ const Avatar = ({ position = [10, -20, 30] }) => {
 
         const targetRadius = isOverFace.current ? 0.22 : 0.0;
         const targetVisible = isOverFace.current ? 1.0 : 0.0;
-        
+
         // Much smoother lerping (0.05 instead of 0.1)
         currentRadius.current = THREE.MathUtils.lerp(currentRadius.current, targetRadius, 0.06);
-        
+
         if (materialRef.current) {
             materialRef.current.uTime = state.clock.elapsedTime;
             materialRef.current.uSketch = textures[0]; // Always use the new face
@@ -178,7 +178,7 @@ const Avatar = ({ position = [10, -20, 30] }) => {
             <mesh ref={meshRef} position={[0, dimensions.height / 2, 0]}>
                 {/* High resolution geometry for smooth bending/waving */}
                 <planeGeometry args={[dimensions.width, dimensions.height, 32, 32]} />
-                <magnifyMaterial 
+                <magnifyMaterial
                     ref={materialRef}
                     uSketch={textures[0]}
                     uReal={realFaceTex}
