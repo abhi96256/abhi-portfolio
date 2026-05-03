@@ -3,6 +3,7 @@ import { useTexture, Text } from '@react-three/drei';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import gsap from 'gsap';
+import { usePerformance, TIERS } from '../../../context/PerformanceContext';
 import '../shaders/RevealMaterial';
 import { isTouchDevice } from '../../../utils/deviceDetect';
 /**
@@ -97,6 +98,8 @@ const PictureContent = ({ imagePath, imagePaintedPath, width, height, isPainted 
 
 const InspectableFrame = ({ frame, wallX, frameTexture, framePaintedTexture, CABIN_SKETCH_URL, setCameraOverride }) => {
     const { camera, viewport } = useThree();
+    const { tier } = usePerformance();
+    const isLowTier = tier === TIERS.LOW;
     const groupRef = useRef();
     const frameMaterialRef = useRef();
     const framePaintedRef = useRef();
@@ -171,7 +174,18 @@ const InspectableFrame = ({ frame, wallX, frameTexture, framePaintedTexture, CAB
     }, [isHovered, isInspected]);
 
     useFrame((state, delta) => {
-        if (!groupRef.current) return;
+        if (!groupRef.current || !groupRef.current.visible) return;
+
+        if (isLowTier && !isInspected) {
+            // Static on low tier unless inspected
+            tempPos.copy(originalPos);
+            tempRot.setFromEuler(originalRot);
+            tempScale.set(1, 1, 1);
+            groupRef.current.position.copy(tempPos);
+            groupRef.current.quaternion.copy(tempRot);
+            groupRef.current.scale.copy(tempScale);
+            return;
+        }
 
         if (compileFramesRef.current < 2) {
             compileFramesRef.current++;
@@ -317,8 +331,9 @@ const InspectableFrame = ({ frame, wallX, frameTexture, framePaintedTexture, CAB
         </group>
     );
 };
-
 const CorridorDecorations = ({ segmentLength, zOffset, corridorWidth = 4, corridorHeight = 3.5, zClip = 100000, setCameraOverride }) => {
+    const { tier } = usePerformance();
+    const isLowTier = tier === TIERS.LOW;
 
     const wallX = corridorWidth / 2 - 0.01;
     const floorY = -corridorHeight / 2;
@@ -512,13 +527,7 @@ const CorridorDecorations = ({ segmentLength, zOffset, corridorWidth = 4, corrid
                         </mesh>
 
                         {/* RZECZYWISTE ŹRÓDŁO ŚWIATŁA (PointLight) - WYLACZONE */}
-                        {/* <pointLight
-                            position={[0, -1.5, 0]}
-                            distance={6}
-                            intensity={0.8}
-                            color="#ffffff"
-                            decay={2}
-                        /> */}
+                        {/* Wylaczone globalnie, uzywamy meshBasicMaterial/emissive dla wydajnosci */}
                     </group>
                 );
             })}

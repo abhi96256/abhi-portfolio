@@ -72,7 +72,7 @@ const HeroText = ({ position = [0, 0.3, 0] }) => {
 
     // Animation loop
     useFrame((state, delta) => {
-        if (!groupRef.current) return;
+        if (!groupRef.current || !groupRef.current.visible) return;
 
         const time = state.clock.elapsedTime;
 

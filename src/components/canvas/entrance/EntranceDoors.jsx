@@ -3,6 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { Text, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import gsap from 'gsap';
+import { usePerformance, TIERS } from '../../../context/PerformanceContext';
 import '../shaders/RevealMaterial'; // Registers alpha-discard reveal shader
 import { playBackgroundMusic } from '../../../utils/audioManager';
 import { useAchievements } from '../../../context/AchievementsContext';
@@ -43,6 +44,8 @@ const EntranceDoors = ({
     const windowAvatarRef = useRef();
     const { camera } = useThree();
     const { unlockAchievement } = useAchievements();
+    const { tier } = usePerformance();
+    const isLowTier = tier === TIERS.LOW;
 
     const [isMobile, setIsMobile] = useState(false);
 
@@ -466,7 +469,7 @@ const EntranceDoors = ({
 
     // --- Cat Eye Tracking Logic ---
     useFrame((state) => {
-        if (!leftPupilRef.current || !rightPupilRef.current) return;
+        if (isLowTier || !leftPupilRef.current || !rightPupilRef.current) return;
 
         // Mouse position in normalized device reference (-1 to +1)
         const { x, y } = state.pointer;
@@ -491,6 +494,7 @@ const EntranceDoors = ({
     // --- Mouse Swinging Animation ---
     const mousePivotRef = useRef();
     useFrame(({ clock }) => {
+        if (isLowTier) return;
         if (mousePivotRef.current) {
             // Gentle swing: sin wave
             // Amplitude: 0.05 radians (approx 3 degrees)

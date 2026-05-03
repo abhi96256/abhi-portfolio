@@ -122,6 +122,7 @@ const SketchElement = ({
     initialRotation = 0
 }) => {
     const ref = useRef();
+    const { tier } = usePerformance();
     const [dimensions, setDimensions] = useState({ width: 1, height: 1 });
 
     // Calculate dimensions from texture
@@ -136,7 +137,7 @@ const SketchElement = ({
     }, [texture, scale]);
 
     useFrame((state) => {
-        if (!ref.current) return;
+        if (!ref.current || tier === 'LOW') return;
 
         const time = state.clock.elapsedTime;
 
@@ -186,14 +187,14 @@ const SketchElement = ({
  */
 const AnimatedStar = ({ position, scale = 0.1, speed = 0.5 }) => {
     const ref = useRef();
+    const { tier } = usePerformance();
 
     useFrame((state) => {
-        if (ref.current) {
-            const time = state.clock.elapsedTime;
-            ref.current.rotation.z = time * speed;
-            ref.current.position.y = position[1] + Math.sin(time * 0.8 + position[0]) * 0.03;
-            ref.current.scale.setScalar(scale * (1 + Math.sin(time * 2) * 0.15));
-        }
+        if (!ref.current || tier === 'LOW') return;
+        const time = state.clock.elapsedTime;
+        ref.current.rotation.z = time * speed;
+        ref.current.position.y = position[1] + Math.sin(time * 0.8 + position[0]) * 0.03;
+        ref.current.scale.setScalar(scale * (1 + Math.sin(time * 2) * 0.15));
     });
 
     return (
@@ -213,12 +214,12 @@ const AnimatedStar = ({ position, scale = 0.1, speed = 0.5 }) => {
  */
 const Squiggle = ({ position, rotation = 0 }) => {
     const ref = useRef();
+    const { tier } = usePerformance();
 
     useFrame((state) => {
-        if (ref.current) {
-            const time = state.clock.elapsedTime;
-            ref.current.position.x = position[0] + Math.sin(time * 0.5) * 0.02;
-        }
+        if (!ref.current || tier === 'LOW') return;
+        const time = state.clock.elapsedTime;
+        ref.current.position.x = position[0] + Math.sin(time * 0.5) * 0.02;
     });
 
     return (
@@ -238,13 +239,13 @@ const Squiggle = ({ position, rotation = 0 }) => {
  */
 const DoodleCircle = ({ position, scale = 0.08 }) => {
     const ref = useRef();
+    const { tier } = usePerformance();
 
     useFrame((state) => {
-        if (ref.current) {
-            const time = state.clock.elapsedTime;
-            const pulse = 1 + Math.sin(time * 2) * 0.1;
-            ref.current.scale.setScalar(scale * pulse);
-        }
+        if (!ref.current || tier === 'LOW') return;
+        const time = state.clock.elapsedTime;
+        const pulse = 1 + Math.sin(time * 2) * 0.1;
+        ref.current.scale.setScalar(scale * pulse);
     });
 
     return (
@@ -261,12 +262,12 @@ const DoodleCircle = ({ position, scale = 0.08 }) => {
 const ThoughtBubble = ({ position }) => {
     const ref = useRef();
     const contentRef = useRef();
+    const { tier } = usePerformance();
 
     useFrame((state) => {
-        if (ref.current) {
-            const time = state.clock.elapsedTime;
-            ref.current.position.y = position[1] + Math.sin(time * 0.6) * 0.02;
-        }
+        if (!ref.current || tier === 'LOW') return;
+        const time = state.clock.elapsedTime;
+        ref.current.position.y = position[1] + Math.sin(time * 0.6) * 0.02;
 
         if (contentRef.current) {
             // Pulsing content inside bubble

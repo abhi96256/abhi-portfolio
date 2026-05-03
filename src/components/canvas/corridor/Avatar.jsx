@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useFrame, useThree, extend } from '@react-three/fiber';
 import { useTexture, shaderMaterial } from '@react-three/drei';
 import * as THREE from 'three';
+import { usePerformance, TIERS } from '../../../context/PerformanceContext';
 
 // Custom shader for magnifying glass reveal effect
 const MagnifyMaterial = shaderMaterial(
@@ -56,6 +57,8 @@ const Avatar = ({ position = [10, -20, 30] }) => {
     const groupRef = useRef();
     const [dimensions, setDimensions] = useState({ width: 1.2, height: 2.4 });
     const { camera } = useThree();
+    const { tier } = usePerformance();
+    const isLowTier = tier === TIERS.LOW;
 
     const dodgeX = useRef(0);
     const targetDodgeX = useRef(0);
@@ -88,21 +91,27 @@ const Avatar = ({ position = [10, -20, 30] }) => {
 
     useFrame((state, delta) => {
         if (!groupRef.current || !meshRef.current) return;
+        if (!groupRef.current.visible) return;
 
-        groupRef.current.getWorldPosition(worldPosVec.current);
-        const distance = camera.position.z - worldPosVec.current.z;
+        // Skip complex dodging on low tier
+        if (!isLowTier) {
+            groupRef.current.getWorldPosition(worldPosVec.current);
+            const distance = camera.position.z - worldPosVec.current.z;
 
-        if (distance > 0 && distance < 3) {
-            const t = (3 - distance) / 3;
-            targetDodgeX.current = -1.5 * t * (2 - t);
+            if (distance > 0 && distance < 3) {
+                const t = (3 - distance) / 3;
+                targetDodgeX.current = -1.5 * t * (2 - t);
+            } else {
+                targetDodgeX.current = 0;
+            }
+
+            dodgeX.current = THREE.MathUtils.lerp(dodgeX.current, targetDodgeX.current, 0.08);
+            groupRef.current.position.x = position[0] + dodgeX.current;
         } else {
-            targetDodgeX.current = 0;
+            groupRef.current.position.x = position[0];
         }
 
-        dodgeX.current = THREE.MathUtils.lerp(dodgeX.current, targetDodgeX.current, 0.08);
-        groupRef.current.position.x = position[0] + dodgeX.current;
-
-        const frameDuration = 1 / 20;
+        const frameDuration = isLowTier ? 1 / 12 : 1 / 20; // Slower animation on low tier
         frameTimer.current += delta;
         if (frameTimer.current >= frameDuration) {
             frameTimer.current = 0;

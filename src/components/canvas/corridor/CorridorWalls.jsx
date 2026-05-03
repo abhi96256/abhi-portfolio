@@ -2,6 +2,7 @@ import { useMemo, useRef } from 'react';
 import { useFrame, useThree, extend } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useTexture, MeshReflectorMaterial } from '@react-three/drei';
+import { usePerformance, TIERS } from '../../../context/PerformanceContext';
 
 const WALL_X_OUTER = 3.5;
 const WALL_X_INNER = 1.7;
@@ -11,6 +12,9 @@ const WALL_X_INNER = 1.7;
  */
 const CorridorWalls = ({ zStart = 10, length = 80, doorPositions = [], zClip = 100000 }) => {
     const corridorHeight = 3.5;
+    const { tier } = usePerformance();
+    const isLowTier = tier === TIERS.LOW;
+    const isMediumTier = tier === TIERS.MEDIUM;
 
     // Load Realistic Textures
     const floorTexture = useTexture('/textures/corridor/real_floor.png');
@@ -120,20 +124,29 @@ const CorridorWalls = ({ zStart = 10, length = 80, doorPositions = [], zClip = 1
                     tiles.push(
                         <mesh key={`f-${tileZ}`} position={[0, floorY, tileZ]} rotation={[-Math.PI / 2, 0, Math.PI / 2]}>
                             <planeGeometry args={[TILE_LENGTH, CENTER_WIDTH]} />
-                            <MeshReflectorMaterial
-                                blur={[300, 100]}
-                                resolution={1024}
-                                mixBlur={1}
-                                mixStrength={40}
-                                roughness={1}
-                                depthScale={1.2}
-                                minDepthThreshold={0.4}
-                                maxDepthThreshold={1.4}
-                                color="#151515"
-                                metalness={0.5}
-                                mirror={1}
-                                map={floorTexture}
-                            />
+                            {isLowTier ? (
+                                <meshStandardMaterial
+                                    color="#151515"
+                                    map={floorTexture}
+                                    roughness={0.8}
+                                    metalness={0.2}
+                                />
+                            ) : (
+                                <MeshReflectorMaterial
+                                    blur={[300, 100]}
+                                    resolution={isMediumTier ? 512 : 1024}
+                                    mixBlur={1}
+                                    mixStrength={isMediumTier ? 30 : 40}
+                                    roughness={1}
+                                    depthScale={1.2}
+                                    minDepthThreshold={0.4}
+                                    maxDepthThreshold={1.4}
+                                    color="#151515"
+                                    metalness={0.5}
+                                    mirror={1}
+                                    map={floorTexture}
+                                />
+                            )}
                         </mesh>
                     );
                     tileZ -= TILE_LENGTH;
@@ -161,11 +174,19 @@ const CorridorWalls = ({ zStart = 10, length = 80, doorPositions = [], zClip = 1
                                     roughness={0.9} 
                                     metalness={0.0}
                                     emissive="#ffffff" 
-                                    emissiveIntensity={0.02} 
+                                    emissiveIntensity={isLowTier ? 0.01 : 0.02} 
                                 />
                             </mesh>
-                            {/* CEILING LIGHT FIXTURES - Softer with higher decay */}
-                            <pointLight position={[0, ceilingY - 0.2, tileZ]} intensity={8} distance={12} decay={2.5} color="#fff5e6" />
+                            {/* CEILING LIGHT FIXTURES - Optimized for performance tiers */}
+                            {!isLowTier && (
+                                <pointLight 
+                                    position={[0, ceilingY - 0.2, tileZ]} 
+                                    intensity={isMediumTier ? 5 : 8} 
+                                    distance={isMediumTier ? 10 : 12} 
+                                    decay={2.5} 
+                                    color="#fff5e6" 
+                                />
+                            )}
                         </group>
                     );
                     tileZ -= tileLength;
