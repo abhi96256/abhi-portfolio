@@ -1,33 +1,33 @@
-https://portfolio-itom.pages.dev/*
-  X-Robots-Tag: noindex
+https://abhi-portfolio.vercel.app/*
+  X-Robots-Tag: index, follow
 
-https://itomdev.com/*
+https://abhi-portfolio.vercel.app/*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 
 # Cache static assets for 1 year (Performance & SEO Server Score)
-https://itomdev.com/*.js
+https://abhi-portfolio.vercel.app/*.js
   Cache-Control: public, max-age=31536000, immutable
 
-https://itomdev.com/*.css
+https://abhi-portfolio.vercel.app/*.css
   Cache-Control: public, max-age=31536000, immutable
 
-https://itomdev.com/*.webp
+https://abhi-portfolio.vercel.app/*.webp
   Cache-Control: public, max-age=31536000, immutable
 
-https://itomdev.com/*.png
+https://abhi-portfolio.vercel.app/*.png
   Cache-Control: public, max-age=31536000, immutable
 
-https://itomdev.com/*.ktx2
+https://abhi-portfolio.vercel.app/*.ktx2
   Cache-Control: public, max-age=31536000, immutable
 
-https://itomdev.com/*.glb
+https://abhi-portfolio.vercel.app/*.glb
   Cache-Control: public, max-age=31536000, immutable
 
-https://itomdev.com/*.mp3
+https://abhi-portfolio.vercel.app/*.mp3
   Cache-Control: public, max-age=31536000, immutable
 
-https://itomdev.com/fonts/*
+https://abhi-portfolio.vercel.app/fonts/*
   Cache-Control: public, max-age=31536000, immutable
