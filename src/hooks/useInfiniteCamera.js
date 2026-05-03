@@ -289,7 +289,7 @@ const useInfiniteCamera = ({
     }, [handleWheel, handleMouseMove, handleKeyDown, handleTouchStart, handleTouchMove, handleDeviceOrientation, requestGyroscopePermission]);
 
     // Main camera update loop
-    useFrame(() => {
+    useFrame((state) => {
         // If camera override is active, let external code control the camera
         if (cameraOverride.current) {
             return;

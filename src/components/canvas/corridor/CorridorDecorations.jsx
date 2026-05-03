@@ -585,10 +585,10 @@ const CorridorDecorations = ({ segmentLength, zOffset, corridorWidth = 4, corrid
                         {!isLowTier && (
                             <pointLight 
                                 position={[0, -0.2, 0]} 
-                                intensity={35} 
-                                distance={15} 
+                                intensity={500} 
+                                distance={20} 
                                 decay={2} 
-                                color="#ffffff"
+                                color="#fff5e6"
                             />
                         )}
                     </group>

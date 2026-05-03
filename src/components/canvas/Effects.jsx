@@ -4,20 +4,18 @@ import { usePerformance, TIERS } from '../../context/PerformanceContext';
 const Effects = () => {
     const { tier } = usePerformance();
     
-    // Disable effects on low tier for performance
-    if (tier === TIERS.LOW) return null;
-
+    // High quality bloom
     return (
         <EffectComposer disableNormalPass>
             <Bloom 
-                intensity={1.0} 
-                luminanceThreshold={0.9} 
+                intensity={1.5} 
+                luminanceThreshold={0.5} 
                 luminanceSmoothing={0.025} 
                 mipmapBlur 
             />
-            <Noise opacity={0.02} />
+            <Noise opacity={0.03} />
             <Vignette eskil={false} offset={0.1} darkness={1.1} />
-            <ChromaticAberration offset={[0.0005, 0.0005]} />
+            <ChromaticAberration offset={[0.001, 0.001]} />
         </EffectComposer>
     );
 };
