@@ -309,6 +309,25 @@ const Preloader = ({ onComplete, ready }) => {
       pencilSoundRef.current = null;
     }
     play('tear', { volume: 0.8 });
+    
+    // 0. Earthquake Shake Effect
+    const shakeTL = gsap.timeline();
+    shakeTL.to(".app", {
+      x: "random(-15, 15)",
+      y: "random(-10, 10)",
+      rotation: "random(-0.5, 0.5)",
+      duration: 0.05,
+      repeat: 35,
+      yoyo: true,
+      ease: "none"
+    });
+    shakeTL.to(".app", { 
+      x: 0, 
+      y: 0, 
+      rotation: 0, 
+      duration: 0.5, 
+      ease: "elastic.out(1, 0.3)" 
+    });
 
     const tl = gsap.timeline({
       onComplete: () => {
