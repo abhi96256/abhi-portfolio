@@ -36,7 +36,7 @@ const AchievementIcon = () => (
 const AchievementsPanel = ({ isOpen, onClose }) => {
     const stats = [
         { id: 'exp', title: '2+', label: 'Years Experience', icon: <ExperienceIcon /> },
-        { id: 'projects', title: '20+', label: 'Projects Completed', icon: <ProjectsIcon /> },
+        { id: 'projects', title: '30+', label: 'Projects Completed', icon: <ProjectsIcon /> },
         { id: 'tools', title: '15+', label: 'Tools Mastered', icon: <ToolsIcon /> }
     ];
 

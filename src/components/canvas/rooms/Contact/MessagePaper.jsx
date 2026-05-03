@@ -66,6 +66,7 @@ const InteractiveTextField = ({
             <mesh 
                 position={[hitboxPosition[0] - position[0], 0, hitboxPosition[2] - position[2]]} 
                 rotation={[-Math.PI / 2, 0, 0]}
+                visible={false}
             >
                 <planeGeometry args={hitboxSize} />
                 <meshBasicMaterial transparent opacity={0} />
@@ -102,7 +103,8 @@ const InteractiveTextField = ({
                                 background: 'transparent',
                                 fontSize: '64px',
                                 resize: 'none',
-                                padding: '10px'
+                                padding: '10px',
+                                caretColor: 'transparent'
                             }}
                         />
                     ) : (
@@ -123,7 +125,8 @@ const InteractiveTextField = ({
                                 outline: 'none',
                                 background: 'transparent',
                                 fontSize: '64px',
-                                padding: '10px'
+                                padding: '10px',
+                                caretColor: 'transparent'
                             }}
                         />
                     )}
