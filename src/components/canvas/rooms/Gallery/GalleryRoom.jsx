@@ -178,9 +178,36 @@ const UNIQUE_PROJECTS = [
         description: 'Premium beauty platform for salons with online booking and stylist profiles.',
         techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/tailwindlogo.webp']
     },
+    {
+        id: 'gymtrainer',
+        title: 'APEX PERFORMANCE',
+        front: '/gym.png',
+        painted: '/gym.png',
+        url: 'https://trianer-rust.vercel.app/',
+        description: 'High-energy fitness trainer portfolio built with React and CSS, featuring fluid ReactBits-powered animations, workout plans, and an immersive personal brand experience.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/csslogo.webp']
+    },
+    {
+        id: 'euchariry',
+        title: 'EURO CHARITY',
+        front: '/logo (2).png',
+        painted: '/logo (2).png',
+        url: 'https://site-eta-nine-81.vercel.app/',
+        description: 'A compassionate European charity platform designed to connect donors with causes, featuring a clean, accessible interface and smooth React-powered user interactions.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/csslogo.webp']
+    },
+    {
+        id: 'a2pcosmetics',
+        title: 'A2P COSMETICS',
+        front: '/A2P final logo.png',
+        painted: '/A2P final logo.png',
+        url: 'https://a2p-cosmetics1.vercel.app/',
+        description: 'Full-stack cosmetics e-commerce platform with product catalog, cart management, and secure checkout — powered by React, Node.js, Express, and MySQL for enterprise-grade performance.',
+        techStack: ['/textures/gallery/reactlogo.webp', '/textures/gallery/jslogo.webp', '/textures/gallery/phplogo.webp', '/textures/gallery/csslogo.webp']
+    },
 ];
 
-const PROJECT_COUNT = 16; // One per unique project
+const PROJECT_COUNT = 19; // One per unique project
 const GAP = 2.5;
 
 // Zmień te wartości aby dopasować proporcje ptaka (legacy ratio 1.41)
