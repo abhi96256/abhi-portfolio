@@ -169,22 +169,22 @@ const CorridorWalls = ({ zStart = 10, length = 80, doorPositions = [], zClip = 1
                         <group key={`c-group-${tileZ}`}>
                             <mesh position={[0, ceilingY, tileZ]} rotation={[Math.PI / 2, 0, 0]}>
                                 <planeGeometry args={[tileWidth, tileLength]} />
-                                <meshStandardMaterial 
-                                    map={ceilingTexture} 
-                                    roughness={0.9} 
+                                <meshStandardMaterial
+                                    map={ceilingTexture}
+                                    roughness={0.9}
                                     metalness={0.0}
-                                    emissive="#ffffff" 
-                                    emissiveIntensity={isLowTier ? 0.01 : 0.02} 
+                                    emissive="#ffffff"
+                                    emissiveIntensity={isLowTier ? 0.01 : 0.02}
                                 />
                             </mesh>
                             {/* CEILING LIGHT FIXTURES - Optimized for performance tiers */}
                             {!isLowTier && (
-                                <pointLight 
-                                    position={[0, ceilingY - 0.2, tileZ]} 
-                                    intensity={isMediumTier ? 5 : 8} 
-                                    distance={isMediumTier ? 10 : 12} 
-                                    decay={2.5} 
-                                    color="#fff5e6" 
+                                <pointLight
+                                    position={[0, ceilingY - 0.2, tileZ]}
+                                    intensity={isMediumTier ? 5 : 8}
+                                    distance={isMediumTier ? 10 : 12}
+                                    decay={2.5}
+                                    color="#fff5e6"
                                 />
                             )}
                         </group>
@@ -213,3 +213,4 @@ const CorridorWalls = ({ zStart = 10, length = 80, doorPositions = [], zClip = 1
 };
 
 export default CorridorWalls;
+
