@@ -309,10 +309,10 @@ const Preloader = ({ onComplete, ready }) => {
       pencilSoundRef.current = null;
     }
     play('tear', { volume: 0.8 });
-    
+
     // 0. Earthquake Shake Effect (Violent start, decaying rumble)
     const shakeTL = gsap.timeline();
-    
+
     // Initial violent jolt
     shakeTL.to(".app", {
       x: "random(-20, 20)",
@@ -323,7 +323,7 @@ const Preloader = ({ onComplete, ready }) => {
       yoyo: true,
       ease: "none"
     });
-    
+
     // Decaying rumble
     shakeTL.to(".app", {
       x: "random(-8, 8)",
@@ -335,12 +335,12 @@ const Preloader = ({ onComplete, ready }) => {
       ease: "none"
     });
 
-    shakeTL.to(".app", { 
-      x: 0, 
-      y: 0, 
-      rotation: 0, 
-      duration: 0.8, 
-      ease: "elastic.out(1, 0.3)" 
+    shakeTL.to(".app", {
+      x: 0,
+      y: 0,
+      rotation: 0,
+      duration: 0.8,
+      ease: "elastic.out(1, 0.3)"
     });
 
     const tl = gsap.timeline({
@@ -429,4 +429,5 @@ const Preloader = ({ onComplete, ready }) => {
 };
 
 export default Preloader;
+
 
