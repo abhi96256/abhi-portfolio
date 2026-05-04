@@ -339,6 +339,7 @@ export const filterTexturesByDevice = (list, usePainted) => {
             return true;
         }
 
+
         // It's a painted version
         return usePainted;
     });
