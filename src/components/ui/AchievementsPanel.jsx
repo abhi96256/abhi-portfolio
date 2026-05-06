@@ -79,3 +79,4 @@ const AchievementsPanel = ({ isOpen, onClose }) => {
 };
 
 export default AchievementsPanel;
+
