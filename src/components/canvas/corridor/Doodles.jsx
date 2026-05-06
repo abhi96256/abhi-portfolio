@@ -308,3 +308,4 @@ const ThoughtBubble = ({ position }) => {
 };
 
 export default Doodles;
+
