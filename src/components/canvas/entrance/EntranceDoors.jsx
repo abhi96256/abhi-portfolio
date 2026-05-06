@@ -666,6 +666,7 @@ const EntranceDoors = ({
                     </mesh>
                 )}
 
+
                 {/* Sketch overlay (front) - left door brush-stroke reveal */}
                 <mesh position={[doorWidth / 2, 0, 0.09]}>
                     <planeGeometry args={[doorWidth, doorHeight]} />
