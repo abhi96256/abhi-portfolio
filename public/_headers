@@ -31,3 +31,4 @@ https://abhi-portfolio.vercel.app/*.mp3
 
 https://abhi-portfolio.vercel.app/fonts/*
   Cache-Control: public, max-age=31536000, immutable
+  
