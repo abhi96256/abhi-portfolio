@@ -30,17 +30,18 @@ import './styles/main.scss';
 // --- CONDITIONAL ASSET PRELOADING ---
 // On high-end devices, preloads everything for zero stutter.
 // On mobile/low-end devices, only preloads core textures to prevent Out Of Memory crashes.
-import { 
-  ENTRANCE_TEXTURES, 
-  CORRIDOR_TEXTURES, 
+import {
+  ENTRANCE_TEXTURES,
+  CORRIDOR_TEXTURES,
   UI_TEXTURES,
-  PRELOAD_ALL, 
+  PRELOAD_ALL,
   PRELOAD_LOADER,
   ABOUT_TEXTURES,
   IMAGE_ASSETS,
   filterTexturesByDevice
 } from './config/texturePreloadList';
 import { TextureLoader } from 'three';
+
 
 // Standard Browser-level Image Preloader (for <img> tags)
 const preloadBrowserImage = (path) => {
@@ -70,7 +71,7 @@ if (isLowEnd) {
 } else {
   const filteredAll = filterTexturesByDevice(PRELOAD_ALL, supportsHover);
   const filteredLoader = filterTexturesByDevice(PRELOAD_LOADER, supportsHover);
-  
+
   filteredAll.forEach(path => useTexture.preload(path));
   filteredLoader.forEach(path => useLoader.preload(TextureLoader, path));
 }
