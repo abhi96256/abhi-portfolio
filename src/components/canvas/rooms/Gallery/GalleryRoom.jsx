@@ -262,10 +262,10 @@ const GalleryRoom = ({ showRoom, onReady, isExiting, isWarmup }) => {
 
     // Setup Paint Transition
     const { onBeforeCompile, animatePaint, resetPaint, uniformsData, updateRoomOrigin } = usePaintMaterial();
-    
+
     // Track transition state to disable interactions
     const [isTransitioning, setIsTransitioning] = useState(false);
-    
+
     // Track if user teleported into this room 
     const wasTeleportedRef = useRef(false);
     useEffect(() => {
@@ -285,7 +285,7 @@ const GalleryRoom = ({ showRoom, onReady, isExiting, isWarmup }) => {
                 resetPaint();
                 // Start the paint animation with a slight delay so it happens *during* fly-in
                 animatePaint(0.2, 2.5);
-                
+
                 // Re-enable interactions once painting finishes
                 setTimeout(() => {
                     setIsTransitioning(false);
@@ -390,7 +390,7 @@ const GalleryRoom = ({ showRoom, onReady, isExiting, isWarmup }) => {
             return `/textures/gallery/${name}_painted.webp`;
         });
     }, [canHover]);
-    
+
     useTexture(allLogos);
 
     // Construct the full list of projects (repeated) with textures attached
@@ -546,7 +546,7 @@ const GalleryRoom = ({ showRoom, onReady, isExiting, isWarmup }) => {
         floorMat.onBeforeCompile = onBeforeCompile;
         floorMat.transparent = true;
         floorMat.needsUpdate = true;
-        
+
         const ropeMat = new THREE.MeshBasicMaterial({ color: '#666666' });
         ropeMat.onBeforeCompile = onBeforeCompile;
         ropeMat.transparent = true;
@@ -1111,7 +1111,7 @@ const ProjectCard = memo(forwardRef(({ index, project, clothespinTexture, curren
             const p = paintProgress.value;
             // Instantly reveal if we teleported
             const expectedOpacity = p >= 1.0 ? 1.0 : THREE.MathUtils.clamp((p - 0.3) * 2.0, 0.0, 1.0);
-            
+
             if (textRef.current.fillOpacity !== expectedOpacity) {
                 const applyOpacity = (ref) => {
                     if (ref.current) {
@@ -1553,15 +1553,15 @@ const TechStackLogo = ({ path, position }) => {
 // Label Cloud Component
 const LabelCloud = ({ texture }) => {
     const cloudRef = useRef();
-    
+
     return (
         <group position={[6, 5, -12]}>
             <mesh ref={cloudRef} scale={[3.5, 3.5, 1]}>
                 <planeGeometry args={[2.459, 1]} />
-                <meshBasicMaterial 
-                    map={texture} 
-                    transparent 
-                    opacity={0.8} 
+                <meshBasicMaterial
+                    map={texture}
+                    transparent
+                    opacity={0.8}
                     color="#ffffff"
                     depthWrite={false}
                 />
@@ -1583,4 +1583,5 @@ const LabelCloud = ({ texture }) => {
 };
 
 export default GalleryRoom;
+
 
